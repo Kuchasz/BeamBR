@@ -1,15 +1,26 @@
 import * as React from 'preact';
+import {IRouteState, Route} from "../routes/model";
+import {connect} from 'preact-redux';
 
-export const Main = () => (
+const MainComponent = (props: IRouteState) => (
     <div>
-        <LoginForm></LoginForm>
+        {props.currentRoute == Route.LoginForm ? <LoginForm></LoginForm> :<Dashboard></Dashboard>}
     </div>
 );
+
+export const Main = connect(state => ({
+    currentRoute: state.currentRoute
+}))(MainComponent);
 
 export const LoginForm = () => (
     <div>
-        <input/>
-        <input/>
-        <button>Login</button>
+        <h3>Login Form Component</h3>
     </div>
 );
+
+export const Dashboard = () => (
+    <div>
+        <h3>Dashboard Component</h3>
+    </div>
+);
+
