@@ -1,15 +1,21 @@
 import * as React from 'preact';
 import {IRouteState, Route} from "../routes/model";
 import {connect} from 'preact-redux';
+import {navigateToRoute} from "../routes/actions";
 
-const MainComponent = (props: IRouteState) => (
+const MainComponent = ({currentRoute, navigateToDashboard, navigateToLoginForm}) => (
     <div>
-        {props.currentRoute == Route.LoginForm ? <LoginForm></LoginForm> :<Dashboard></Dashboard>}
+        <button onClick={navigateToDashboard}>Dashboard</button>
+        <button onClick={navigateToLoginForm}>Login</button>
+        <div>{currentRoute == Route.LoginForm ? <LoginForm></LoginForm> : <Dashboard></Dashboard>}</div>
     </div>
 );
 
 export const Main = connect(state => ({
     currentRoute: state.currentRoute
+}), dispatch => ({
+    navigateToDashboard: () => dispatch(navigateToRoute(Route.Dashboard)),
+    navigateToLoginForm: () => dispatch(navigateToRoute(Route.LoginForm))
 }))(MainComponent);
 
 export const LoginForm = () => (
