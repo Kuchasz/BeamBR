@@ -1,16 +1,17 @@
 import {Actions, LogoutActionType, StoreUserProfileActionType} from "./actions";
-const defaultState = {
+
+const initialState = {
     login: undefined,
     token: undefined
 };
 
-export const reducer = (state = defaultState, action: Actions) => {
+export const reducer = (state = initialState, action: Actions) => {
     switch (action.type) {
         case LogoutActionType:
-            console.log(action.type);
             return state;
         case StoreUserProfileActionType:
             return {
+                ...state,
                 login: action.login,
                 token: action.token
             };

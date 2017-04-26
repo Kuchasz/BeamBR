@@ -27,7 +27,7 @@ class NetworksListView extends Component<Props, State> {
                 <button onClick={this.props.createFetchNetworksAction}>Click to fetch networks!</button>
                 {this.props.networks.map(n => (<NetworkListItem onClick={this.onSelectNetwork.bind(this)} {...n}/>))}
                 {this.state.selectedNetworkSSID ? getIsSecured(this.props.networks, this.state.selectedNetworkSSID) ?
-                    <input placeholder="Type password"></input> : null : null}
+                    <input placeholder="Type password"/> : null : null}
             </div>
         )
     }

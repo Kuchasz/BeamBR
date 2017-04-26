@@ -1,7 +1,7 @@
 import * as React from 'preact';
 import {Component} from 'preact';
 import {connect} from 'preact-redux';
-import {createLoginAction, createLogoutAction} from "../actions";
+import {createLoginAction} from "../actions";
 import {HTMLInputEvent} from "../../core/html";
 
 interface Props {
@@ -33,6 +33,5 @@ class LoginFormView extends Component<Props, State> {
 }
 
 export const LoginForm = connect(undefined, {
-    createLoginAction,
-    createLogoutAction
+    createLoginAction
 })(LoginFormView);

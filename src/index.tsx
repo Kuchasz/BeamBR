@@ -8,9 +8,6 @@ import * as networking from './networking/reducer';
 import {Provider} from 'preact-redux';
 import thunk from 'redux-thunk';
 
-export const getIsSecured = (state, ssid: string) =>
-    networking.getIsSecured(state.networking.networks, ssid);
-
 const store = createStore(
     combineReducers({
         login: login.reducer,
