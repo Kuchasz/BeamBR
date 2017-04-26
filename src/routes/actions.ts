@@ -1,4 +1,4 @@
-import {Route} from "./model";
+import {Route} from "./state";
 
 export const ActionTypes = {
     NAVIGATE: "NAVIGATE"

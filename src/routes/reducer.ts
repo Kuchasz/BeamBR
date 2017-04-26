@@ -1,5 +1,5 @@
 import {ActionTypes} from './actions';
-import {Route} from "./model";
+import {Route} from "./state";
 
 const defaultState = {
     currentRoute: Route.LoginForm

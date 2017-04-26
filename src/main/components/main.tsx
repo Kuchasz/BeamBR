@@ -1,8 +1,8 @@
 import * as React from 'preact';
-import {Route} from "../../routes/model";
+import {Route} from "../../routes/state";
 import {connect} from 'preact-redux';
 import {LoginForm} from "../../login/components/login-form";
-import {NetworksList} from "../../networks/components/networks-list";
+import {NetworksList} from "../../networking/components/networks-list";
 
 const MainComponent = ({currentRoute, token, login}) => (
     <div>
