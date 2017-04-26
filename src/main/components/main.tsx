@@ -2,12 +2,14 @@ import * as React from 'preact';
 import {Route} from "../../routes/model";
 import {connect} from 'preact-redux';
 import {LoginForm} from "../../login/components/login-form";
+import {NetworksList} from "../../networks/components/networks-list";
 
 const MainComponent = ({currentRoute, token, login}) => (
     <div>
         <div>{currentRoute == Route.LoginForm ? <LoginForm></LoginForm> : <Dashboard></Dashboard>}</div>
         <h2>Your Login: {login}</h2>
         <h2>Your Token: {token}</h2>
+        <NetworksList></NetworksList>
     </div>
 );
 
