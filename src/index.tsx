@@ -2,8 +2,8 @@ import { render } from "preact";
 import {Main} from "./main/components/main";
 import * as React from 'preact';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
-import {reducer as routesReducer} from './routes/reducer';
-import {reducer as loginReducer} from './login/reducer';
+import * as routes from './routes/reducer';
+import * as login from './login/reducer';
 import * as networking from './networking/reducer';
 import {Provider} from 'preact-redux';
 import thunk from 'redux-thunk';
@@ -13,8 +13,8 @@ export const getIsSecured = (state, ssid: string) =>
 
 const store = createStore(
     combineReducers({
-        login: loginReducer,
-        routes: routesReducer,
+        login: login.reducer,
+        routes: routes.reducer,
         networking: networking.reducer
     }),
     applyMiddleware(thunk));

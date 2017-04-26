@@ -1,7 +1,7 @@
-export const getAuthToken = (login, password) => new Promise((res, rej) => {
+export const getAuthToken = (login, password) => new Promise<string>((res, rej) => {
         setTimeout(() => {
             if (login === 'admin' && password === 'admin'){
-                res(Math.random());
+                res(Math.random().toString());
             } else {
                 rej();
             }

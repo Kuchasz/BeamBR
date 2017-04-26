@@ -6,6 +6,6 @@ export interface Network{
 }
 
 export interface State{
-    currentNetwork: string;
+    currentNetworkSSID: string;
     networks: Network[];
 }

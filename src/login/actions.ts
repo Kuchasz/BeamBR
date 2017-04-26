@@ -1,4 +1,5 @@
 import {getAuthToken} from "./apis";
+
 export type LoginActionType = 'loginActionType';
 export const LoginActionType = 'loginActionType';
 
@@ -8,23 +9,23 @@ export const LogoutActionType = 'logoutActionType';
 export type StoreUserProfileActionType = 'storeUserProfileActionType';
 export const StoreUserProfileActionType = 'storeUserProfileActionType';
 
-export interface LoginAction {
+interface LoginAction {
     type: LoginActionType,
     login: string,
     password: string
 }
 
-export interface LogoutAction {
+interface LogoutAction {
     type: LogoutActionType
 }
 
-export interface StoreUserProfileAction{
+interface StoreUserProfileAction{
     type: StoreUserProfileActionType,
     login: string,
     token: string
 }
 
-export const createLoginAction = (login, password) => (dispatch, getState) => {
+export const createLoginAction = (login, password) => (dispatch) => {
     getAuthToken(login, password)
         .then(token => dispatch(createStoreUserProfileAction(login, token)))
         .catch(()=>console.log(`Argh! Failure...`));
@@ -40,4 +41,4 @@ export const createStoreUserProfileAction = (login, token) => ({
     token
 });
 
-export type LoginActions = LoginAction | LogoutAction | StoreUserProfileAction;
+export type Actions = LoginAction | LogoutAction | StoreUserProfileAction;
