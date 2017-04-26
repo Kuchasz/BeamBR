@@ -1,4 +1,4 @@
-import {LoginActions, LoginActionType, LogoutActionType} from "./actions";
+import {LoginActions, LoginActionType, LogoutActionType, StoreUserProfileActionType} from "./actions";
 const defaultState = {
     login: undefined,
     token: undefined
@@ -7,11 +7,16 @@ const defaultState = {
 export const reducer = (state = defaultState, action: LoginActions) => {
     switch (action.type) {
         case LoginActionType:
-            console.log(action.type, action.login, action.password);
+            console.log('LoginAction!', action.type, action.login, action.password);
             return state;
         case LogoutActionType:
-            console.log(action.type);
+            console.log('LogoutAction!', action.type);
             return state;
+        case StoreUserProfileActionType:
+            return {
+                login: action.login,
+                token: action.token
+            };
         default:
             return state;
     }

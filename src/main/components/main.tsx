@@ -1,16 +1,20 @@
 import * as React from 'preact';
-import {IRouteState, Route} from "../routes/model";
+import {Route} from "../../routes/model";
 import {connect} from 'preact-redux';
-import {LoginForm} from "../login/components/login-form";
+import {LoginForm} from "../../login/components/login-form";
 
-const MainComponent = ({currentRoute}) => (
+const MainComponent = ({currentRoute, token, login}) => (
     <div>
         <div>{currentRoute == Route.LoginForm ? <LoginForm></LoginForm> : <Dashboard></Dashboard>}</div>
+        <h2>Your Login: {login}</h2>
+        <h2>Your Token: {token}</h2>
     </div>
 );
 
 export const Main = connect(state => ({
-    currentRoute: state.routes.currentRoute
+    currentRoute: state.routes.currentRoute,
+    token: state.login.token,
+    login: state.login.login
 }))(MainComponent);
 
 export const Dashboard = () => (

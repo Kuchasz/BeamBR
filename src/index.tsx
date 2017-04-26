@@ -1,5 +1,5 @@
 import { render } from "preact";
-import {Main} from "./components/main";
+import {Main} from "./main/components/main";
 import * as React from 'preact';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {reducer as routesReducer} from './routes/reducer';
