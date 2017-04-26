@@ -1,24 +1,33 @@
-import {State} from "./state";
+import {State, Network} from "./state";
 const initialState = {
+    currentNetwork: undefined,
     networks: [
         {
-            name: 'd-link 94Aec',
+            ssid: 'd-link 94Aec',
             channel: 7,
-            strength: 55
+            strength: 55,
+            isSecured: true
         }, {
-            name: 'Rom@nX-Pollack',
+            ssid: 'Rom@nX-Pollack',
             channel: 2,
-            strength: 81
+            strength: 81,
+            isSecured: true
         }, {
-            name: 'Neostrada 2e11',
+            ssid: 'Neostrada 2e11',
             channel: 10,
-            strength: 65
+            strength: 65,
+            isSecured: false
         }, {
-            name: 'YogaCenter II',
+            ssid: 'YogaCenter II',
             channel: 5,
-            strength: 73
+            strength: 73,
+            isSecured: true
         },
     ]
 };
 
-export const reducer = (state: State = initialState, action) => state;
+export const reducer = (state: State = initialState, action) =>
+    state;
+
+export const getIsSecured = (networks: Network[], ssid: string) =>
+    networks.filter(n => n.ssid === ssid)[0].isSecured;

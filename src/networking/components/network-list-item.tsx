@@ -1,9 +1,9 @@
 import * as React from 'preact';
 import {Network} from "../state";
 
-export const NetworkListItem = ({name, strength, channel}: Network) => (
+export const NetworkListItem = ({ssid, strength, channel, isSecured}: Network) => (
     <div>
-        <div>{name}({channel})</div>
-        <div>{strength}</div>
+        <div>{ssid}({channel})</div>
+        <div>{strength}({isSecured ? 'closed': 'open'})</div>
     </div>
 );

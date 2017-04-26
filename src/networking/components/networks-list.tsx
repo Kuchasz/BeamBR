@@ -9,7 +9,6 @@ interface Props{
 }
 
 interface State{
-
 }
 
 class NetworksListView extends Component<Props, State> {
