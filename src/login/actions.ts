@@ -1,4 +1,6 @@
 import {getAuthToken} from "./apis";
+import {createNavigateToRouteAction} from "../routes/actions";
+import {Route} from "../routes/state";
 
 export type LoginActionType = 'loginActionType';
 export const LoginActionType = 'loginActionType';
@@ -27,7 +29,10 @@ interface StoreUserProfileAction{
 
 export const createLoginAction = (login, password) => (dispatch) => {
     getAuthToken(login, password)
-        .then(token => dispatch(createStoreUserProfileAction(login, token)))
+        .then(token => {
+            dispatch(createStoreUserProfileAction(login, token));
+            dispatch(createNavigateToRouteAction(Route.Dashboard))
+        })
         .catch(()=>console.log(`Argh! Failure...`));
 };
 

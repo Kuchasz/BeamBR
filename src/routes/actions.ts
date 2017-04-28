@@ -1,16 +1,16 @@
 import {Route} from "./state";
 
-export const ActionTypes = {
-    NAVIGATE: "NAVIGATE"
-};
+export type NavigateToRouteActionType = 'navigateToRouteActionType';
+export const NavigateToRouteActionType = 'navigateToRouteActionType';
 
-export const navigateToRoute = (route: Route) => ({
-    type: ActionTypes.NAVIGATE,
+interface NavigateToRouteAction{
+    type: NavigateToRouteActionType;
+    route: Route
+}
+
+export const createNavigateToRouteAction = (route: Route) => ({
+    type: NavigateToRouteActionType,
     route
 });
 
-export const asyncNavigateToRoute = (route: Route) => (dispatch, getState) => {
-    setTimeout(()=>{
-        dispatch(navigateToRoute(route));
-    }, 1500);
-};
+export type Actions = NavigateToRouteAction;

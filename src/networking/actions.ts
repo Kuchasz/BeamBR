@@ -1,11 +1,14 @@
 import {Network} from "./state";
-import {getNetworks} from "./apis";
+import {getNetworks, connectToNetwork} from "./apis";
 
 export type FetchNetworksActionType = 'fetchNetworksActionType';
 export const FetchNetworksActionType = 'fetchNetworksActionType';
 
 export type StoreNetworksActionType = 'storeNetworksActionType';
 export const StoreNetworksActionType = 'storeNetworksActionType';
+
+export type ConnectToNetworkActionType = 'connectToNetworkActionType';
+export const ConnectToNetworkActionType = 'connectToNetworkActionType';
 
 interface FetchNetworksAction {
     type: FetchNetworksActionType;
@@ -14,6 +17,12 @@ interface FetchNetworksAction {
 interface StoreNetworksAction{
     type: StoreNetworksActionType;
     networks: Network[];
+}
+
+interface ConnectToNetworkAction{
+    type: ConnectToNetworkActionType;
+    id: string;
+    password?: string;
 }
 
 export const createFetchNetworksAction = () => (dispatch) => {
@@ -25,4 +34,12 @@ export const createStoreNetworksAction = (networks: Network[]) => ({
     networks
 });
 
-export type Actions = FetchNetworksAction | StoreNetworksAction;
+export const createConnectToNetworkAction = (id: string, password: string) => (dispatch) =>{
+    connectToNetwork(id, password).then(()=>{
+        console.log('Connected to network!');
+    }).catch(()=>{
+        console.log('Not Connected to network!');
+    });
+};
+
+export type Actions = FetchNetworksAction | StoreNetworksAction | ConnectToNetworkAction;

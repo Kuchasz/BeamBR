@@ -7,21 +7,17 @@ import {NetworksList} from "../../networking/components/networks-list";
 const MainComponent = ({currentRoute, token, login}) => (
     <div>
         <div>{currentRoute == Route.LoginForm ? <LoginForm></LoginForm> : <Dashboard></Dashboard>}</div>
-        <h2>Your Login: {login}</h2>
-        <h2>Your Token: {token}</h2>
-        <NetworksList></NetworksList>
     </div>
 );
 
 export const Main = connect(state => ({
-    currentRoute: state.routes.currentRoute,
-    token: state.login.token,
-    login: state.login.login
+    currentRoute: state.routes.currentRoute
 }))(MainComponent);
 
 export const Dashboard = () => (
     <div>
         <h3>Dashboard Component</h3>
+        <NetworksList/>
     </div>
 );
 

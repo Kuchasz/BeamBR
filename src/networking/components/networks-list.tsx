@@ -4,21 +4,32 @@ import {connect} from 'preact-redux';
 import {NetworkListItem} from './network-list-item';
 import {Network} from "../state";
 import {getIsSecured} from "../reducer";
-import {createFetchNetworksAction} from "../actions";
+import {createFetchNetworksAction, createConnectToNetworkAction} from "../actions";
+import {HTMLInputEvent} from "../../core/html";
 
 interface Props {
     networks: Network[];
     createFetchNetworksAction: () => void;
+    createConnectToNetworkAction: (id: string, password: string) => void;
 }
 
 interface State {
-    selectedNetworkSSID: string;
+    selectedNetworkId: string;
+    password: string;
 }
 
 class NetworksListView extends Component<Props, State> {
 
-    onSelectNetwork(ssid: string) {
-        this.setState({selectedNetworkSSID: ssid});
+    onSelectNetwork(selectedNetworkId: string) {
+        this.setState({selectedNetworkId});
+    }
+
+    onTypePassword(password: string){
+        this.setState({password});
+    }
+
+    onConnectToNetwork(){
+        this.props.createConnectToNetworkAction(this.state.selectedNetworkId, this.state.password);
     }
 
     render() {
@@ -26,8 +37,12 @@ class NetworksListView extends Component<Props, State> {
             <div>
                 <button onClick={this.props.createFetchNetworksAction}>Click to fetch networks!</button>
                 {this.props.networks.map(n => (<NetworkListItem onClick={this.onSelectNetwork.bind(this)} {...n}/>))}
-                {this.state.selectedNetworkSSID ? getIsSecured(this.props.networks, this.state.selectedNetworkSSID) ?
-                    <input placeholder="Type password"/> : null : null}
+                {this.state.selectedNetworkId
+                    ? getIsSecured(this.props.networks, this.state.selectedNetworkId)
+                        ? <input onChange={({target: {value}}: HTMLInputEvent) => this.onTypePassword(value) } placeholder="Type password"/>
+                        : null
+                    : null}
+                <button onClick={this.onConnectToNetwork.bind(this)}>Connect!</button>
             </div>
         )
     }
@@ -37,5 +52,6 @@ class NetworksListView extends Component<Props, State> {
 export const NetworksList = connect(state => ({
     networks: state.networking.networks
 }), {
-    createFetchNetworksAction
+    createFetchNetworksAction,
+    createConnectToNetworkAction
 })(NetworksListView);
