@@ -1,5 +1,4 @@
 import * as React from 'preact';
-import {Component} from 'preact';
 import {connect} from 'preact-redux';
 import {createLoginAction} from "../actions";
 import {HTMLInputEvent} from "../../core/html";
@@ -13,7 +12,7 @@ interface State {
     password: string;
 }
 
-class LoginFormView extends Component<Props, State> {
+class LoginFormView extends React.Component<Props, State> {
 
     state = {
         login: undefined,

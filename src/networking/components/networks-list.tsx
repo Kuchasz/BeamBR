@@ -1,5 +1,4 @@
 import * as React from 'preact';
-import {Component} from 'preact';
 import {connect} from 'preact-redux';
 import {NetworkListItem} from './network-list-item';
 import {Network} from "../state";
@@ -18,7 +17,7 @@ interface State {
     password: string;
 }
 
-class NetworksListView extends Component<Props, State> {
+class NetworksListView extends React.Component<Props, State> {
 
     onSelectNetwork(selectedNetworkId: string) {
         this.setState({selectedNetworkId});

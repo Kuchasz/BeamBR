@@ -3,9 +3,11 @@ import {Route} from "../../routes/state";
 import {connect} from 'preact-redux';
 import {LoginForm} from "../../login/components/login-form";
 import {NetworksList} from "../../networking/components/networks-list";
+import {NetworkConnectionState} from "../../networking/components/network-connection-state";
 
 const MainComponent = ({currentRoute, token, login}) => (
     <div>
+        <NetworkConnectionState></NetworkConnectionState>
         <div>{currentRoute == Route.LoginForm ? <LoginForm></LoginForm> : <Dashboard></Dashboard>}</div>
     </div>
 );

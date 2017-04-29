@@ -5,7 +5,11 @@ export interface Network{
     isSecured: boolean;
 }
 
+export interface NetworkConnection{
+    network: Network;
+}
+
 export interface State{
-    currentNetworkSSID: string;
+    connection: NetworkConnection;
     networks: Network[];
 }
