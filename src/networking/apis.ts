@@ -1,5 +1,17 @@
 import {Network} from "./state";
 
+const _ssids = ['theros', 'neostrada', 'linksys', 'd-link', 'Aero', 'Netia', 'TPNeo']
+
+const createFakeNetwork = () => ({
+    ssid: _ssids[Math.floor(Math.random() * _ssids.length)] + (Math.random() * (10 ** 5)).toFixed(0).toString(),
+    channel: Math.floor(Math.random() * 11) + 1,
+    strength: (Math.floor(Math.random() * 50) + 30),
+    isSecured: Math.random() > 0.25,
+    password: '12345678'
+});
+
+const fakeNetworks = Array.from(Array(Math.floor(Math.random() * 10)).keys()).map(() => createFakeNetwork());
+
 export const getNetworks = () => new Promise<Network[]>((res) => {
     setTimeout(() => {
         res(fakeNetworks);
@@ -13,31 +25,3 @@ export const connectToNetwork = (ssid: string, password: string) => new Promise(
     networkToConnect.password === password && res();
     rej();
 });
-
-const fakeNetworks = [
-    {
-        ssid: 'd-link 94Aec',
-        channel: 7,
-        strength: 55,
-        isSecured: true,
-        password: '12345678'
-    }, {
-        ssid: 'Rom@nX-Pollack',
-        channel: 2,
-        strength: 81,
-        isSecured: true,
-        password: '12345678'
-    }, {
-        ssid: 'Neostrada 2e11',
-        channel: 10,
-        strength: 65,
-        isSecured: false,
-        password: undefined
-    }, {
-        ssid: 'YogaCenter II',
-        channel: 5,
-        strength: 73,
-        isSecured: true,
-        password: '12345678'
-    },
-];
