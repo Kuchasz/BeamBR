@@ -9,10 +9,13 @@ import {Provider} from 'preact-redux';
 import thunk from 'redux-thunk';
 
 export const getNetwork = (state, id: string) =>
-    networking.getNetwork(state.networking.networks, id);
+    networking.getNetwork(state.networking, id);
 
 export const getCurrentNetwork = (state) =>
     networking.getCurrentNetwork(state.networking);
+
+export const getNetworks = (state)=>
+    networking.getNetworks(state.networking);
 
 const store = createStore(
     combineReducers({

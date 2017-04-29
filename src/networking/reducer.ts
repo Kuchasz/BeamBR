@@ -32,11 +32,14 @@ const connectionReducer = (state: NetworkConnection, action: Actions) => {
     }
 };
 
-export const getIsSecured = (networks: Network[], ssid: string) =>
-    getNetwork(networks, ssid).isSecured;
+export const getIsSecured = (state: State, ssid: string) =>
+    getNetwork(state, ssid).isSecured;
 
-export const getNetwork = (networks: Network[], ssid: string) =>
-    networks.filter(n => n.ssid === ssid)[0];
+export const getNetwork = (state: State, ssid: string) =>
+    state.networks.filter(n => n.ssid === ssid)[0];
 
 export const getCurrentNetwork = (state: State) =>
     state.connection.network;
+
+export const getNetworks = (state: State) =>
+    state.networks;

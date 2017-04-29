@@ -5,6 +5,7 @@ import {Network} from "../state";
 import {getIsSecured} from "../reducer";
 import {createFetchNetworksAction, createConnectToNetworkAction} from "../actions";
 import {HTMLInputEvent} from "../../core/html";
+import {getNetworks} from "../../index";
 
 interface Props {
     networks: Network[];
@@ -37,7 +38,7 @@ class NetworksListView extends React.Component<Props, State> {
                 <button onClick={this.props.createFetchNetworksAction}>Click to fetch networks!</button>
                 {this.props.networks.map(n => (<NetworkListItem onClick={this.onSelectNetwork.bind(this)} isSelected={n.ssid === this.state.selectedNetworkId} {...n}/>))}
                 {this.state.selectedNetworkId
-                    ? getIsSecured(this.props.networks, this.state.selectedNetworkId)
+                    ? this.props.networks.filter(f => f.ssid === this.state.selectedNetworkId)[0].isSecured
                         ? <input onChange={({target: {value}}: HTMLInputEvent) => this.onTypePassword(value) } placeholder="Type password"/>
                         : null
                     : null}
@@ -49,7 +50,7 @@ class NetworksListView extends React.Component<Props, State> {
 }
 
 export const NetworksList = connect(state => ({
-    networks: state.networking.networks
+    networks: getNetworks(state)
 }), {
     createFetchNetworksAction,
     createConnectToNetworkAction

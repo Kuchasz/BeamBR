@@ -20,8 +20,8 @@ export const getNetworks = () => new Promise<Network[]>((res) => {
 
 export const connectToNetwork = (ssid: string, password: string) => new Promise((res, rej) => {
     const networkToConnect = fakeNetworks.filter(n => n.ssid === ssid)[0];
-    !networkToConnect && rej();
-    !networkToConnect.password && res();
-    networkToConnect.password === password && res();
+    if (networkToConnect === undefined) rej();
+    if (networkToConnect.isSecured === false) res();
+    if (networkToConnect.password === password) res();
     rej();
 });
