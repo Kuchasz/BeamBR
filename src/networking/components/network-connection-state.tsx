@@ -1,7 +1,7 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
-import {getCurrentNetwork} from "../../index";
 import {Network} from "../state";
+import {getCurrentNetwork} from "../../main/reducer";
 
 interface Props{
     network: Network;

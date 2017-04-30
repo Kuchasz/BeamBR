@@ -1,9 +1,9 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
 import {SensorListItem} from './sensor-list-item';
-import {getSensors} from "../../index";
 import {Sensor} from "../state";
 import {createFetchSensorsAction} from "../actions";
+import {getSensors} from "../../main/reducer";
 
 interface Props{
     sensors: Sensor[];

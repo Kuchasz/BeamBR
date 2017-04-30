@@ -1,6 +1,6 @@
 import {Network} from "./state";
 import {getNetworks, connectToNetwork} from "./apis";
-import {getNetwork} from "../index";
+import {getNetwork} from "../main/reducer";
 
 export type FetchNetworksActionType = 'fetchNetworksActionType';
 export const FetchNetworksActionType = 'fetchNetworksActionType';
