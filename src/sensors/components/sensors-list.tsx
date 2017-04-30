@@ -1,19 +1,32 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
 import {SensorListItem} from './sensor-list-item';
+import {getSensors} from "../../index";
+import {Sensor} from "../state";
+import {createFetchSensorsAction} from "../actions";
 
-class SensorsListView extends React.Component<any, any>{
+interface Props{
+    sensors: Sensor[];
+    createFetchSensorsAction: () => void;
+}
+
+interface State{
+
+}
+
+class SensorsListView extends React.Component<Props, State>{
     render(){
         return (
             <div>
-                <SensorListItem id={'0404032'} resolution={'9bit'}/>
-                <SensorListItem id={'04ff3d2'} resolution={'10bit'}/>
-                <SensorListItem id={'099bee3'} resolution={'10bit'}/>
-                <SensorListItem id={'04ba322'} resolution={'11bit'}/>
-                <SensorListItem id={'0bf4e62'} resolution={'9bit'}/>
+                {this.props.sensors.map(s => <SensorListItem {...s}/>)}
+                <button onClick={this.props.createFetchSensorsAction}>Get Sensors</button>
             </div>
         )
     }
 }
 
-export const SensorsList = connect()(SensorsListView);
+export const SensorsList = connect(state => ({
+    sensors: getSensors(state)
+}), {
+    createFetchSensorsAction
+})(SensorsListView);

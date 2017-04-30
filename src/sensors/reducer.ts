@@ -1,5 +1,5 @@
 import {State, Sensor} from "./state";
-import {Actions, SetNameForSensorActionType} from "./actions";
+import {Actions, SetNameForSensorActionType, StoreSensorsActionType} from "./actions";
 
 const initialState = {
     sensors: []
@@ -26,6 +26,7 @@ export const reducer = (state: State = initialState, action: Actions) => {
                     ...state.sensors.slice(sensorIndex, state.sensors.length - sensorIndex)]
             }
         };
+        case StoreSensorsActionType: return {...state, sensors: action.sensors};
         default:
             return state;
     }
@@ -33,3 +34,6 @@ export const reducer = (state: State = initialState, action: Actions) => {
 
 const getSensorById = (state: State, id: string) =>
     state.sensors.filter(s => s.id === id)[0];
+
+export const getSensors = (state: State) =>
+    state.sensors;
