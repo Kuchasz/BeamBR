@@ -22,3 +22,6 @@ export const getNetworks = (state) =>
 
 export const getSensors = (state) =>
     sensors.getSensors(state.sensors);
+
+export const getSensorById = (state, id: string) =>
+    sensors.getSensorById(state.sensors, id);

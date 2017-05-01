@@ -32,7 +32,7 @@ export const reducer = (state: State = initialState, action: Actions) => {
     }
 };
 
-const getSensorById = (state: State, id: string) =>
+export const getSensorById = (state: State, id: string) =>
     state.sensors.filter(s => s.id === id)[0];
 
 export const getSensors = (state: State) =>

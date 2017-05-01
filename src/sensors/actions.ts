@@ -25,7 +25,7 @@ interface StoreSensorsAction{
     sensors: Sensor[];
 }
 
-export const createSetNaforForSensorAction = (id: string, name: string) => ({
+export const createSetNameForSensorAction = (id: string, name: string) => ({
     type: SetNameForSensorActionType,
     id,
     name
