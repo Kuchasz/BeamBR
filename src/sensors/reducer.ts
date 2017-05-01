@@ -21,9 +21,9 @@ export const reducer = (state: State = initialState, action: Actions) => {
             const sensorIndex = state.sensors.indexOf(sensorToRename);
             return {
                 ...state, sensors: [
-                    ...state.sensors.slice(0, sensorIndex + 1),
+                    ...state.sensors.slice(0, sensorIndex),
                     sensorReducer(sensorToRename, action),
-                    ...state.sensors.slice(sensorIndex, state.sensors.length - sensorIndex)]
+                    ...state.sensors.slice(sensorIndex + 1)]
             }
         };
         case StoreSensorsActionType: return {...state, sensors: action.sensors};
