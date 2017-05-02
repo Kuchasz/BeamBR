@@ -10,7 +10,6 @@ const MainComponent = ({currentRoute, token, login}) => (
     <div>
         <NetworkConnectionState/>
         <div>{currentRoute == Route.LoginForm ? <LoginForm></LoginForm> : <Dashboard></Dashboard>}</div>
-        <SensorsList/>
     </div>
 );
 
@@ -21,6 +20,7 @@ export const Main = connect(state => ({
 export const Dashboard = () => (
     <div>
         <h3>Dashboard Component</h3>
+        <SensorsList/>
         <NetworksList/>
     </div>
 );

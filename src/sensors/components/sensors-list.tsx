@@ -39,7 +39,6 @@ class SensorsListView extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                {this.props.sensors.map(s => <SensorListItem onClick={() => this.selectSensor(s.id)} {...s}/>)}
                 <button onClick={this.props.createFetchSensorsAction}>Get Sensors</button>
                 {this.state.selectedSensorId !== undefined
                     ? <div>
@@ -47,6 +46,7 @@ class SensorsListView extends React.Component<Props, State> {
                         <button onClick={this.setName.bind(this)}>Set</button>
                     </div>
                     : null}
+                {this.props.sensors.map(s => <SensorListItem onClick={() => this.selectSensor(s.id)} isSelected={s.id === this.state.selectedSensorId} {...s}/>)}
             </div>
         )
     }

@@ -35,14 +35,14 @@ class NetworksListView extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                <button onClick={this.props.createFetchNetworksAction}>Click to fetch networks!</button>
-                {this.props.networks.map(n => (<NetworkListItem onClick={this.onSelectNetwork.bind(this)} isSelected={n.ssid === this.state.selectedNetworkId} {...n}/>))}
+                <button onClick={this.props.createFetchNetworksAction}>Get Networks</button>
                 {this.state.selectedNetworkId
                     ? this.props.networks.filter(f => f.ssid === this.state.selectedNetworkId)[0].isSecured
                         ? <input onChange={({target: {value}}: HTMLInputEvent) => this.onTypePassword(value) } placeholder="Type password"/>
                         : null
                     : null}
-                <button onClick={this.onConnectToNetwork.bind(this)}>Connect!</button>
+                {this.state.selectedNetworkId ? <button onClick={this.onConnectToNetwork.bind(this)}>Connect!</button> : null}
+                {this.props.networks.map(n => (<NetworkListItem onClick={this.onSelectNetwork.bind(this)} isSelected={n.ssid === this.state.selectedNetworkId} {...n}/>))}
             </div>
         )
     }
