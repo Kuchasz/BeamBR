@@ -12,7 +12,7 @@ interface Props{
 
 export const SensorListItem = ({onClick, isSelected, color, id, resolution, name}: Props) => (
     <div onClick={onClick} style={{margin: '5px', padding: '5px', border: 'solid 1px black', background: isSelected ? 'lightgray' : null}}>
-        {color ? <div style={{width: '5px', height: '5px', background: `#${color.hex}`}}></div> : null}
+        {color ? <span style={{display:'inline-block', width: '10px', height: '10px', background: `#${color.hex}`}}></span> : null}
         <span>{id}({name})</span>
         <span>({resolution})</span>
     </div>
