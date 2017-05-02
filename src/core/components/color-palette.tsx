@@ -1,15 +1,16 @@
 import * as React from 'preact';
 
-interface Props{
+interface Props {
     colors: Color[];
     onChoose: (color: Color) => void;
 }
 
-export interface Color{
+export interface Color {
     hex: string;
 }
 
-export const ColorPalette = ({colors}: Props) => (
+export const ColorPalette = ({onChoose, colors}: Props) => (
     <div>
-        {colors.map(c => <div onClick={() => this.props.onChoose(c)} style={{width: '10px', height: '10px', background:`#${c.hex}`}}></div>)}
+        {colors.map(c => <span onClick={() => onChoose(c)}
+                              style={{ display: 'inline-block', margin: '2px', width: '20px', height: '20px', background:`#${c.hex}`}}></span>)}
     </div>);

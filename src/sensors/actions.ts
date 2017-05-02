@@ -1,5 +1,6 @@
 import {getSensors} from "./apis";
 import {Sensor} from "./state";
+import {Color} from "../core/components/color-palette";
 
 export type SetNameForSensorActionType = 'setNameForSensorActionType';
 export const SetNameForSensorActionType = 'setNameForSensorActionType';
@@ -9,6 +10,9 @@ export const FetchSensorsActionType = 'fetchSensorsActionType';
 
 export type StoreSensorsActionType = 'storeSensorsActionType';
 export const StoreSensorsActionType = 'storeSensorsActionType';
+
+export type SetColorForSensorActionType = 'setColorForSensorActionType';
+export const SetColorForSensorActionType = 'setColorForSensorActionType';
 
 interface SetNameForSensorAction{
     type: SetNameForSensorActionType;
@@ -23,6 +27,12 @@ interface FetchSensorsAction{
 interface StoreSensorsAction{
     type: StoreSensorsActionType;
     sensors: Sensor[];
+}
+
+interface SetColorForSensorAction{
+    type: SetColorForSensorActionType;
+    id: string;
+    color: Color;
 }
 
 export const createSetNameForSensorAction = (id: string, name: string) => ({
@@ -40,6 +50,12 @@ export const createFetchSensorsAction = () => (dispatch) => {
     getSensors().then(sensors => {
         dispatch(createStoreSensorsAction(sensors));
     });
-}
+};
 
-export type Actions = SetNameForSensorAction | FetchSensorsAction | StoreSensorsAction;
+export const createSetColorForSensorAction = (id: string, color: Color) => ({
+    type: SetColorForSensorActionType,
+    id,
+    color
+});
+
+export type Actions = SetNameForSensorAction | FetchSensorsAction | StoreSensorsAction | SetColorForSensorAction;
