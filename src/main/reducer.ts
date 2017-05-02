@@ -25,3 +25,6 @@ export const getSensors = (state) =>
 
 export const getSensorById = (state, id: string) =>
     sensors.getSensorById(state.sensors, id);
+
+export const getInnerRoute = (state) =>
+    routes.getInnerRoute(state.routes);

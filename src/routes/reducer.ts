@@ -1,8 +1,9 @@
-import {Route, State} from "./state";
-import {Actions, NavigateToRouteActionType} from "./actions";
+import {Route, State, InnerRoute} from "./state";
+import {Actions, NavigateToRouteActionType, NavigateToInnerRouteActionType} from "./actions";
 
 const initialState = {
-    currentRoute: Route.LoginForm
+    currentRoute: Route.LoginForm,
+    currentInnerRoute: InnerRoute.Visualization
 };
 
 export const reducer = (state: State = initialState, action: Actions) => {
@@ -12,7 +13,15 @@ export const reducer = (state: State = initialState, action: Actions) => {
                 ...state,
                 currentRoute: action.route,
             };
+        case NavigateToInnerRouteActionType:
+            return {
+                ...state,
+                currentInnerRoute: action.route,
+            };
         default:
             return state;
     }
 };
+
+export const getInnerRoute = (state: State) =>
+    state.currentInnerRoute;

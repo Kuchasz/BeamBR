@@ -1,11 +1,19 @@
-import {Route} from "./state";
+import {Route, InnerRoute} from "./state";
 
 export type NavigateToRouteActionType = 'navigateToRouteActionType';
 export const NavigateToRouteActionType = 'navigateToRouteActionType';
 
+export type NavigateToInnerRouteActionType = 'navigateToInnerRouteActionType';
+export const NavigateToInnerRouteActionType = 'navigateToInnerRouteActionType';
+
 interface NavigateToRouteAction{
     type: NavigateToRouteActionType;
-    route: Route
+    route: Route;
+}
+
+interface NavigateToInnerRouteAction{
+    type: NavigateToInnerRouteActionType;
+    route: InnerRoute;
 }
 
 export const createNavigateToRouteAction = (route: Route) => ({
@@ -13,4 +21,9 @@ export const createNavigateToRouteAction = (route: Route) => ({
     route
 });
 
-export type Actions = NavigateToRouteAction;
+export const createNavigateToInnerRouteAction = (route: InnerRoute) => ({
+    type: NavigateToInnerRouteActionType,
+    route
+});
+
+export type Actions = NavigateToRouteAction | NavigateToInnerRouteAction;
