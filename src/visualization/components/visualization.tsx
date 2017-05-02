@@ -2,30 +2,19 @@ import * as React from 'preact';
 import {connect} from 'preact-redux';
 
 interface Props {
-
+    data: Data[];
 }
 
 interface State {
     points: {x: number, y: number}[];
 }
 
+interface Data{
+    name: string;
+    points: {y: number}[];
+}
+
 class VisualizationView extends React.Component<any, any> {
-
-    constructor() {
-        super();
-        this.state = {
-            points: []
-        };
-
-        let direction = 1;
-        let previos = {x: 0, y: Math.floor(Math.random() * 800)};
-
-        setInterval(() => {
-            let potential = {x: 0, y: ( previos.y + direction * Math.floor(Math.random() * 20) - 10) % 600};
-            previos = potential;
-            this.setState({points: [...this.state.points, potential]})
-        }, 100);
-    }
 
     canvas: HTMLCanvasElement;
 
@@ -46,9 +35,10 @@ class VisualizationView extends React.Component<any, any> {
 
         ctx.beginPath();
 
-        for (var i = 0; i < this.state.points.length; i++) {
-            ctx.lineTo(800 / this.state.points.length * i, this.state.points[i].y);
-        }
+        //
+        // for (var i = 0; i < this.state.points.length; i++) {
+        //     ctx.lineTo(800 / this.state.points.length * i, this.state.points[i].y);
+        // }
 
         ctx.stroke();
     }
