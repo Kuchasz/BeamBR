@@ -7,6 +7,7 @@ import {NetworkConnectionState} from "../../networking/components/network-connec
 import {InnerRoute} from "../../routes/state";
 import {createNavigateToInnerRouteAction} from "../../routes/actions";
 import {Visualization} from "../../visualization/components/visualization";
+import {TempsReader} from "../../temperatures/components/temps-reader";
 
 interface Props{
     innerRoute: InnerRoute;
@@ -22,6 +23,7 @@ class DashboardView extends React.Component<Props, State>{
             <div>
                 <h3>Dashboard</h3>
                 <NetworkConnectionState/>
+                <TempsReader/>
                 <span>
                     <button onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.SensorsConfig)}>Sensors</button>
                     <button onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.NetworksConfig)}>Networks</button>

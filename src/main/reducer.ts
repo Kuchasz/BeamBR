@@ -3,12 +3,14 @@ import * as routes from '../routes/reducer';
 import * as login from '../login/reducer';
 import * as networking from '../networking/reducer';
 import * as sensors from '../sensors/reducer';
+import * as temperatures from '../temperatures/reducer';
 
 export const reducer = combineReducers({
     login: login.reducer,
     routes: routes.reducer,
     networking: networking.reducer,
-    sensors: sensors.reducer
+    sensors: sensors.reducer,
+    temperatures: temperatures.reducer
 });
 
 export const getNetwork = (state, id: string) =>
@@ -28,3 +30,6 @@ export const getSensorById = (state, id: string) =>
 
 export const getInnerRoute = (state) =>
     routes.getInnerRoute(state.routes);
+
+export const getTemperatures = (state) =>
+    state.temperatures;
