@@ -1,46 +1,48 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
+import {Color} from "../../core/components/color-palette";
 
 interface Props {
     data: Data[];
 }
 
 interface State {
-    points: {x: number, y: number}[];
 }
 
 interface Data{
     name: string;
-    points: {y: number}[];
+    color: Color;
+    points: {x: number, y: number}[];
 }
 
-class VisualizationView extends React.Component<any, any> {
+class VisualizationView extends React.Component<Props, State> {
 
     canvas: HTMLCanvasElement;
 
     componentDidMount() {
-        this.updateCanvas();
+        this.draw();
     }
 
     componentDidUpdate() {
-        this.updateCanvas();
+        this.draw();
     }
 
-    updateCanvas() {
+    draw() {
         const ctx = this.canvas.getContext('2d');
         ctx.fillRect(0, 0, 800, 600);
 
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 1;
 
-        ctx.beginPath();
+        this.props.data.forEach(d => {
+            ctx.strokeStyle = `#${d.color.hex}`;
+            ctx.beginPath();
 
-        //
-        // for (var i = 0; i < this.state.points.length; i++) {
-        //     ctx.lineTo(800 / this.state.points.length * i, this.state.points[i].y);
-        // }
+            for (let i =0; i<d.points.length; i++){
+                ctx.lineTo(800 / d.points.length * i, d.points[i].y);
+            }
 
-        ctx.stroke();
+            ctx.stroke();
+        });
     }
 
     render() {
@@ -50,6 +52,5 @@ class VisualizationView extends React.Component<any, any> {
             </div>)
     }
 }
-;
 
 export const Visualization = connect()(VisualizationView);
