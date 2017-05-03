@@ -6,7 +6,7 @@ const initialState = [];
 export const reducer = (state: Temperature[] = initialState, action: Actions) => {
     switch (action.type) {
         case StoreTemperaturesActionType:
-            return [...state, action.temperatures];
+            return [...state, ...action.temperatures];
         default:
             return state;
     }
