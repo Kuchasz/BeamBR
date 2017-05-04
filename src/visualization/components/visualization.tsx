@@ -37,8 +37,6 @@ class VisualizationView extends React.Component<Props, State> {
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.lineWidth = 1;
 
-        console.log(this.props.minTime, this.props.maxTime);
-
         const temperaturesToDisplay = this.props.temperatures.filter(t => t.time >= this.props.minTime && t.time <= this.props.maxTime);
 
         this.props.sensors && this.props.sensors.forEach(sensor => {
@@ -48,7 +46,7 @@ class VisualizationView extends React.Component<Props, State> {
 
             for (let i = 0; i < tempsForSensor.length; i++) {
                 const rawValue = tempsForSensor[i].value;
-                const mappedValue = (rawValue - this.props.minValue) * canvasWidth / (this.props.maxValue - this.props.minValue);
+                const mappedValue = canvasHeight - (rawValue - this.props.minValue) * canvasHeight / (this.props.maxValue - this.props.minValue);
                 ctx.lineTo(800 / tempsForSensor.length * i, mappedValue);
             }
 
