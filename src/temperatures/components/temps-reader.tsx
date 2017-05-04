@@ -2,29 +2,29 @@ import * as React from 'preact';
 import {connect} from 'preact-redux';
 import {createFetchTemperaturesAction} from "../actions";
 
-interface Props{
+interface Props {
     createFetchTemperaturesAction: () => void;
 }
 
-interface State{
+interface State {
 }
 
-class TempsReaderView extends React.Component<Props, State>{
+class TempsReaderView extends React.Component<Props, State> {
 
-    loopInterval: number;
+    loopInterval: any;
 
-    componentWillMount(){
-        this.loopInterval = setInterval(()=>{
+    componentWillMount() {
+        this.loopInterval = setInterval(() => {
             this.props.createFetchTemperaturesAction();
         }, 1000);
     }
 
-    componentWillUnmount(){
-
+    componentWillUnmount() {
+        clearInterval(this.loopInterval);
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div></div>
         )
     }

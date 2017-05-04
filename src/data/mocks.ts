@@ -3,10 +3,13 @@ const ssids = ['theros', 'neostrada', 'linksys', 'd-link', 'Aero', 'Netia', 'TPN
 const createSensor = () => ({
     id: (Math.random() * 10 ** 10).toFixed(0),
     resolution: Math.floor(Math.random()*3)+9,
-    name: Math.random() > 0.25 ? undefined : `Nice name ${Math.floor(Math.random() * 100)}`
+    name: Math.random() > 0.25 ? undefined : `Nice name ${Math.floor(Math.random() * 100)}`,
+    color: {
+        hex: 'FFFFFF'
+    }
 });
 
-export const sensors = Array.from(Array(Math.floor(Math.random() + 1 * 10)).keys()).map(() => createSensor());
+export const sensors = Array.from(Array(Math.floor(Math.random() * 10 + 1)).keys()).map(() => createSensor());
 
 const createNetwork = () => ({
     ssid: ssids[Math.floor(Math.random() * ssids.length)] + (Math.random() * (10 ** 5)).toFixed(0).toString(),
