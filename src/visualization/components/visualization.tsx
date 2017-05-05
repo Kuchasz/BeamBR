@@ -44,7 +44,8 @@ class VisualizationView extends React.Component<Props, State> {
 
         this.props.sensors && this.props.sensors.forEach(sensor => {
             const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
-            ctx.strokeStyle = `#${sensor.color.hex}`;
+            ctx.strokeStyle = `rgba(255, 255, 255, 0.1)`;
+
             ctx.beginPath();
 
             for (let i = 0; i < tempsForSensor.length; i++) {
