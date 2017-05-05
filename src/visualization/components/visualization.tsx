@@ -9,8 +9,6 @@ interface Props {
     sensors: Sensor[];
     minValue: number;
     maxValue: number;
-    minTime: number;
-    maxTime: number;
 }
 
 interface State {
@@ -33,11 +31,16 @@ class VisualizationView extends React.Component<Props, State> {
         const canvasWidth = 800;
         const canvasHeight = 600;
 
+        const currentTime = new Date();
+        const maxTime = currentTime.getTime();
+        const minTime = new Date(currentTime.getTime() - 10*950).getTime();
+
+
         const ctx = this.canvas.getContext('2d');
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.lineWidth = 1;
 
-        const temperaturesToDisplay = this.props.temperatures.filter(t => t.time >= this.props.minTime && t.time <= this.props.maxTime);
+        const temperaturesToDisplay = this.props.temperatures.filter(t => t.time >= minTime && t.time <= maxTime);
 
         this.props.sensors && this.props.sensors.forEach(sensor => {
             const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
@@ -68,7 +71,5 @@ export const Visualization = connect((state, ownProps) => ({
     temperatures: getTemperatures(state),
     sensors: getSensors(state),
     minValue: ownProps.minValue,
-    maxValue: ownProps.maxValue,
-    maxTime: new Date().getTime(),
-    minTime: (() => {const d = new Date(); return d.getTime() - 10000;})()
+    maxValue: ownProps.maxValue
 }))(VisualizationView);
