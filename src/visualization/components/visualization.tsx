@@ -1,87 +1,63 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
-import {getTemperatures, getSensors, getLastTemp} from "../../main/reducer";
+import {getTemperatures, getSensors} from "../../main/reducer";
 import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
+import {TemperaturesChart} from "./temperatures-chart";
+import {HTMLInputEvent} from "../../core/html";
 
 interface Props {
     temperatures: Temperature[];
     sensors: Sensor[];
-    minValue: number;
-    maxValue: number;
 }
 
 interface State {
+    minValue: number;
+    maxValue: number;
+    valueSteps: number;
 }
+
+const defaults = {
+    minValue: 0,
+    maxValue: 100,
+    valueSteps: 20
+};
 
 class VisualizationView extends React.Component<Props, State> {
 
-    canvas: HTMLCanvasElement;
-
-    componentDidMount() {
-        this.draw();
+    constructor(){
+        super();
+        this.state = {...defaults};
     }
 
-    componentDidUpdate() {
-        this.draw();
-    }
-
-    draw() {
-
-        const canvasWidth = 800;
-        const canvasHeight = 600;
-
-        const currentTime = new Date();
-        const maxTime = currentTime.getTime();
-        const minTime = currentTime.getTime() - 60*1000;
-
-        const valueSteps = 20;
-
-        const ctx = this.canvas.getContext('2d');
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-        ctx.lineWidth = 1;
-
-        const temperaturesToDisplay = this.props.temperatures.filter(t => t.time >= minTime && t.time <= maxTime);
-
-        ctx.strokeStyle = '#333';
-
-        for (let i = 0; i < valueSteps; i++){
-            ctx.beginPath();
-            ctx.moveTo(0, canvasHeight / valueSteps * i);
-            ctx.lineTo(canvasWidth, canvasHeight / valueSteps * i);
-            ctx.stroke();
-
-            ctx.font = "12px Arial";
-            ctx.fillStyle = "#333";
-            const text = (this.props.maxValue - (i - 0) * (this.props.maxValue - this.props.minValue) / (valueSteps - 0) + this.props.minValue).toString();
-            ctx.fillText(text, 0 + 4, canvasHeight / valueSteps * i);
-        }
-
-
-        this.props.sensors && this.props.sensors.forEach(sensor => {
-            const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
-            ctx.strokeStyle = `#${sensor.color.hex}`;
-
-            ctx.beginPath();
-
-            for (let i = 0; i < tempsForSensor.length; i++) {
-                const {value, time} = tempsForSensor[i];
-                const mappedValue = canvasHeight - (value - this.props.minValue) * canvasHeight / (this.props.maxValue - this.props.minValue);
-                const mappedTime = (time - minTime) * canvasWidth / (maxTime - minTime);
-                ctx.lineTo(mappedTime, mappedValue);
-            }
-
-            ctx.stroke();
+    onChangeMinValue(value: number){
+        this.setState({
+            minValue: value
         });
+    }
 
+    onChangeMaxValue(value: number){
+        this.setState({
+            maxValue: value
+        });
+    }
+
+    onChangeValueSteps(steps: number){
+        this.setState({
+            valueSteps: steps
+        })
     }
 
     render() {
         return (
             <div>
                 <h3>Amount of temperatures: {this.props.temperatures.length}</h3>
-                <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={800} height={600}/>
+                <div>
+                    <input onKeyUp={({target: {value}}: HTMLInputEvent) => this.onChangeMaxValue(Number(value))} value={this.state.maxValue.toString()} placeholder="Maximum chart value"/>
+                    <input onKeyUp={({target: {value}}: HTMLInputEvent) => this.onChangeMinValue(Number(value))} value={this.state.minValue.toString()} placeholder="Minimum chart value"/>
+                    <input onKeyUp={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))} value={this.state.valueSteps.toString()} placeholder="Value steps"/>
+                </div>
+                <TemperaturesChart temperatures={this.props.temperatures} sensors={this.props.sensors} {...this.state}/>
                 {this.props.sensors.map(s => <div>
                     {s.name} - {this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}
                 </div>)}
@@ -92,6 +68,4 @@ class VisualizationView extends React.Component<Props, State> {
 export const Visualization = connect((state, ownProps) => ({
     temperatures: getTemperatures(state),
     sensors: getSensors(state),
-    minValue: ownProps.minValue,
-    maxValue: ownProps.maxValue
 }))(VisualizationView);

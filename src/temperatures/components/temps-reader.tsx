@@ -16,7 +16,7 @@ class TempsReaderView extends React.Component<Props, State> {
     componentWillMount() {
         this.loopInterval = setInterval(() => {
             this.props.createFetchTemperaturesAction();
-        }, 100);
+        }, 1000);
     }
 
     componentWillUnmount() {

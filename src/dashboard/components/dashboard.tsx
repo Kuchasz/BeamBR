@@ -31,7 +31,7 @@ class DashboardView extends React.Component<Props, State>{
                 </span>
                 {this.props.innerRoute === InnerRoute.SensorsConfig ? <SensorsList/> : null}
                 {this.props.innerRoute === InnerRoute.NetworksConfig ? <NetworksList/> : null}
-                {this.props.innerRoute === InnerRoute.Visualization ? <Visualization minValue={0} maxValue={100}/> : null}
+                {this.props.innerRoute === InnerRoute.Visualization ? <Visualization/> : null}
             </div>
         )
     }

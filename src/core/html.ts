@@ -3,5 +3,5 @@ export interface HTMLInputEvent extends Event{
 }
 
 export interface HTMLInputEventTarget extends EventTarget{
-    value: string;
+    value?: string;
 }
