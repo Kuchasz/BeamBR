@@ -3,16 +3,16 @@ import {connect} from 'preact-redux';
 import {SensorListItem} from './sensor-list-item';
 import {Sensor} from "../state";
 import {createFetchSensorsAction, createSetNameForSensorAction, createSetColorForSensorAction} from "../actions";
-import {getSensors, getSensorById} from "../../main/reducer";
+import {getSensors} from "../../main/reducer";
 import {HTMLInputEvent} from "../../core/html";
-import {ColorPalette, Color} from "../../core/components/color-palette";
+import {ColorPalette} from "../../core/components/color-palette";
+import {Color, colors} from "../../core/colors";
 
 interface Props {
     sensors: Sensor[];
     createFetchSensorsAction: () => void;
     createSetNameForSensorAction: (id: string, name: string) => void;
     createSetColorForSensorAction: (id:string, color: Color) => void;
-    getSensorById: (id: string) => Sensor;
 }
 
 interface State {
@@ -20,30 +20,11 @@ interface State {
     selectedSensorName: string;
 }
 
-const colors = [
-        {hex: 'f44336'},
-        {hex: 'e91e63'},
-        {hex: '9c27b0'},
-        {hex: '673ab7'},
-        {hex: '3f51b5'},
-        {hex: '2196f3'},
-        {hex: '03a9f4'},
-        {hex: '00bcd4'},
-        {hex: '009688'},
-        {hex: '4caf50'},
-        {hex: '8bc34a'},
-        {hex: 'cddc39'},
-        {hex: 'ffeb3b'},
-        {hex: 'ffc107'},
-        {hex: 'ff9800'},
-        {hex: 'ff5722'}
-    ];
-
 class SensorsListView extends React.Component<Props, State> {
     selectSensor(id){
         this.setState({
             selectedSensorId: id,
-            selectedSensorName: this.props.getSensorById(id).name
+            selectedSensorName: this.props.sensors.filter(s => s.id ===id)[0].name
         });
     }
 
@@ -79,8 +60,7 @@ class SensorsListView extends React.Component<Props, State> {
 }
 
 export const SensorsList = connect(state => ({
-    sensors: getSensors(state),
-    getSensorById: (id: string) => getSensorById(state, id)
+    sensors: getSensors(state)
 }), {
     createFetchSensorsAction,
     createSetNameForSensorAction,

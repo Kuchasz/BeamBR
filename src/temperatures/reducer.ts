@@ -11,3 +11,8 @@ export const reducer = (state: Temperature[] = initialState, action: Actions) =>
             return state;
     }
 };
+
+export const getLastTemp = (state: Temperature[], sensorId: string) => {
+    const tempsForSensor = state.filter(t => t.sensorId === sensorId);
+    return tempsForSensor[tempsForSensor.length - 1];
+};

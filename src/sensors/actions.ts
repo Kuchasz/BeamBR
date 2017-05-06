@@ -1,6 +1,6 @@
 import {getSensors} from "./apis";
 import {Sensor} from "./state";
-import {Color} from "../core/components/color-palette";
+import {Color} from "../core/colors";
 
 export type SetNameForSensorActionType = 'setNameForSensorActionType';
 export const SetNameForSensorActionType = 'setNameForSensorActionType';

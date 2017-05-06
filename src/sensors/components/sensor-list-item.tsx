@@ -1,5 +1,5 @@
 import * as React from 'preact';
-import {Color} from "../../core/components/color-palette";
+import {Color} from "../../core/colors";
 
 interface Props{
     id: string;

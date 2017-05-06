@@ -1,12 +1,9 @@
 import * as React from 'preact';
+import {Color} from "../colors";
 
 interface Props {
     colors: Color[];
     onChoose: (color: Color) => void;
-}
-
-export interface Color {
-    hex: string;
 }
 
 export const ColorPalette = ({onChoose, colors}: Props) => (

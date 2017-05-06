@@ -33,3 +33,6 @@ export const getInnerRoute = (state) =>
 
 export const getTemperatures = (state) =>
     state.temperatures;
+
+export const getLastTemp = (state, sensorId: string) =>
+    temperatures.getLastTemp(state.temperatures, sensorId);

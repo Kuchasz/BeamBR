@@ -1,4 +1,4 @@
-import {Color} from "../core/components/color-palette";
+import {Color} from "../core/colors";
 
 export interface Sensor{
     id: string;

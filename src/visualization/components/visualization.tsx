@@ -1,6 +1,6 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
-import {getTemperatures, getSensors} from "../../main/reducer";
+import {getTemperatures, getSensors, getLastTemp} from "../../main/reducer";
 import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
 
@@ -33,9 +33,9 @@ class VisualizationView extends React.Component<Props, State> {
 
         const currentTime = new Date();
         const maxTime = currentTime.getTime();
-        const minTime = currentTime.getTime() - 10*1000;
+        const minTime = currentTime.getTime() - 60*1000;
 
-        const valueSteps = 25;
+        const valueSteps = 20;
 
         const ctx = this.canvas.getContext('2d');
         ctx.fillStyle = "black";
@@ -44,7 +44,7 @@ class VisualizationView extends React.Component<Props, State> {
 
         const temperaturesToDisplay = this.props.temperatures.filter(t => t.time >= minTime && t.time <= maxTime);
 
-        ctx.strokeStyle = '#333333';
+        ctx.strokeStyle = '#333';
 
         for (let i = 0; i < valueSteps; i++){
             ctx.beginPath();
@@ -53,9 +53,9 @@ class VisualizationView extends React.Component<Props, State> {
             ctx.stroke();
 
             ctx.font = "12px Arial";
-            ctx.fillStyle = "#AAAAAA";
-            const text = ((i - 0) * (this.props.maxValue - this.props.minValue) / (valueSteps - 0) + this.props.minValue).toString();
-            ctx.fillText(text, 0 + 4, canvasHeight / valueSteps * i + 4);
+            ctx.fillStyle = "#333";
+            const text = (this.props.maxValue - (i - 0) * (this.props.maxValue - this.props.minValue) / (valueSteps - 0) + this.props.minValue).toString();
+            ctx.fillText(text, 0 + 4, canvasHeight / valueSteps * i);
         }
 
 
@@ -81,6 +81,9 @@ class VisualizationView extends React.Component<Props, State> {
             <div>
                 <h3>Amount of temperatures: {this.props.temperatures.length}</h3>
                 <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={800} height={600}/>
+                {this.props.sensors.map(s => <div>
+                    {s.name} - {this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}
+                </div>)}
             </div>)
     }
 }

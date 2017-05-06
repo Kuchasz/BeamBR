@@ -1,18 +1,18 @@
-const ssids = ['theros', 'neostrada', 'linksys', 'd-link', 'Aero', 'Netia', 'TPNeo'];
+import {colors} from "../core/colors";
+const networksSSIDs = ['Theros', 'Neostrada', 'Linksys', 'D-link', 'Aero', 'Netia', 'TPNeo'];
+const sensorsNames = ['Kolumna', 'Baniak', 'Rurka', 'Tutla', 'Zawór', 'Tuleja', 'Lejek', 'Kolanko', 'Odpływ', 'Pogon', 'Napar', 'Solanka'];
 
 const createSensor = () => ({
     id: (Math.random() * 10 ** 10).toFixed(0),
     resolution: Math.floor(Math.random()*3)+9,
-    name: Math.random() > 0.25 ? undefined : `Nice name ${Math.floor(Math.random() * 100)}`,
-    color: {
-        hex: 'FFFFFF'
-    }
+    name: sensorsNames[Math.floor(Math.random() * sensorsNames.length)],
+    color: colors[Math.floor(Math.random()* colors.length)]
 });
 
 export const sensors = Array.from(Array(Math.floor(Math.random() * 10 + 1)).keys()).map(() => createSensor());
 
 const createNetwork = () => ({
-    ssid: ssids[Math.floor(Math.random() * ssids.length)] + (Math.random() * (10 ** 5)).toFixed(0).toString(),
+    ssid: networksSSIDs[Math.floor(Math.random() * networksSSIDs.length)] + (Math.random() * (10 ** 5)).toFixed(0).toString(),
     channel: Math.floor(Math.random() * 11) + 1,
     strength: (Math.floor(Math.random() * 50) + 30),
     isSecured: Math.random() > 0.25,
@@ -23,11 +23,11 @@ export const networks = Array.from(Array(Math.floor(Math.random() * 10)).keys())
 
 const lastTempsForSensors = {};
 export const createTemperatureValue = (sensorId : string) => {
-    const lastTempForSensor = lastTempsForSensors[sensorId] || Math.floor(Math.random()*1600)- 800;
+    const lastTempForSensor = lastTempsForSensors[sensorId] || Math.random() * 50 + 20;
 
-    const offset = Math.floor(Math.random()*100) - 50;
+    const offset = Math.random() - 0.5;
     let newTempForSensor = lastTempForSensor + offset;
-    if (newTempForSensor <= -800 || newTempForSensor >= 800)
+    if (newTempForSensor <= 10 || newTempForSensor >= 70)
         newTempForSensor = lastTempForSensor - offset;
 
     lastTempsForSensors[sensorId] = newTempForSensor;
