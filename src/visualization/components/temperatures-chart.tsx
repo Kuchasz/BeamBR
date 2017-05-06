@@ -19,19 +19,21 @@ export class TemperaturesChart extends React.Component<Props, State>{
     canvas: HTMLCanvasElement;
 
     componentDidMount() {
+        // this.renderChart();
+        // requestAnimationFrame(this.renderChart);
         this.renderChart();
     }
 
     componentDidUpdate() {
-        this.renderChart();
+        // this.renderChart();
     }
 
     renderChart() {
 
         const {valueSteps, temperatures, minValue, maxValue, sensors} = this.props;
 
-        const canvasWidth = 800;
-        const canvasHeight = 600;
+        const canvasWidth = 1280;
+        const canvasHeight = 720;
 
         const currentTime = new Date();
         const maxTime = currentTime.getTime();
@@ -52,7 +54,7 @@ export class TemperaturesChart extends React.Component<Props, State>{
             ctx.lineTo(canvasWidth, canvasHeight / valueSteps * i);
             ctx.stroke();
 
-            ctx.font = "12px Arial";
+            ctx.font = "12px Verdana";
             ctx.fillStyle = "#333";
             const text = ((valueSteps - i) * (maxValue - minValue) / valueSteps + minValue).toString();
             ctx.fillText(text, 0 + 4, canvasHeight / valueSteps * i);
@@ -75,9 +77,17 @@ export class TemperaturesChart extends React.Component<Props, State>{
             ctx.stroke();
         });
 
+        requestAnimationFrame(() => this.renderChart());
     }
 
     render(){
-        return <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={800} height={600}/>
+        return <div style={{display: 'inline-block', position: 'relative'}}>
+            <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>
+            <div style={{position: 'absolute', right: 0, top: 0, background: 'rgba(255, 255, 255, 0.4)', padding: '5px'}}>
+                {this.props.sensors.map(s => <div>
+                    {s.name} - <span style={{color: `#${s.color.hex}`}}>{this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}</span>
+                </div>)}
+            </div>
+        </div>;
     }
 }

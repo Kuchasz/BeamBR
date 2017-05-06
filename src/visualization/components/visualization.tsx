@@ -25,6 +25,10 @@ const defaults = {
 
 class VisualizationView extends React.Component<Props, State> {
 
+    maxValueInput: HTMLInputElement;
+    minValueInput: HTMLInputElement;
+    valueStepsInput: HTMLInputElement;
+
     constructor(){
         super();
         this.state = {...defaults};
@@ -48,19 +52,22 @@ class VisualizationView extends React.Component<Props, State> {
         })
     }
 
+    componentDidMount(){
+        this.maxValueInput.value = this.state.maxValue.toString();
+        this.minValueInput.value = this.state.minValue.toString();
+        this.valueStepsInput.value = this.state.valueSteps.toString();
+    }
+
     render() {
         return (
             <div>
                 <h3>Amount of temperatures: {this.props.temperatures.length}</h3>
                 <div>
-                    <input onKeyUp={({target: {value}}: HTMLInputEvent) => this.onChangeMaxValue(Number(value))} value={this.state.maxValue.toString()} placeholder="Maximum chart value"/>
-                    <input onKeyUp={({target: {value}}: HTMLInputEvent) => this.onChangeMinValue(Number(value))} value={this.state.minValue.toString()} placeholder="Minimum chart value"/>
-                    <input onKeyUp={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))} value={this.state.valueSteps.toString()} placeholder="Value steps"/>
+                    <input ref={(element: HTMLInputElement) => this.maxValueInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMaxValue(Number(value))} placeholder="Maximum chart value"/>
+                    <input ref={(element: HTMLInputElement) => this.minValueInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMinValue(Number(value))} placeholder="Minimum chart value"/>
+                    <input ref={(element: HTMLInputElement) => this.valueStepsInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))} placeholder="Value steps"/>
                 </div>
-                <TemperaturesChart temperatures={this.props.temperatures} sensors={this.props.sensors} {...this.state}/>
-                {this.props.sensors.map(s => <div>
-                    {s.name} - {this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}
-                </div>)}
+                    <TemperaturesChart temperatures={this.props.temperatures} sensors={this.props.sensors} {...this.state}/>
             </div>)
     }
 }
