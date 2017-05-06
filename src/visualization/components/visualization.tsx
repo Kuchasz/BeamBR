@@ -66,9 +66,10 @@ class VisualizationView extends React.Component<Props, State> {
             ctx.beginPath();
 
             for (let i = 0; i < tempsForSensor.length; i++) {
-                const rawValue = tempsForSensor[i].value;
-                const mappedValue = canvasHeight - (rawValue - this.props.minValue) * canvasHeight / (this.props.maxValue - this.props.minValue);
-                ctx.lineTo(800 / tempsForSensor.length * i, mappedValue);
+                const {value, time} = tempsForSensor[i];
+                const mappedValue = canvasHeight - (value - this.props.minValue) * canvasHeight / (this.props.maxValue - this.props.minValue);
+                const mappedTime = (time - minTime) * canvasWidth / (maxTime - minTime);
+                ctx.lineTo(mappedTime, mappedValue);
             }
 
             ctx.stroke();
