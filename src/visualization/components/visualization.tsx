@@ -33,18 +33,35 @@ class VisualizationView extends React.Component<Props, State> {
 
         const currentTime = new Date();
         const maxTime = currentTime.getTime();
-        const minTime = new Date(currentTime.getTime() - 10*950).getTime();
+        const minTime = currentTime.getTime() - 10*1000;
 
+        const valueSteps = 25;
 
         const ctx = this.canvas.getContext('2d');
+        ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.lineWidth = 1;
 
         const temperaturesToDisplay = this.props.temperatures.filter(t => t.time >= minTime && t.time <= maxTime);
 
+        ctx.strokeStyle = '#333333';
+
+        for (let i = 0; i < valueSteps; i++){
+            ctx.beginPath();
+            ctx.moveTo(0, canvasHeight / valueSteps * i);
+            ctx.lineTo(canvasWidth, canvasHeight / valueSteps * i);
+            ctx.stroke();
+
+            ctx.font = "12px Arial";
+            ctx.fillStyle = "#AAAAAA";
+            const text = ((i - 0) * (this.props.maxValue - this.props.minValue) / (valueSteps - 0) + this.props.minValue).toString();
+            ctx.fillText(text, 0 + 4, canvasHeight / valueSteps * i + 4);
+        }
+
+
         this.props.sensors && this.props.sensors.forEach(sensor => {
             const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
-            ctx.strokeStyle = `rgba(255, 255, 255, 0.1)`;
+            ctx.strokeStyle = `#${sensor.color.hex}`;
 
             ctx.beginPath();
 

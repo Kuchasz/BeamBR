@@ -41,16 +41,16 @@ export const createSetNameForSensorAction = (id: string, name: string) => ({
     name
 });
 
-export const createStoreSensorsAction = (sensors: Sensor[]) => ({
-    type: StoreSensorsActionType,
-    sensors
-});
-
 export const createFetchSensorsAction = () => (dispatch) => {
     getSensors().then(sensors => {
         dispatch(createStoreSensorsAction(sensors));
     });
 };
+
+export const createStoreSensorsAction = (sensors: Sensor[]) => ({
+    type: StoreSensorsActionType,
+    sensors
+});
 
 export const createSetColorForSensorAction = (id: string, color: Color) => ({
     type: SetColorForSensorActionType,
