@@ -84,7 +84,7 @@ export class TemperaturesChart extends React.Component<Props, State>{
             <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>
             <div style={{position: 'absolute', right: 0, top: 0, background: 'rgba(255, 255, 255, 0.4)', padding: '5px'}}>
                 {this.props.sensors.map(s => <div>
-                    {s.name} - <span style={{color: `#${s.color.hex}`}}>{this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}</span>
+                    <span style={{display: 'inline-block', width: 10, height: 10, marginRight:5, background: `#${s.color.hex}`}}></span>{s.name} - <span>{this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}</span>
                 </div>)}
             </div>
         </div>;
