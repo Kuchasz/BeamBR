@@ -17,15 +17,10 @@ interface State{
 export class TemperaturesChart extends React.Component<Props, State>{
 
     canvas: HTMLCanvasElement;
+    currentRenderLoop: number = undefined;
 
     componentDidMount() {
-        // this.renderChart();
-        // requestAnimationFrame(this.renderChart);
         this.renderChart();
-    }
-
-    componentDidUpdate() {
-        // this.renderChart();
     }
 
     renderChart() {
@@ -77,7 +72,11 @@ export class TemperaturesChart extends React.Component<Props, State>{
             ctx.stroke();
         });
 
-        requestAnimationFrame(() => this.renderChart());
+        this.currentRenderLoop = requestAnimationFrame(() => this.renderChart());
+    }
+
+    componentWillUnmount(){
+        cancelAnimationFrame(this.currentRenderLoop);
     }
 
     render(){
