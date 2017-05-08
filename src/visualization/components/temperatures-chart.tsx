@@ -11,16 +11,37 @@ interface Props {
 }
 
 interface State {
-
+    hiddenSensors: string[];
 }
 
 export class TemperaturesChart extends React.Component<Props, State> {
+
+    constructor() {
+        super();
+        this.state = {
+            hiddenSensors: []
+        };
+    }
 
     canvas: HTMLCanvasElement;
     currentRenderLoop: number = undefined;
 
     componentDidMount() {
         this.renderChart();
+    }
+
+    toggleSensor(sensorId: string){
+        const {hiddenSensors}  = this.state;
+        const sensorIndex = hiddenSensors.indexOf(sensorId);
+        if(sensorIndex !== -1){
+            this.setState({
+                hiddenSensors: [...hiddenSensors.slice(0, sensorIndex), ...hiddenSensors.slice(sensorIndex+1)]
+            })
+        } else {
+            this.setState({
+                hiddenSensors: [...hiddenSensors, sensorId]
+            })
+        }
     }
 
     renderChart() {
@@ -58,7 +79,12 @@ export class TemperaturesChart extends React.Component<Props, State> {
 
         sensors && sensors.forEach(sensor => {
             const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
-            ctx.strokeStyle = `#${sensor.color.hex}`;
+
+            if(this.state.hiddenSensors.indexOf(sensor.id) === -1)
+                ctx.strokeStyle = `${sensor.color.hex}`;
+            else
+                ctx.strokeStyle = `rgba(${sensor.color.r}, ${sensor.color.g}, ${sensor.color.b}, 0.25)`;
+
 
             ctx.beginPath();
 
@@ -84,12 +110,11 @@ export class TemperaturesChart extends React.Component<Props, State> {
             <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>
             <div
                 style={{position: 'absolute', right: 0, top: 0, background: 'rgba(255, 255, 255, 0.4)', padding: '5px'}}>
-                {this.props.sensors.map(s => <div>
-                    <span
-                        style={{display: 'inline-block', width: 10, height: 10, marginRight:5, background: `#${s.color.hex}`}}></span>{s.name}
-                    -
-                    <span>{this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}</span>
-                </div>)}
+                {this.props.sensors.map(s =>
+                    <div onClick={() => this.toggleSensor(s.id)}>
+                        <span style={{display: 'inline-block', width: 10, height: 10, marginRight:5, background: s.color.hex}}></span>
+                        <span>{s.name} - {this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}</span>
+                    </div>)}
             </div>
         </div>;
     }
