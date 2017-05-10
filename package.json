@@ -14,6 +14,7 @@
   "devDependencies": {
     "@types/es6-shim": "^0.31.33",
     "@types/node": "^7.0.13",
+    "@types/uuid": "^2.0.29",
     "html-loader": "^0.4.5",
     "html-webpack-harddisk-plugin": "^0.1.0",
     "html-webpack-inline-source-plugin": "0.0.8",
@@ -26,6 +27,7 @@
     "preact": "^8.1.0",
     "preact-redux": "^2.0.1",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "uuid": "^3.0.1"
   }
 }

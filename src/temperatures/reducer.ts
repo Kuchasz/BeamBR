@@ -11,8 +11,3 @@ export const reducer = (state: State = initialState, action: Actions) => {
             return state;
     }
 };
-
-export const getLastTemp = (state: State, sensorId: string) => {
-    const tempsForSensor = state.filter(t => t.sensorId === sensorId);
-    return tempsForSensor[tempsForSensor.length - 1];
-};
