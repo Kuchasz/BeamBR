@@ -1,5 +1,15 @@
-import {State} from "./state";
+import {State, Alarm} from "./state";
 import {Actions, CreateAlarmActionType, ToggleAlarmAction, ToggleAlarmActionType} from "./actions";
+
+const alarmReducer = (state: Alarm, action: Actions) => {
+    switch (action.type){
+        case ToggleAlarmActionType: {
+            return {...state, isEnabled: !state.isEnabled}
+        }
+        default:
+            return state;
+    }
+};
 
 export const reducer = (state: State, action: Actions) => {
     switch (action.type){
@@ -8,14 +18,15 @@ export const reducer = (state: State, action: Actions) => {
                 id: '',
                 sensorId: action.sensorId,
                 minTemp: action.minTemp,
-                maxTemp: action.maxTemp
+                maxTemp: action.maxTemp,
+                isEnabled: true
             }];
         }
         case ToggleAlarmActionType: {
             const alarmToToggle = state.filter(a => a.id === action.alarmId)[0];
             const alarmIndex = state.indexOf(alarmToToggle);
             return [...state.slice(0, alarmIndex),
-                {},
+                alarmReducer(alarmToToggle, action),
                 ...state.slice(alarmIndex + 1)];
         }
         default:

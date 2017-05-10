@@ -3,6 +3,7 @@ export interface Alarm{
     sensorId: string;
     minTemp?: number;
     maxTemp?: number;
+    isEnabled: boolean;
 }
 
 export type State = Alarm[];
