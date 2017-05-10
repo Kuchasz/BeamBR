@@ -3,3 +3,5 @@ export interface Temperature{
     value: number;
     time: number;
 }
+
+export type State = Temperature[];

@@ -4,3 +4,5 @@ export interface Alarm{
     minTemp?: number;
     maxTemp?: number;
 }
+
+export type State = Alarm[];

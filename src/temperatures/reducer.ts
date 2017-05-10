@@ -1,9 +1,9 @@
-import {Temperature} from "./state";
+import {State} from "./state";
 import {Actions, StoreTemperaturesActionType} from "./actions";
 
 const initialState = [];
 
-export const reducer = (state: Temperature[] = initialState, action: Actions) => {
+export const reducer = (state: State = initialState, action: Actions) => {
     switch (action.type) {
         case StoreTemperaturesActionType:
             return [...state, ...action.temperatures];
@@ -12,7 +12,7 @@ export const reducer = (state: Temperature[] = initialState, action: Actions) =>
     }
 };
 
-export const getLastTemp = (state: Temperature[], sensorId: string) => {
+export const getLastTemp = (state: State, sensorId: string) => {
     const tempsForSensor = state.filter(t => t.sensorId === sensorId);
     return tempsForSensor[tempsForSensor.length - 1];
 };
