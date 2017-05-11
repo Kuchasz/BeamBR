@@ -1,4 +1,6 @@
 import {colors} from "../core/colors";
+import {Alarm} from "../alarms/state";
+import {v4} from 'uuid';
 const networksSSIDs = ['Theros', 'Neostrada', 'Linksys', 'D-link', 'Aero', 'Netia', 'TPNeo'];
 const sensorsNames = ['Kolumna', 'Baniak', 'Rurka', 'Tutla', 'Zawór', 'Tuleja', 'Lejek', 'Kolanko', 'Odpływ', 'Pogon', 'Napar', 'Solanka'];
 
@@ -32,4 +34,14 @@ export const createTemperatureValue = (sensorId : string) => {
 
     lastTempsForSensors[sensorId] = newTempForSensor;
     return newTempForSensor;
-}
+};
+
+export const createAlarm: () => Alarm = () => ({
+    id: v4(),
+    sensorId: sensors[Math.floor(Math.random()*sensors.length)].id,
+    isEnabled: Math.random() > 0.25,
+    minTemp: Math.random() > 0.5 ? (Math.random() * 50) : undefined,
+    maxTemp: Math.random() > 0.5 ? (Math.random() * 50 + 50) : undefined
+});
+
+export const alarms = Array.from(Array(Math.floor(Math.random() * 15)).keys()).map(() => createAlarm());
