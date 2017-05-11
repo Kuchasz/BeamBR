@@ -21,5 +21,5 @@ class AlarmsListView extends React.Component<Props, State>{
 }
 
 export const AlarmsList = connect((state, ownProps) => ({
-    alarms: getAlarmsForSensor(ownProps.sensorId)
+    alarms: getAlarmsForSensor(state, ownProps.sensorId)
 }))(AlarmsListView);
