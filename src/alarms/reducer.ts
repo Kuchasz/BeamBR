@@ -36,3 +36,6 @@ export const reducer = (state: State = initialState, action: Actions) => {
             return state;
     }
 };
+
+export const getAlarmsForSensor = (state: State, sensorId: string) =>
+    state.filter(s => s.sensorId === sensorId);

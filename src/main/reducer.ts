@@ -32,3 +32,6 @@ export const getInnerRoute = (state) =>
 
 export const getTemperatures = (state) =>
     state.temperatures;
+
+export const getAlarmsForSensor = (state, sensorId: string) =>
+    alarms.getAlarmsForSensor(state.alarms, sensorId);
