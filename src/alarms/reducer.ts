@@ -2,6 +2,8 @@ import {State, Alarm} from "./state";
 import {Actions, CreateAlarmActionType, ToggleAlarmActionType} from "./actions";
 import {v4} from 'uuid';
 
+const initialState = [];
+
 const alarmReducer = (state: Alarm, action: Actions) => {
     switch (action.type){
         case ToggleAlarmActionType: {
@@ -12,7 +14,7 @@ const alarmReducer = (state: Alarm, action: Actions) => {
     }
 };
 
-export const reducer = (state: State, action: Actions) => {
+export const reducer = (state: State = initialState, action: Actions) => {
     switch (action.type){
         case CreateAlarmActionType: {
             return [...state, {
