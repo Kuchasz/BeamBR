@@ -7,6 +7,7 @@ import {getSensors} from "../../main/reducer";
 import {HTMLInputEvent} from "../../core/html";
 import {ColorPalette} from "../../core/components/color-palette";
 import {Color, colors} from "../../core/colors";
+import {AlarmsList} from "../../alarms/components/alarms-list";
 
 interface Props {
     sensors: Sensor[];
@@ -51,6 +52,7 @@ class SensorsListView extends React.Component<Props, State> {
                         <ColorPalette onChoose={(color) => this.setColor(color)} colors={colors}/>
                         <input onChange={({target: {value}}: HTMLInputEvent) => this.onTypeName(value) } placeholder="Name for sensor" value={this.state.selectedSensorName}></input>
                         <button onClick={this.setName.bind(this)}>Set</button>
+                        <AlarmsList sensorId={this.state.selectedSensorId}/>
                     </div>
                     : null}
                 {this.props.sensors.map(s => <SensorListItem onClick={() => this.selectSensor(s.id)} isSelected={s.id === this.state.selectedSensorId} {...s}/>)}

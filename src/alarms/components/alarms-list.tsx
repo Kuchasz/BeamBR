@@ -6,6 +6,7 @@ import {AlarmListItem} from "./alarm-list-item";
 
 interface Props{
     alarms: Alarm[];
+    sensorId: string;
 }
 
 interface State{
