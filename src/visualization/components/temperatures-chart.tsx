@@ -108,6 +108,13 @@ export class TemperaturesChart extends React.Component<Props, State> {
 
         const temperaturesToDisplay = temperatures.filter(t => t.time >= (minTime - minimumTimeUnit) && t.time <= maxTime);
 
+        for (let i = 0; i <= valueSteps; i++) {
+            ctx.beginPath();
+            ctx.moveTo(40, canvasHeight / valueSteps * i);
+            ctx.lineTo(canvasWidth, canvasHeight / valueSteps * i);
+            ctx.stroke();
+        }
+
         sensors && sensors.forEach(sensor => {
             const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
 
@@ -128,11 +135,6 @@ export class TemperaturesChart extends React.Component<Props, State> {
         ctx.strokeStyle = '#333';
 
         for (let i = 0; i <= valueSteps; i++) {
-            ctx.beginPath();
-            ctx.moveTo(40, canvasHeight / valueSteps * i);
-            ctx.lineTo(canvasWidth, canvasHeight / valueSteps * i);
-            ctx.stroke();
-
             ctx.font = "12px Verdana";
             ctx.fillStyle = "#333";
             const text = ((valueSteps - i) * (maxValue - minValue) / valueSteps + minValue).toFixed(2).toString();
