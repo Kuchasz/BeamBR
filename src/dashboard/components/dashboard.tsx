@@ -17,18 +17,31 @@ interface Props{
 interface State{
 }
 
+const menuButtonStyle = {
+    cursor: 'pointer',
+    padding: '5px 10px',
+    color: '#444',
+    border: 'solid 1px #EEE',
+    margin: '5px'
+};
+
+const selectedMenu = {
+    background: 'rgb(33, 150, 243)',
+    color: 'white'
+};
+
 class DashboardView extends React.Component<Props, State>{
     render(){
         return (
             <div>
-                <h3>Dashboard</h3>
                 <NetworkConnectionState/>
                 <TempsReader/>
-                <span>
-                    <button onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.SensorsConfig)}>Sensors</button>
-                    <button onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.NetworksConfig)}>Networks</button>
-                    <button onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.Visualization)}>Visualization</button>
+                <span style={{display: 'flex'}}>
+                    <div style={{...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.SensorsConfig ? selectedMenu : null)}} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.SensorsConfig)}>Sensors config</div>
+                    <div style={{...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.NetworksConfig ? selectedMenu : null)}} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.NetworksConfig)}>Networks config</div>
+                    <div style={{...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.Visualization ? selectedMenu : null)}} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.Visualization)}>Visualization</div>
                 </span>
+                <br/>
                 {this.props.innerRoute === InnerRoute.SensorsConfig ? <SensorsList/> : null}
                 {this.props.innerRoute === InnerRoute.NetworksConfig ? <NetworksList/> : null}
                 {this.props.innerRoute === InnerRoute.Visualization ? <Visualization/> : null}

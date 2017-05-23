@@ -11,7 +11,7 @@ const createSensor = () => ({
     color: colors[Math.floor(Math.random()* colors.length)]
 });
 
-export const sensors = Array.from(Array(Math.floor(Math.random() * 10 + 1)).keys()).map(() => createSensor());
+export const sensors = Array.from(Array(Math.floor(Math.random() * 7 + 3)).keys()).map(() => createSensor());
 
 const createNetwork = () => ({
     ssid: networksSSIDs[Math.floor(Math.random() * networksSSIDs.length)] + (Math.random() * (10 ** 5)).toFixed(0).toString(),

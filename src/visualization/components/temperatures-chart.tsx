@@ -25,12 +25,24 @@ export class TemperaturesChart extends React.Component<Props, State> {
             hiddenSensors: [],
             intervals: [
             {
+                name: '1h',
+                time: 3600
+            },
+            {
+                name: '30m',
+                time: 1800
+            },
+            {
                 name: '10m',
                 time: 600
             },
             {
                 name: '5m',
                 time: 300
+            },
+            {
+                name: '2m',
+                time: 120
             },
             {
                 name: '1m',
@@ -43,6 +55,10 @@ export class TemperaturesChart extends React.Component<Props, State> {
             {
                 name: '15s',
                 time: 15
+            },
+            {
+                name: '10s',
+                time: 10
             },
             {
                 name: '5s',
@@ -92,20 +108,6 @@ export class TemperaturesChart extends React.Component<Props, State> {
 
         const temperaturesToDisplay = temperatures.filter(t => t.time >= (minTime - minimumTimeUnit) && t.time <= maxTime);
 
-        ctx.strokeStyle = '#333';
-
-        for (let i = 0; i <= valueSteps; i++) {
-            ctx.beginPath();
-            ctx.moveTo(0, canvasHeight / valueSteps * i);
-            ctx.lineTo(canvasWidth, canvasHeight / valueSteps * i);
-            ctx.stroke();
-
-            ctx.font = "12px Verdana";
-            ctx.fillStyle = "#333";
-            const text = ((valueSteps - i) * (maxValue - minValue) / valueSteps + minValue).toString();
-            ctx.fillText(text, 0 + 4, canvasHeight / valueSteps * i);
-        }
-
         sensors && sensors.forEach(sensor => {
             const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
 
@@ -122,6 +124,28 @@ export class TemperaturesChart extends React.Component<Props, State> {
 
             ctx.stroke();
         });
+
+        ctx.strokeStyle = '#333';
+
+        for (let i = 0; i <= valueSteps; i++) {
+            ctx.beginPath();
+            ctx.moveTo(40, canvasHeight / valueSteps * i);
+            ctx.lineTo(canvasWidth, canvasHeight / valueSteps * i);
+            ctx.stroke();
+
+            ctx.font = "12px Verdana";
+            ctx.fillStyle = "#333";
+            const text = ((valueSteps - i) * (maxValue - minValue) / valueSteps + minValue).toFixed(2).toString();
+
+            const yOffset = i === 0
+                ? 8
+                : i === valueSteps
+                ? canvasHeight / valueSteps * i - 8
+                : canvasHeight / valueSteps * i + 4;
+
+            ctx.fillText(text, 8, yOffset);
+        }
+
 
         this.currentRenderLoop = requestAnimationFrame(() => this.renderChart());
     }
@@ -142,17 +166,22 @@ export class TemperaturesChart extends React.Component<Props, State> {
         cancelAnimationFrame(this.currentRenderLoop);
     }
 
+    getLastTemperatureForSensor(sensorId: string){
+        const temperaturesForSensor = this.props.temperatures.filter(t => t.sensorId === sensorId);
+        return temperaturesForSensor.length > 0 ? temperaturesForSensor.reverse()[0].value.toFixed(2) : '--.--';
+    }
+
     render() {
         return <div style={{display: 'inline-block', position: 'relative'}}>
             <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
-                {this.state.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)}style={{cursor: 'pointer', color: this.state.selectedInterval === interval.name ? 'lightgray' : 'gray'}}>
+                {this.state.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)} style={{cursor: 'pointer', color: this.state.selectedInterval === interval.name ? 'white' : 'gray'}}>
                     {interval.name}
                 </div>)}
             </div>
             <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
                 {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}} onClick={() => this.toggleSensor(sensor.id)}>
                     <span style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight:5, background: this.getColorForSensor(sensor)}}></span>
-                    <span style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.props.temperatures.filter(t => t.sensorId === sensor.id).reverse()[0].value.toFixed(2)}</span>
+                    <span style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
                 </div>)}
             </div>
             <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>

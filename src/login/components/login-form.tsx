@@ -22,7 +22,6 @@ class LoginFormView extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                <h2>Login to get access!</h2>
                 <input onChange={({target: {value}}: HTMLInputEvent) => this.setState({login: value})}/>
                 <input onChange={({target: {value}}: HTMLInputEvent) => this.setState({password: value})}/>
                 <button onClick={() => this.props.createLoginAction(this.state.login, this.state.password)}>Login</button>

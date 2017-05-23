@@ -6,7 +6,7 @@ import {Dashboard} from "../../dashboard/components/dashboard";
 
 const MainComponent = ({currentRoute, token, login}) => (
     <div>
-        <div>{currentRoute == Route.LoginForm ? <LoginForm></LoginForm> : <Dashboard></Dashboard>}</div>
+        <div>{currentRoute === Route.LoginForm ? <LoginForm></LoginForm> : <Dashboard></Dashboard>}</div>
     </div>
 );
 

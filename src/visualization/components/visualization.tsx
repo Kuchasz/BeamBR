@@ -61,11 +61,19 @@ class VisualizationView extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                <h3>Amount of temperatures: {this.props.temperatures.length}</h3>
-                <div>
-                    <input ref={(element: HTMLInputElement) => this.maxValueInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMaxValue(Number(value))} placeholder="Maximum chart value"/>
-                    <input ref={(element: HTMLInputElement) => this.minValueInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMinValue(Number(value))} placeholder="Minimum chart value"/>
-                    <input ref={(element: HTMLInputElement) => this.valueStepsInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))} placeholder="Value steps"/>
+                <div style={{display: 'flex'}}>
+                    <span style={{margin: 10, marginLeft: 0}}>
+                        <label style={{display: 'block'}}>Maximum temperature</label>
+                        <input ref={(element: HTMLInputElement) => this.maxValueInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMaxValue(Number(value))}/>
+                    </span>
+                    <span style={{margin: 10}}>
+                        <label style={{display: 'block'}}>Minimum temperature</label>
+                        <input ref={(element: HTMLInputElement) => this.minValueInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMinValue(Number(value))}/>
+                    </span>
+                    <span style={{margin: 10}}>
+                        <label style={{display: 'block'}}>Number of temperature steps</label>
+                        <input ref={(element: HTMLInputElement) => this.valueStepsInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))}/>
+                    </span>
                 </div>
                     <TemperaturesChart temperatures={this.props.temperatures} sensors={this.props.sensors} {...this.state}/>
             </div>)

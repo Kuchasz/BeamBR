@@ -25,18 +25,12 @@ class SensorsListView extends React.Component<Props, State> {
     selectSensor(id){
         this.setState({
             selectedSensorId: id,
-            selectedSensorName: this.props.sensors.filter(s => s.id ===id)[0].name
+            selectedSensorName: this.props.sensors.filter(s => s.id === id)[0].name
         });
     }
 
-    onTypeName(name: string){
-        this.setState({
-            selectedSensorName: name
-        });
-    }
-
-    setName() {
-        this.props.createSetNameForSensorAction(this.state.selectedSensorId, this.state.selectedSensorName);
+    setName(name: string) {
+        this.props.createSetNameForSensorAction(this.state.selectedSensorId, name);
     }
 
     setColor(color: Color){
@@ -49,9 +43,14 @@ class SensorsListView extends React.Component<Props, State> {
                 <button onClick={this.props.createFetchSensorsAction}>Get Sensors</button>
                 {this.state.selectedSensorId !== undefined
                     ? <div>
-                        <ColorPalette onChoose={(color) => this.setColor(color)} colors={colors}/>
-                        <input onChange={({target: {value}}: HTMLInputEvent) => this.onTypeName(value) } placeholder="Name for sensor" value={this.state.selectedSensorName}></input>
-                        <button onClick={this.setName.bind(this)}>Set</button>
+                        <div>
+                            <label>Set color for sensor</label>
+                            <ColorPalette onChoose={(color) => this.setColor(color)} colors={colors}/>
+                        </div>
+                        <div>
+                            <label style={{display: 'block'}}>Set name for sensor</label>
+                            <input onChange={({target: {value}}: HTMLInputEvent) => this.setName(value) } placeholder="Name for sensor" value={this.state.selectedSensorName}></input>
+                        </div>
                         <AlarmsList sensorId={this.state.selectedSensorId}/>
                     </div>
                     : null}
