@@ -1,6 +1,7 @@
 import * as React from 'preact';
 import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
+import {Interval} from "../../core/interval";
 
 interface Props {
     temperatures: Temperature[];
@@ -12,6 +13,8 @@ interface Props {
 
 interface State {
     hiddenSensors: string[];
+    intervals: Interval[];
+    selectedInterval: string;
 }
 
 export class TemperaturesChart extends React.Component<Props, State> {
@@ -19,7 +22,33 @@ export class TemperaturesChart extends React.Component<Props, State> {
     constructor() {
         super();
         this.state = {
-            hiddenSensors: []
+            hiddenSensors: [],
+            intervals: [
+            {
+                name: '10m',
+                time: 600
+            },
+            {
+                name: '5m',
+                time: 300
+            },
+            {
+                name: '1m',
+                time: 60
+            },
+            {
+                name: '30s',
+                time: 30
+            },
+            {
+                name: '15s',
+                time: 15
+            },
+            {
+                name: '5s',
+                time: 5
+            }],
+            selectedInterval: '30s'
         };
     }
 
@@ -30,12 +59,12 @@ export class TemperaturesChart extends React.Component<Props, State> {
         this.renderChart();
     }
 
-    toggleSensor(sensorId: string){
+    toggleSensor(sensorId: string) {
         const {hiddenSensors}  = this.state;
         const sensorIndex = hiddenSensors.indexOf(sensorId);
-        if(sensorIndex !== -1){
+        if (sensorIndex !== -1) {
             this.setState({
-                hiddenSensors: [...hiddenSensors.slice(0, sensorIndex), ...hiddenSensors.slice(sensorIndex+1)]
+                hiddenSensors: [...hiddenSensors.slice(0, sensorIndex), ...hiddenSensors.slice(sensorIndex + 1)]
             })
         } else {
             this.setState({
@@ -54,7 +83,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
 
         const currentTime = new Date();
         const maxTime = currentTime.getTime();
-        const minTime = currentTime.getTime() - 60 * minimumTimeUnit;
+        const minTime = currentTime.getTime() - this.state.intervals.filter(i => i.name === this.state.selectedInterval)[0].time * minimumTimeUnit;
 
         const ctx = this.canvas.getContext('2d');
         ctx.fillStyle = "black";
@@ -80,11 +109,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
         sensors && sensors.forEach(sensor => {
             const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
 
-            if(this.state.hiddenSensors.indexOf(sensor.id) === -1)
-                ctx.strokeStyle = `${sensor.color.hex}`;
-            else
-                ctx.strokeStyle = `rgba(${sensor.color.r}, ${sensor.color.g}, ${sensor.color.b}, 0.25)`;
-
+            ctx.strokeStyle = this.getColorForSensor(sensor);
 
             ctx.beginPath();
 
@@ -101,21 +126,36 @@ export class TemperaturesChart extends React.Component<Props, State> {
         this.currentRenderLoop = requestAnimationFrame(() => this.renderChart());
     }
 
+    getColorForSensor(sensor: Sensor) {
+        return (this.state.hiddenSensors.indexOf(sensor.id) === -1)
+            ? `${sensor.color.hex}`
+            : `rgba(${sensor.color.r}, ${sensor.color.g}, ${sensor.color.b}, 0.25)`;
+    }
+
+    setSelectedInterval(name: string){
+        this.setState({
+            selectedInterval: name
+        });
+    }
+
     componentWillUnmount() {
         cancelAnimationFrame(this.currentRenderLoop);
     }
 
     render() {
         return <div style={{display: 'inline-block', position: 'relative'}}>
-            <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>
-            <div
-                style={{position: 'absolute', right: 0, top: 0, background: 'rgba(255, 255, 255, 0.4)', padding: '5px'}}>
-                {this.props.sensors.map(s =>
-                    <div onClick={() => this.toggleSensor(s.id)}>
-                        <span style={{display: 'inline-block', width: 10, height: 10, marginRight:5, background: s.color.hex}}></span>
-                        <span>{s.name} - {this.props.temperatures.filter(t => t.sensorId === s.id).reverse()[0].value.toFixed(2)}</span>
-                    </div>)}
+            <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
+                {this.state.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)}style={{cursor: 'pointer', color: this.state.selectedInterval === interval.name ? 'lightgray' : 'gray'}}>
+                    {interval.name}
+                </div>)}
             </div>
+            <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
+                {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}} onClick={() => this.toggleSensor(sensor.id)}>
+                    <span style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight:5, background: this.getColorForSensor(sensor)}}></span>
+                    <span style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.props.temperatures.filter(t => t.sensorId === sensor.id).reverse()[0].value.toFixed(2)}</span>
+                </div>)}
+            </div>
+            <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>
         </div>;
     }
 }
