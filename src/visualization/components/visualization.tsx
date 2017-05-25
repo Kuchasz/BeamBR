@@ -64,15 +64,15 @@ class VisualizationView extends React.Component<Props, State> {
                 <div style={{display: 'flex'}}>
                     <span style={{margin: 10, marginLeft: 0}}>
                         <label style={{display: 'block'}}>Maximum temperature</label>
-                        <input ref={(element: HTMLInputElement) => this.maxValueInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMaxValue(Number(value))}/>
+                        <input ref={(element: HTMLInputElement) => this.maxValueInput = element} type="number" onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMaxValue(Number(value))}/>
                     </span>
                     <span style={{margin: 10}}>
                         <label style={{display: 'block'}}>Minimum temperature</label>
-                        <input ref={(element: HTMLInputElement) => this.minValueInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMinValue(Number(value))}/>
+                        <input ref={(element: HTMLInputElement) => this.minValueInput = element} type="number" onChange={({target: {value}}: HTMLInputEvent) => this.onChangeMinValue(Number(value))}/>
                     </span>
                     <span style={{margin: 10}}>
                         <label style={{display: 'block'}}>Number of temperature steps</label>
-                        <input ref={(element: HTMLInputElement) => this.valueStepsInput = element} onChange={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))}/>
+                        <input ref={(element: HTMLInputElement) => this.valueStepsInput = element} type="number" onChange={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))}/>
                     </span>
                 </div>
                     <TemperaturesChart temperatures={this.props.temperatures} sensors={this.props.sensors} {...this.state}/>

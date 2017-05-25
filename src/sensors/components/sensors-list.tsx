@@ -47,10 +47,12 @@ class SensorsListView extends React.Component<Props, State> {
                             <label>Set color for sensor</label>
                             <ColorPalette onChoose={(color) => this.setColor(color)} colors={colors}/>
                         </div>
+                        <br/>
                         <div>
                             <label style={{display: 'block'}}>Set name for sensor</label>
                             <input onChange={({target: {value}}: HTMLInputEvent) => this.setName(value) } placeholder="Name for sensor" value={this.state.selectedSensorName}></input>
                         </div>
+                        <br/>
                         <div>
                             <label style={{display: 'block'}}>Alarms for sensor</label>
                             <AlarmsList sensorId={this.state.selectedSensorId}/>

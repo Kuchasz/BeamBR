@@ -1,3 +1,4 @@
+import {AlarmType} from "./state";
 export type CreateAlarmActionType = 'createAlarmActionType';
 export const CreateAlarmActionType = 'createAlarmActionType';
 
@@ -7,8 +8,8 @@ export const ToggleAlarmActionType = 'toggleAlarmActionType';
 export interface CreateAlarmAction {
     type: CreateAlarmActionType;
     sensorId: string;
-    minTemp: number;
-    maxTemp: number;
+    temp: number;
+    alarmType: AlarmType;
 }
 
 export interface ToggleAlarmAction {
@@ -16,11 +17,11 @@ export interface ToggleAlarmAction {
     alarmId: string;
 }
 
-export const createAlarmAction = (sensorId: string, minTemp: number, maxTemp: number) => ({
+export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType) => ({
     type: CreateAlarmActionType,
     sensorId,
-    minTemp,
-    maxTemp
+    temp,
+    alarmType: type
 });
 
 export const createToggleAlarmAction = (alarmId: string) => ({

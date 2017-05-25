@@ -1,8 +1,13 @@
+export enum AlarmType{
+    LowerThan,
+    HigherThan
+}
+
 export interface Alarm{
     id: string;
     sensorId: string;
-    minTemp?: number;
-    maxTemp?: number;
+    temp: number;
+    type: AlarmType;
     isEnabled: boolean;
 }
 

@@ -20,8 +20,8 @@ export const reducer = (state: State = initialState, action: Actions) => {
             return [...state, {
                 id: v4(),
                 sensorId: action.sensorId,
-                minTemp: action.minTemp,
-                maxTemp: action.maxTemp,
+                temp: action.temp,
+                type: action.alarmType,
                 isEnabled: true
             }];
         }
