@@ -24,10 +24,14 @@
     "webpack": "^2.4.1"
   },
   "dependencies": {
+    "@types/node": "^7.0.22",
     "preact": "^8.1.0",
     "preact-redux": "^2.0.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
-    "uuid": "^3.0.1"
+    "ts-loader": "^2.1.0",
+    "typescript": "^2.3.3",
+    "uuid": "^3.0.1",
+    "webpack": "^2.6.1"
   }
 }
