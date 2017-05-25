@@ -51,7 +51,10 @@ class SensorsListView extends React.Component<Props, State> {
                             <label style={{display: 'block'}}>Set name for sensor</label>
                             <input onChange={({target: {value}}: HTMLInputEvent) => this.setName(value) } placeholder="Name for sensor" value={this.state.selectedSensorName}></input>
                         </div>
-                        <AlarmsList sensorId={this.state.selectedSensorId}/>
+                        <div>
+                            <label style={{display: 'block'}}>Alarms for sensor</label>
+                            <AlarmsList sensorId={this.state.selectedSensorId}/>
+                        </div>
                     </div>
                     : null}
                 {this.props.sensors.map(s => <SensorListItem onClick={() => this.selectSensor(s.id)} isSelected={s.id === this.state.selectedSensorId} {...s}/>)}
