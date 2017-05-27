@@ -182,6 +182,10 @@ export class TemperaturesChart extends React.Component<Props, State> {
         return (this.state.hiddenSensors.indexOf(sensor.id) === -1)
     }
 
+    isSensorHovered(sensor: Sensor){
+        return this.state.hoveredSensor === sensor.id;
+    }
+
     setSelectedInterval(name: string){
         this.setState({
             selectedInterval: name
@@ -210,13 +214,19 @@ export class TemperaturesChart extends React.Component<Props, State> {
                     {interval.name}
                 </div>)}
             </div>
-            <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
+            <div style={{position:'relative', display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
                 {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}}>
                     <span onClick={() => this.hideSensor(sensor.id)} style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight:5, borderWidth: '1px', borderStyle: 'solid', borderColor: this.getColorForSensor(sensor), background: this.isSensorVisible(sensor) ? this.getColorForSensor(sensor): null}}></span>
                     <span onClick={() => this.graySensor(sensor.id)} style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
                     <span onMouseOver={()=> this.setHoveredSensor(sensor.id)} style={{display: 'inline-block', width: '15px', height: '15px', borderRadius: '25px', background: 'red'}}>
                         <span style={{marginLeft: '4px'}}>!</span>
                     </span>
+                    {this.isSensorHovered(sensor) ? <div style={{padding: '5px', position: 'absolute', background: 'beige'}}>
+                            <div>Alarm 1</div>
+                            <div>Alarm 2</div>
+                            <div>Alarm 3</div>
+                            <div>Alarm 4</div>
+                        </div> : null }
                 </div>)}
             </div>
             <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>
