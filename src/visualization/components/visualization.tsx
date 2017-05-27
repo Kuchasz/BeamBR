@@ -1,14 +1,16 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
-import {getTemperatures, getSensors} from "../../main/reducer";
+import {getTemperatures, getSensors, getAlarmsOccurences} from "../../main/reducer";
 import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
 import {TemperaturesChart} from "./temperatures-chart";
 import {HTMLInputEvent} from "../../core/html";
+import {AlarmOccurence} from "../../alarms/state";
 
 interface Props {
     temperatures: Temperature[];
     sensors: Sensor[];
+    alarms: AlarmOccurence[];
 }
 
 interface State {
@@ -83,4 +85,5 @@ class VisualizationView extends React.Component<Props, State> {
 export const Visualization = connect((state, ownProps) => ({
     temperatures: getTemperatures(state),
     sensors: getSensors(state),
+    alarms: getAlarmsOccurences(state)
 }))(VisualizationView);

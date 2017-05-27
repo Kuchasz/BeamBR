@@ -3,6 +3,7 @@ import {Alarm, AlarmType} from "../alarms/state";
 import {v4} from 'uuid';
 const networksSSIDs = ['Theros', 'Neostrada', 'Linksys', 'D-link', 'Aero', 'Netia', 'TPNeo'];
 const sensorsNames = ['Kolumna', 'Baniak', 'Rurka', 'Tutla', 'Zawór', 'Tuleja', 'Lejek', 'Kolanko', 'Odpływ', 'Pogon', 'Napar', 'Solanka'];
+const alarmsDescriptions = ['is too hot','has too big temp','is cold'];
 
 const createSensor = () => ({
     id: (Math.random() * 10 ** 10).toFixed(0),
@@ -41,7 +42,8 @@ export const createAlarm: () => Alarm = () => ({
     sensorId: sensors[Math.floor(Math.random()*sensors.length)].id,
     isEnabled: Math.random() > 0.25,
     temp: Math.random() > 0.5 ? (Math.random() * 50) : undefined,
-    type: Math.random() > 0.5 ? AlarmType.HigherThan : AlarmType.LowerThan
+    type: Math.random() > 0.5 ? AlarmType.HigherThan : AlarmType.LowerThan,
+    description: alarmsDescriptions[Math.floor(Math.random()*alarmsDescriptions.length)]
 });
 
 export const alarms = Array.from(Array(Math.floor(Math.random() * 15)).keys()).map(() => createAlarm());

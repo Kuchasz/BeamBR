@@ -35,3 +35,6 @@ export const getTemperatures = (state) =>
 
 export const getAlarmsForSensor = (state, sensorId: string) =>
     alarms.getAlarmsForSensor(state.alarms, sensorId);
+
+export const getAlarmsOccurences = (state) =>
+    alarms.getAlarmsOccurences(state.alarms);

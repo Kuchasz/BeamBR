@@ -206,6 +206,9 @@ export class TemperaturesChart extends React.Component<Props, State> {
                 {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}}>
                     <span onClick={() => this.hideSensor(sensor.id)} style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight:5, borderWidth: '1px', borderStyle: 'solid', borderColor: this.getColorForSensor(sensor), background: this.isSensorVisible(sensor) ? this.getColorForSensor(sensor): null}}></span>
                     <span onClick={() => this.graySensor(sensor.id)} style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
+                    <span style={{display: 'inline-block', width: '15px', height: '15px', borderRadius: '25px', background: 'red'}}>
+                        <span style={{marginLeft: '4px'}}>!</span>
+                    </span>
                 </div>)}
             </div>
             <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>

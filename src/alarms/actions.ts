@@ -10,6 +10,7 @@ export interface CreateAlarmAction {
     sensorId: string;
     temp: number;
     alarmType: AlarmType;
+    description: string;
 }
 
 export interface ToggleAlarmAction {
@@ -17,11 +18,12 @@ export interface ToggleAlarmAction {
     alarmId: string;
 }
 
-export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType) => ({
+export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType, description: string) => ({
     type: CreateAlarmActionType,
     sensorId,
     temp,
-    alarmType: type
+    alarmType: type,
+    description
 });
 
 export const createToggleAlarmAction = (alarmId: string) => ({

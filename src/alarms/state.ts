@@ -9,6 +9,20 @@ export interface Alarm{
     temp: number;
     type: AlarmType;
     isEnabled: boolean;
+    description: string;
 }
 
-export type State = Alarm[];
+export enum AlarmOccurenceType{
+    Past,
+    Current
+}
+
+export interface AlarmOccurence{
+    alarmId: string;
+    type: AlarmOccurenceType;
+}
+
+export interface State {
+    alarms: Alarm[];
+    alarmOccurences: AlarmOccurence[];
+}

@@ -2,10 +2,13 @@ import {State, Alarm} from "./state";
 import {Actions, CreateAlarmActionType, ToggleAlarmActionType} from "./actions";
 import {v4} from 'uuid';
 
-const initialState = [];
+const initialState: State = {
+    alarms: [],
+    alarmOccurences: []
+};
 
 const alarmReducer = (state: Alarm, action: Actions) => {
-    switch (action.type){
+    switch (action.type) {
         case ToggleAlarmActionType: {
             return {...state, isEnabled: !state.isEnabled}
         }
@@ -14,15 +17,16 @@ const alarmReducer = (state: Alarm, action: Actions) => {
     }
 };
 
-export const reducer = (state: State = initialState, action: Actions) => {
-    switch (action.type){
+const alarmsReducer = (state: Alarm[], action: Actions) => {
+    switch (action.type) {
         case CreateAlarmActionType: {
             return [...state, {
                 id: v4(),
                 sensorId: action.sensorId,
                 temp: action.temp,
                 type: action.alarmType,
-                isEnabled: true
+                isEnabled: true,
+                description: action.description
             }];
         }
         case ToggleAlarmActionType: {
@@ -37,5 +41,19 @@ export const reducer = (state: State = initialState, action: Actions) => {
     }
 };
 
+export const reducer = (state: State = initialState, action: Actions) => {
+    switch (action.type) {
+        case CreateAlarmActionType:
+            return {...state, alarms: alarmsReducer(state.alarms, action)};
+        case ToggleAlarmActionType:
+            return {...state, alarms: alarmsReducer(state.alarms, action)};
+        default:
+            return state;
+    }
+}
+
 export const getAlarmsForSensor = (state: State, sensorId: string) =>
-    state.filter(s => s.sensorId === sensorId);
+    state.alarms.filter(s => s.sensorId === sensorId);
+
+export const getAlarmsOccurences = (state: State) =>
+    state.alarmOccurences;
