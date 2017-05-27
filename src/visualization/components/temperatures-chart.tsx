@@ -12,6 +12,7 @@ interface Props {
 }
 
 interface State {
+    grayedSensors: string[];
     hiddenSensors: string[];
     intervals: Interval[];
     selectedInterval: string;
@@ -22,6 +23,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
     constructor() {
         super();
         this.state = {
+            grayedSensors: [],
             hiddenSensors: [],
             intervals: [
             {
@@ -75,8 +77,22 @@ export class TemperaturesChart extends React.Component<Props, State> {
         this.renderChart();
     }
 
-    toggleSensor(sensorId: string) {
-        const {hiddenSensors}  = this.state;
+    graySensor(sensorId: string) {
+        const {grayedSensors}  = this.state;
+        const sensorIndex = grayedSensors.indexOf(sensorId);
+        if (sensorIndex !== -1) {
+            this.setState({
+                grayedSensors: [...grayedSensors.slice(0, sensorIndex), ...grayedSensors.slice(sensorIndex + 1)]
+            })
+        } else {
+            this.setState({
+                grayedSensors: [...grayedSensors, sensorId]
+            })
+        }
+    }
+
+    hideSensor(sensorId: string){
+        const {hiddenSensors} = this.state;
         const sensorIndex = hiddenSensors.indexOf(sensorId);
         if (sensorIndex !== -1) {
             this.setState({
@@ -92,6 +108,8 @@ export class TemperaturesChart extends React.Component<Props, State> {
     renderChart() {
 
         const {valueSteps, temperatures, minValue, maxValue, sensors} = this.props;
+        const sensorsToRender = sensors.filter(s => this.state.hiddenSensors.indexOf(s.id) === -1);
+
         const minimumTimeUnit = 1000;
 
         const canvasWidth = 1280;
@@ -115,7 +133,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
             ctx.stroke();
         }
 
-        sensors && sensors.forEach(sensor => {
+        sensorsToRender && sensorsToRender.forEach(sensor => {
             const tempsForSensor = temperaturesToDisplay.filter(t => t.sensorId === sensor.id);
 
             ctx.strokeStyle = this.getColorForSensor(sensor);
@@ -153,9 +171,13 @@ export class TemperaturesChart extends React.Component<Props, State> {
     }
 
     getColorForSensor(sensor: Sensor) {
-        return (this.state.hiddenSensors.indexOf(sensor.id) === -1)
+        return (this.state.grayedSensors.indexOf(sensor.id) === -1)
             ? `${sensor.color.hex}`
             : `rgba(${sensor.color.r}, ${sensor.color.g}, ${sensor.color.b}, 0.25)`;
+    }
+
+    isSensorVisible(sensor: Sensor){
+        return (this.state.hiddenSensors.indexOf(sensor.id) === -1)
     }
 
     setSelectedInterval(name: string){
@@ -181,9 +203,9 @@ export class TemperaturesChart extends React.Component<Props, State> {
                 </div>)}
             </div>
             <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
-                {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}} onClick={() => this.toggleSensor(sensor.id)}>
-                    <span style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight:5, background: this.getColorForSensor(sensor)}}></span>
-                    <span style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
+                {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}}>
+                    <span onClick={() => this.hideSensor(sensor.id)} style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight:5, borderWidth: '1px', borderStyle: 'solid', borderColor: this.getColorForSensor(sensor), background: this.isSensorVisible(sensor) ? this.getColorForSensor(sensor): null}}></span>
+                    <span onClick={() => this.graySensor(sensor.id)} style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
                 </div>)}
             </div>
             <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>
