@@ -22,6 +22,12 @@ export interface AlarmOccurence{
     type: AlarmOccurenceType;
 }
 
+export interface SensorAlarm{
+    alarmType: AlarmType;
+    occurenceType: AlarmOccurenceType;
+    temp: number;
+}
+
 export interface State {
     alarms: Alarm[];
     alarmOccurences: AlarmOccurence[];
