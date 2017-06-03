@@ -1,5 +1,6 @@
-import {Alarm, AlarmType} from "./state";
-import {getAlarms} from "./apis";
+import {Alarm, AlarmOccurence, AlarmType} from "./state";
+import {getAlarms, getAlarmsOccurences} from "./apis";
+
 export type CreateAlarmActionType = 'createAlarmActionType';
 export const CreateAlarmActionType = 'createAlarmActionType';
 
@@ -11,6 +12,12 @@ export const FetchAlarmsActionType = 'fetchSensorsActionType';
 
 export type StoreAlarmsActionType = 'storeAlarmsActionType';
 export const StoreAlarmsActionType = 'storeAlarmsActionType';
+
+export type FetchAlarmsOccurencesActionType = 'fetchAlarmsOccurencesActionType';
+export const FetchAlarmsOccurencesActionType = 'fetchAlarmsOccurencesActionType';
+
+export type StoreAlarmsOccurencesActionType = 'storeAlarmsOccurencesActionType';
+export const StoreAlarmsOccurencesActionType = 'storeAlarmsOccurencesActionType';
 
 export interface CreateAlarmAction {
     type: CreateAlarmActionType;
@@ -32,6 +39,15 @@ export interface FetchAlarmsAction {
 export interface StoreAlarmsAction{
     type: StoreAlarmsActionType;
     alarms: Alarm[];
+}
+
+export interface FetchAlarmsOccurencesAction{
+    type: FetchAlarmsOccurencesActionType;
+}
+
+export interface StoreAlarmsOccurencesAction{
+    type: StoreAlarmsOccurencesActionType;
+    alarmsOccurences: AlarmOccurence[];
 }
 
 export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType, description: string) => ({
@@ -56,4 +72,13 @@ export const createStoreAlarmsAction = (alarms: Alarm[]) => ({
     alarms
 });
 
-export type Actions = CreateAlarmAction | ToggleAlarmAction | FetchAlarmsAction | StoreAlarmsAction;
+export const createFetchAlarmsOccurencesAction = () => (dispatch) => {
+    getAlarmsOccurences().then(alarmsOccurences => dispatch(createStoreAlarmsOccurencesAction(alarmsOccurences)))
+};
+
+export const createStoreAlarmsOccurencesAction = (alarmsOccurences: AlarmOccurence[]) => ({
+    type: StoreAlarmsOccurencesActionType,
+    alarmsOccurences
+});
+
+export type Actions = CreateAlarmAction | ToggleAlarmAction | FetchAlarmsAction | StoreAlarmsAction | FetchAlarmsOccurencesAction | StoreAlarmsOccurencesAction;
