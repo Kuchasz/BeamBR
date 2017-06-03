@@ -1,16 +1,17 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
-import {getTemperatures, getSensors, getAlarmsOccurences} from "../../main/reducer";
+import {getTemperatures, getSensors, getAlarmsOccurences, getAlarms} from "../../main/reducer";
 import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
 import {TemperaturesChart} from "./temperatures-chart";
 import {HTMLInputEvent} from "../../core/html";
-import {AlarmOccurence} from "../../alarms/state";
+import {Alarm, AlarmOccurence} from "../../alarms/state";
 
 interface Props {
     temperatures: Temperature[];
     sensors: Sensor[];
     alarmsOccurences: AlarmOccurence[];
+    alarms: Alarm[];
 }
 
 interface State {
@@ -77,7 +78,7 @@ class VisualizationView extends React.Component<Props, State> {
                         <input ref={(element: HTMLInputElement) => this.valueStepsInput = element} type="number" onChange={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))}/>
                     </span>
                 </div>
-                    <TemperaturesChart temperatures={this.props.temperatures} sensors={this.props.sensors} {...this.state}/>
+                    <TemperaturesChart alarms={this.props.alarms} temperatures={this.props.temperatures} alarmsOccurences={this.props.alarmsOccurences} sensors={this.props.sensors} {...this.state}/>
             </div>)
     }
 }
@@ -85,5 +86,6 @@ class VisualizationView extends React.Component<Props, State> {
 export const Visualization = connect((state, ownProps) => ({
     temperatures: getTemperatures(state),
     sensors: getSensors(state),
-    alarmsOccurences: getAlarmsOccurences(state)
+    alarmsOccurences: getAlarmsOccurences(state),
+    alarms: getAlarms(state)
 }))(VisualizationView);

@@ -2,10 +2,13 @@ import * as React from 'preact';
 import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
 import {Interval} from "../../core/interval";
+import {Alarm, AlarmOccurence, AlarmOccurenceType} from "../../alarms/state";
 
 interface Props {
     temperatures: Temperature[];
     sensors: Sensor[];
+    alarmsOccurences: AlarmOccurence[];
+    alarms: Alarm[];
     maxValue: number;
     minValue: number;
     valueSteps: number;
@@ -27,46 +30,46 @@ export class TemperaturesChart extends React.Component<Props, State> {
             grayedSensors: [],
             hiddenSensors: [],
             intervals: [
-            {
-                name: '1h',
-                time: 3600
-            },
-            {
-                name: '30m',
-                time: 1800
-            },
-            {
-                name: '10m',
-                time: 600
-            },
-            {
-                name: '5m',
-                time: 300
-            },
-            {
-                name: '2m',
-                time: 120
-            },
-            {
-                name: '1m',
-                time: 60
-            },
-            {
-                name: '30s',
-                time: 30
-            },
-            {
-                name: '15s',
-                time: 15
-            },
-            {
-                name: '10s',
-                time: 10
-            },
-            {
-                name: '5s',
-                time: 5
-            }],
+                {
+                    name: '1h',
+                    time: 3600
+                },
+                {
+                    name: '30m',
+                    time: 1800
+                },
+                {
+                    name: '10m',
+                    time: 600
+                },
+                {
+                    name: '5m',
+                    time: 300
+                },
+                {
+                    name: '2m',
+                    time: 120
+                },
+                {
+                    name: '1m',
+                    time: 60
+                },
+                {
+                    name: '30s',
+                    time: 30
+                },
+                {
+                    name: '15s',
+                    time: 15
+                },
+                {
+                    name: '10s',
+                    time: 10
+                },
+                {
+                    name: '5s',
+                    time: 5
+                }],
             selectedInterval: '30s',
             hoveredSensor: undefined
         };
@@ -80,7 +83,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
     }
 
     graySensor(sensorId: string) {
-        const {grayedSensors}  = this.state;
+        const {grayedSensors} = this.state;
         const sensorIndex = grayedSensors.indexOf(sensorId);
         if (sensorIndex !== -1) {
             this.setState({
@@ -93,7 +96,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
         }
     }
 
-    hideSensor(sensorId: string){
+    hideSensor(sensorId: string) {
         const {hiddenSensors} = this.state;
         const sensorIndex = hiddenSensors.indexOf(sensorId);
         if (sensorIndex !== -1) {
@@ -162,8 +165,8 @@ export class TemperaturesChart extends React.Component<Props, State> {
             const yOffset = i === 0
                 ? 8
                 : i === valueSteps
-                ? canvasHeight / valueSteps * i - 8
-                : canvasHeight / valueSteps * i + 4;
+                    ? canvasHeight / valueSteps * i - 8
+                    : canvasHeight / valueSteps * i + 4;
 
             ctx.fillText(text, 8, yOffset);
         }
@@ -178,21 +181,28 @@ export class TemperaturesChart extends React.Component<Props, State> {
             : `rgba(${sensor.color.r}, ${sensor.color.g}, ${sensor.color.b}, 0.25)`;
     }
 
-    isSensorVisible(sensor: Sensor){
+    getCurrentAlarmsOccurences(sensor: Sensor) {
+        const alarmsIdsForSensor = this.props.alarms.filter(a => a.sensorId === sensor.id).map(a => a.id);
+        const alarmsOccurencesForSensor = this.props.alarmsOccurences.filter(a => alarmsIdsForSensor.indexOf(a.alarmId) !== -1);
+        const currentAlarmOccurencesForSensor = alarmsOccurencesForSensor.filter(a => a.type === AlarmOccurenceType.Current);
+        return currentAlarmOccurencesForSensor;
+    }
+
+    isSensorVisible(sensor: Sensor) {
         return (this.state.hiddenSensors.indexOf(sensor.id) === -1)
     }
 
-    isSensorHovered(sensor: Sensor){
+    isSensorHovered(sensor: Sensor) {
         return this.state.hoveredSensor === sensor.id;
     }
 
-    setSelectedInterval(name: string){
+    setSelectedInterval(name: string) {
         this.setState({
             selectedInterval: name
         });
     }
 
-    setHoveredSensor(sensorId: string){
+    setHoveredSensor(sensorId: string) {
         this.setState({
             hoveredSensor: sensorId
         })
@@ -202,7 +212,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
         cancelAnimationFrame(this.currentRenderLoop);
     }
 
-    getLastTemperatureForSensor(sensorId: string){
+    getLastTemperatureForSensor(sensorId: string) {
         const temperaturesForSensor = this.props.temperatures.filter(t => t.sensorId === sensorId);
         return temperaturesForSensor.length > 0 ? temperaturesForSensor.reverse()[0].value.toFixed(2) : '--.--';
     }
@@ -210,22 +220,23 @@ export class TemperaturesChart extends React.Component<Props, State> {
     render() {
         return <div style={{display: 'inline-block', position: 'relative'}}>
             <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
-                {this.state.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)} style={{cursor: 'pointer', color: this.state.selectedInterval === interval.name ? 'white' : 'gray'}}>
+                {this.state.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)} style={{ cursor: 'pointer', color: this.state.selectedInterval === interval.name ? 'white' : 'gray' }}>
                     {interval.name}
                 </div>)}
             </div>
-            <div style={{position:'relative', display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
+            <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px' }}>
                 {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}}>
-                    <span onClick={() => this.hideSensor(sensor.id)} style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight:5, borderWidth: '1px', borderStyle: 'solid', borderColor: this.getColorForSensor(sensor), background: this.isSensorVisible(sensor) ? this.getColorForSensor(sensor): null}}></span>
+                    <span onClick={() => this.hideSensor(sensor.id)} style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight: 5, borderWidth: '1px', borderStyle: 'solid', borderColor: this.getColorForSensor(sensor), background: this.isSensorVisible(sensor) ? this.getColorForSensor(sensor) : null }}></span>
                     <span onClick={() => this.graySensor(sensor.id)} style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
-                    <span onMouseOut={() => this.setHoveredSensor(undefined)} onMouseOver={()=> this.setHoveredSensor(sensor.id)} style={{display: 'inline-block', width: '15px', height: '15px', borderRadius: '25px', background: 'red'}}>
-                        <span style={{marginLeft: '4px'}}>!</span>
-                    </span>
-                    {this.isSensorHovered(sensor) ? <div style={{padding: '5px', position: 'absolute', background: 'beige'}}>
-                            <div>Alarm 1</div>
-                            <div>Alarm 2</div>
-                            <div>Alarm 3</div>
-                            <div>Alarm 4</div>
+                    {this.getCurrentAlarmsOccurences(sensor).length > 0 ?
+                        <span onMouseOut={() => this.setHoveredSensor(undefined)} onMouseOver={() => this.setHoveredSensor(sensor.id)} style={{display: 'inline-block', width: '15px', height: '15px', borderRadius: '25px', background: 'red' }}>
+                            <span style={{marginLeft: '4px'}}>!</span>
+                        </span> : undefined }
+                    {this.isSensorHovered(sensor) ?
+                        <div style={{padding: '5px', position: 'absolute', background: 'beige'}}>
+                            {this.getCurrentAlarmsOccurences(sensor).map(ao => <div>
+                                <span>{ao.temp}</span>
+                            </div>)}
                         </div> : null }
                 </div>)}
             </div>

@@ -38,3 +38,6 @@ export const getAlarmsForSensor = (state, sensorId: string) =>
 
 export const getAlarmsOccurences = (state) =>
     alarms.getAlarmsOccurences(state.alarms);
+
+export const getAlarms = (state) =>
+    alarms.getAlarms(state.alarms);
