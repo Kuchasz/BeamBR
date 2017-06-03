@@ -19,6 +19,9 @@ export const FetchAlarmsOccurencesActionType = 'fetchAlarmsOccurencesActionType'
 export type StoreAlarmsOccurencesActionType = 'storeAlarmsOccurencesActionType';
 export const StoreAlarmsOccurencesActionType = 'storeAlarmsOccurencesActionType';
 
+export type AcceptPastAlarmOccurenceActionType = 'acceptPastAlarmOccurenceActionType ';
+export const AcceptPastAlarmOccurenceActionType = 'acceptPastAlarmOccurenceActionType ';
+
 export interface CreateAlarmAction {
     type: CreateAlarmActionType;
     sensorId: string;
@@ -48,6 +51,11 @@ export interface FetchAlarmsOccurencesAction{
 export interface StoreAlarmsOccurencesAction{
     type: StoreAlarmsOccurencesActionType;
     alarmsOccurences: AlarmOccurence[];
+}
+
+export interface AcceptPastAlarmOccurenceAction{
+    type: AcceptPastAlarmOccurenceActionType;
+    alarmId: string;
 }
 
 export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType, description: string) => ({
@@ -81,4 +89,9 @@ export const createStoreAlarmsOccurencesAction = (alarmsOccurences: AlarmOccuren
     alarmsOccurences
 });
 
-export type Actions = CreateAlarmAction | ToggleAlarmAction | FetchAlarmsAction | StoreAlarmsAction | FetchAlarmsOccurencesAction | StoreAlarmsOccurencesAction;
+export const createAcceptPastAlarmOccurenceAction = (alarmId: string) => ({
+    type: AcceptPastAlarmOccurenceActionType,
+    alarmId
+});
+
+export type Actions = CreateAlarmAction | ToggleAlarmAction | FetchAlarmsAction | StoreAlarmsAction | FetchAlarmsOccurencesAction | StoreAlarmsOccurencesAction | AcceptPastAlarmOccurenceAction;

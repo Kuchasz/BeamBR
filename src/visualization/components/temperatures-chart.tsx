@@ -12,6 +12,7 @@ interface Props {
     maxValue: number;
     minValue: number;
     valueSteps: number;
+    onApplyAlarmOccurence: (alarmsOccurences: AlarmOccurence) => void;
 }
 
 interface State {
@@ -206,6 +207,10 @@ export class TemperaturesChart extends React.Component<Props, State> {
         })
     }
 
+    acceptAlarmOccurence(alarmOccurence: AlarmOccurence){
+        this.props.onApplyAlarmOccurence(alarmOccurence);
+    }
+
     componentWillUnmount() {
         cancelAnimationFrame(this.currentRenderLoop);
     }
@@ -227,15 +232,15 @@ export class TemperaturesChart extends React.Component<Props, State> {
                     <span onClick={() => this.hideSensor(sensor.id)} style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight: 5, borderWidth: '1px', borderStyle: 'solid', borderColor: this.getColorForSensor(sensor), background: this.isSensorVisible(sensor) ? this.getColorForSensor(sensor) : null }}></span>
                     <span onClick={() => this.graySensor(sensor.id)} style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
                     {this.getAlarmOccurences(sensor).length > 0 ?
-                        <span onMouseOut={() => this.setHoveredSensor(undefined)} onMouseOver={() => this.setHoveredSensor(sensor.id)} style={{display: 'inline-block', width: '15px', height: '15px', borderRadius: '25px', background: this.getAlarmOccurences(sensor).filter(a => a.type === AlarmOccurenceType.Current).length > 0 ? 'red' : 'orange'}}>
-                            <span style={{marginLeft: '4px'}}>!</span>
+                        <span onMouseOut={() => this.setHoveredSensor(undefined)} onMouseOver={() => this.setHoveredSensor(sensor.id)} style={{display: 'inline-block', width: '15px', height: '15px', borderRadius: '0px', background: this.getAlarmOccurences(sensor).filter(a => a.type === AlarmOccurenceType.Current).length > 0 ? 'red' : 'orange'}}>
+                            <span style={{fontSize: '12px', display: 'flex', justifyContent: 'center'}}>!</span>
+                            {this.isSensorHovered(sensor) ?
+                                <div style={{padding: '5px', position: 'absolute', background: 'beige'}}>
+                                    {this.getAlarmOccurences(sensor).map(ao => <div>
+                                        <span onClick={() => this.acceptAlarmOccurence(ao)}>{ao.temp}</span>
+                                    </div>)}
+                                </div> : null }
                         </span> : undefined }
-                    {this.isSensorHovered(sensor) ?
-                        <div style={{padding: '5px', position: 'absolute', background: 'beige'}}>
-                            {this.getAlarmOccurences(sensor).map(ao => <div>
-                                <span>{ao.temp}</span>
-                            </div>)}
-                        </div> : null }
                 </div>)}
             </div>
             <canvas ref={(canvas: HTMLCanvasElement) => this.canvas = canvas} width={1280} height={720}/>

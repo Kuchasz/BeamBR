@@ -1,5 +1,6 @@
 import {State, Alarm, AlarmOccurence, AlarmOccurenceType} from "./state";
 import {
+    AcceptPastAlarmOccurenceActionType,
     Actions, CreateAlarmActionType, StoreAlarmsActionType, StoreAlarmsOccurencesActionType,
     ToggleAlarmActionType
 } from "./actions";
@@ -10,7 +11,7 @@ const initialState: State = {
     alarmOccurences: []
 };
 
-const alarmReducer = (state: Alarm, action: Actions) => {
+const alarmReducer = (state: Alarm, action: Actions): Alarm => {
     switch (action.type) {
         case ToggleAlarmActionType: {
             return {...state, isEnabled: !state.isEnabled}
@@ -20,7 +21,7 @@ const alarmReducer = (state: Alarm, action: Actions) => {
     }
 };
 
-const alarmsReducer = (state: Alarm[], action: Actions) => {
+const alarmsReducer = (state: Alarm[], action: Actions): Alarm[] => {
     switch (action.type) {
         case CreateAlarmActionType: {
             return [...state, {
@@ -44,21 +45,30 @@ const alarmsReducer = (state: Alarm[], action: Actions) => {
     }
 };
 
-const alarmsOccurencesReducer = (state: AlarmOccurence[], action: Actions) => {
+const alarmsOccurencesReducer = (state: AlarmOccurence[], action: Actions): AlarmOccurence[] => {
     switch (action.type) {
         case StoreAlarmsOccurencesActionType: {
             const previousAlarmsOccurencesAlarmsIds = state.map(a => a.alarmId);
             const currentAlarmsOccurencesAlarmsIds = action.alarmsOccurences.map(a => a.alarmId);
             const pastAlarmsOccurencesIds = previousAlarmsOccurencesAlarmsIds.filter(id => currentAlarmsOccurencesAlarmsIds.indexOf(id) === -1);
             const pastAlarmsOccurences = state.filter(a => pastAlarmsOccurencesIds.indexOf(a.alarmId) !== -1);
-            return [...pastAlarmsOccurences.map(a => ({...a, type: AlarmOccurenceType.Past})), ...action.alarmsOccurences];
+            return [...pastAlarmsOccurences.map(a => ({
+                ...a,
+                type: AlarmOccurenceType.Past
+            })), ...action.alarmsOccurences];
+        }
+        case AcceptPastAlarmOccurenceActionType: {
+            const pastAlarmOccurence = state.filter(a => a.alarmId === action.alarmId)[0];
+            const pastAlarmOccurenceIndex = state.indexOf(pastAlarmOccurence);
+            return [...state.slice(0, pastAlarmOccurenceIndex), ...state.slice(pastAlarmOccurenceIndex + 1)];
         }
         default:
             return state;
-    };
+    }
+    ;
 };
 
-export const reducer = (state: State = initialState, action: Actions) => {
+export const reducer = (state: State = initialState, action: Actions): State => {
     switch (action.type) {
         case CreateAlarmActionType:
             return {...state, alarms: alarmsReducer(state.alarms, action)};
@@ -67,7 +77,9 @@ export const reducer = (state: State = initialState, action: Actions) => {
         case StoreAlarmsActionType:
             return {...state, alarms: action.alarms};
         case StoreAlarmsOccurencesActionType:
-            return {...state, alarmOccurences: alarmsOccurencesReducer(state.alarmOccurences, action)}
+            return {...state, alarmOccurences: alarmsOccurencesReducer(state.alarmOccurences, action)};
+        case AcceptPastAlarmOccurenceActionType:
+            return {...state, alarmOccurences: alarmsOccurencesReducer(state.alarmOccurences, action)};
         default:
             return state;
     }

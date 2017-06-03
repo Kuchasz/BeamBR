@@ -6,12 +6,14 @@ import {Sensor} from "../../sensors/state";
 import {TemperaturesChart} from "./temperatures-chart";
 import {HTMLInputEvent} from "../../core/html";
 import {Alarm, AlarmOccurence} from "../../alarms/state";
+import {createAcceptPastAlarmOccurenceAction} from "../../alarms/actions";
 
 interface Props {
     temperatures: Temperature[];
     sensors: Sensor[];
     alarmsOccurences: AlarmOccurence[];
     alarms: Alarm[];
+    createAcceptPastAlarmOccurenceAction: (alarmId: string) => void;
 }
 
 interface State {
@@ -78,7 +80,7 @@ class VisualizationView extends React.Component<Props, State> {
                         <input ref={(element: HTMLInputElement) => this.valueStepsInput = element} type="number" onChange={({target: {value}}: HTMLInputEvent) => this.onChangeValueSteps(Number(value))}/>
                     </span>
                 </div>
-                    <TemperaturesChart alarms={this.props.alarms} temperatures={this.props.temperatures} alarmsOccurences={this.props.alarmsOccurences} sensors={this.props.sensors} {...this.state}/>
+                    <TemperaturesChart onApplyAlarmOccurence={(alarmOccurence) => this.props.createAcceptPastAlarmOccurenceAction(alarmOccurence.alarmId)} alarms={this.props.alarms} temperatures={this.props.temperatures} alarmsOccurences={this.props.alarmsOccurences} sensors={this.props.sensors} {...this.state}/>
             </div>)
     }
 }
@@ -88,4 +90,6 @@ export const Visualization = connect((state, ownProps) => ({
     sensors: getSensors(state),
     alarmsOccurences: getAlarmsOccurences(state),
     alarms: getAlarms(state)
-}))(VisualizationView);
+}), {
+    createAcceptPastAlarmOccurenceAction
+})(VisualizationView);
