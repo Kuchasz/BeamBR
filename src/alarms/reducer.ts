@@ -1,5 +1,5 @@
 import {State, Alarm} from "./state";
-import {Actions, CreateAlarmActionType, ToggleAlarmActionType} from "./actions";
+import { Actions, CreateAlarmActionType, StoreAlarmsActionType, ToggleAlarmActionType } from "./actions";
 import {v4} from 'uuid';
 
 const initialState: State = {
@@ -47,6 +47,8 @@ export const reducer = (state: State = initialState, action: Actions) => {
             return {...state, alarms: alarmsReducer(state.alarms, action)};
         case ToggleAlarmActionType:
             return {...state, alarms: alarmsReducer(state.alarms, action)};
+        case StoreAlarmsActionType:
+            return {...state, alarms: action.alarms };
         default:
             return state;
     }

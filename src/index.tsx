@@ -6,12 +6,14 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'preact-redux';
 import thunk from 'redux-thunk';
 import {createFetchSensorsAction} from "./sensors/actions";
+import {createFetchAlarmsAction} from "./alarms/actions";
 
 const store = createStore(
     main.reducer,
     applyMiddleware(thunk));
 
 store.dispatch(createFetchSensorsAction());
+store.dispatch(createFetchAlarmsAction());
 
 render(
     <Provider store={store}>

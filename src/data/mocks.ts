@@ -41,7 +41,7 @@ export const createAlarm: () => Alarm = () => ({
     id: v4(),
     sensorId: sensors[Math.floor(Math.random()*sensors.length)].id,
     isEnabled: Math.random() > 0.25,
-    temp: Math.random() > 0.5 ? (Math.random() * 50) : undefined,
+    temp: Math.random() * 50,
     type: Math.random() > 0.5 ? AlarmType.HigherThan : AlarmType.LowerThan,
     description: alarmsDescriptions[Math.floor(Math.random()*alarmsDescriptions.length)]
 });

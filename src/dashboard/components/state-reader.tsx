@@ -1,6 +1,6 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
-import {createFetchTemperaturesAction} from "../actions";
+import {createFetchTemperaturesAction} from "../../temperatures/actions";
 
 interface Props {
     createFetchTemperaturesAction: () => void;
@@ -9,7 +9,7 @@ interface Props {
 interface State {
 }
 
-class TempsReaderView extends React.Component<Props, State> {
+class StateReader extends React.Component<Props, State> {
 
     loopInterval: any;
 
@@ -24,12 +24,10 @@ class TempsReaderView extends React.Component<Props, State> {
     }
 
     render() {
-        return (
-            <div></div>
-        )
+        return undefined;
     }
 }
 
 export const TempsReader = connect(undefined, {
     createFetchTemperaturesAction
-})(TempsReaderView);
+})(StateReader);

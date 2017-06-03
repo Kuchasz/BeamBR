@@ -7,7 +7,7 @@ import {NetworkConnectionState} from "../../networking/components/network-connec
 import {InnerRoute} from "../../routes/state";
 import {createNavigateToInnerRouteAction} from "../../routes/actions";
 import {Visualization} from "../../visualization/components/visualization";
-import {TempsReader} from "../../temperatures/components/temps-reader";
+import {TempsReader} from "./state-reader";
 
 interface Props{
     innerRoute: InnerRoute;

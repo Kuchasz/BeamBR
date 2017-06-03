@@ -20,11 +20,6 @@ export enum AlarmOccurenceType{
 export interface AlarmOccurence{
     alarmId: string;
     type: AlarmOccurenceType;
-}
-
-export interface SensorAlarm{
-    alarmType: AlarmType;
-    occurenceType: AlarmOccurenceType;
     temp: number;
 }
 

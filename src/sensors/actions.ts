@@ -42,9 +42,7 @@ export const createSetNameForSensorAction = (id: string, name: string) => ({
 });
 
 export const createFetchSensorsAction = () => (dispatch) => {
-    getSensors().then(sensors => {
-        dispatch(createStoreSensorsAction(sensors));
-    });
+    getSensors().then(sensors => dispatch(createStoreSensorsAction(sensors)));
 };
 
 export const createStoreSensorsAction = (sensors: Sensor[]) => ({
