@@ -12,11 +12,3 @@ export const getAlarmsOccurences = () => new Promise<AlarmOccurence[]>(res => {
         res(createAlarmOccurences())
     }, Math.floor(Math.random() * 90 + 10))
 });
-
-// export const getTemperatures = () => new Promise<Temperature[]>((res) => {
-//     res(sensors.map(s => ({
-//         sensorId: s.id,
-//         value: createTemperatureValue(s.id),
-//         time: new Date().getTime()
-//     })));
-// });

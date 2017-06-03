@@ -10,7 +10,7 @@ import {AlarmOccurence} from "../../alarms/state";
 interface Props {
     temperatures: Temperature[];
     sensors: Sensor[];
-    alarms: AlarmOccurence[];
+    alarmsOccurences: AlarmOccurence[];
 }
 
 interface State {
@@ -85,5 +85,5 @@ class VisualizationView extends React.Component<Props, State> {
 export const Visualization = connect((state, ownProps) => ({
     temperatures: getTemperatures(state),
     sensors: getSensors(state),
-    alarms: getAlarmsOccurences(state)
+    alarmsOccurences: getAlarmsOccurences(state)
 }))(VisualizationView);

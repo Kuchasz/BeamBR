@@ -1,5 +1,8 @@
-import {State, Alarm} from "./state";
-import { Actions, CreateAlarmActionType, StoreAlarmsActionType, ToggleAlarmActionType } from "./actions";
+import {State, Alarm, AlarmOccurence, AlarmOccurenceType} from "./state";
+import {
+    Actions, CreateAlarmActionType, StoreAlarmsActionType, StoreAlarmsOccurencesActionType,
+    ToggleAlarmActionType
+} from "./actions";
 import {v4} from 'uuid';
 
 const initialState: State = {
@@ -41,6 +44,20 @@ const alarmsReducer = (state: Alarm[], action: Actions) => {
     }
 };
 
+const alarmsOccurencesReducer = (state: AlarmOccurence[], action: Actions) => {
+    switch (action.type) {
+        case StoreAlarmsOccurencesActionType: {
+            const previousAlarmsOccurencesAlarmsIds = state.map(a => a.alarmId);
+            const currentAlarmsOccurencesAlarmsIds = action.alarmsOccurences.map(a => a.alarmId);
+            const pastAlarmsOccurencesIds = previousAlarmsOccurencesAlarmsIds.filter(id => currentAlarmsOccurencesAlarmsIds.indexOf(id) === -1);
+            const pastAlarmsOccurences = state.filter(a => pastAlarmsOccurencesIds.indexOf(a.alarmId) !== -1);
+            return [...pastAlarmsOccurences.map(a => ({...a, type: AlarmOccurenceType.Past})), ...action.alarmsOccurences];
+        }
+        default:
+            return state;
+    };
+};
+
 export const reducer = (state: State = initialState, action: Actions) => {
     switch (action.type) {
         case CreateAlarmActionType:
@@ -48,7 +65,9 @@ export const reducer = (state: State = initialState, action: Actions) => {
         case ToggleAlarmActionType:
             return {...state, alarms: alarmsReducer(state.alarms, action)};
         case StoreAlarmsActionType:
-            return {...state, alarms: action.alarms };
+            return {...state, alarms: action.alarms};
+        case StoreAlarmsOccurencesActionType:
+            return {...state, alarmOccurences: alarmsOccurencesReducer(state.alarmOccurences, action)}
         default:
             return state;
     }
