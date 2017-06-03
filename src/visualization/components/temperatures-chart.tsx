@@ -181,11 +181,9 @@ export class TemperaturesChart extends React.Component<Props, State> {
             : `rgba(${sensor.color.r}, ${sensor.color.g}, ${sensor.color.b}, 0.25)`;
     }
 
-    getCurrentAlarmsOccurences(sensor: Sensor) {
+    getAlarmOccurences(sensor: Sensor) {
         const alarmsIdsForSensor = this.props.alarms.filter(a => a.sensorId === sensor.id).map(a => a.id);
-        const alarmsOccurencesForSensor = this.props.alarmsOccurences.filter(a => alarmsIdsForSensor.indexOf(a.alarmId) !== -1);
-        const currentAlarmOccurencesForSensor = alarmsOccurencesForSensor.filter(a => a.type === AlarmOccurenceType.Current);
-        return currentAlarmOccurencesForSensor;
+        return this.props.alarmsOccurences.filter(a => alarmsIdsForSensor.indexOf(a.alarmId) !== -1);
     }
 
     isSensorVisible(sensor: Sensor) {
@@ -228,13 +226,13 @@ export class TemperaturesChart extends React.Component<Props, State> {
                 {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}}>
                     <span onClick={() => this.hideSensor(sensor.id)} style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight: 5, borderWidth: '1px', borderStyle: 'solid', borderColor: this.getColorForSensor(sensor), background: this.isSensorVisible(sensor) ? this.getColorForSensor(sensor) : null }}></span>
                     <span onClick={() => this.graySensor(sensor.id)} style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
-                    {this.getCurrentAlarmsOccurences(sensor).length > 0 ?
-                        <span onMouseOut={() => this.setHoveredSensor(undefined)} onMouseOver={() => this.setHoveredSensor(sensor.id)} style={{display: 'inline-block', width: '15px', height: '15px', borderRadius: '25px', background: 'red' }}>
+                    {this.getAlarmOccurences(sensor).length > 0 ?
+                        <span onMouseOut={() => this.setHoveredSensor(undefined)} onMouseOver={() => this.setHoveredSensor(sensor.id)} style={{display: 'inline-block', width: '15px', height: '15px', borderRadius: '25px', background: this.getAlarmOccurences(sensor).filter(a => a.type === AlarmOccurenceType.Current).length > 0 ? 'red' : 'orange'}}>
                             <span style={{marginLeft: '4px'}}>!</span>
                         </span> : undefined }
                     {this.isSensorHovered(sensor) ?
                         <div style={{padding: '5px', position: 'absolute', background: 'beige'}}>
-                            {this.getCurrentAlarmsOccurences(sensor).map(ao => <div>
+                            {this.getAlarmOccurences(sensor).map(ao => <div>
                                 <span>{ao.temp}</span>
                             </div>)}
                         </div> : null }
