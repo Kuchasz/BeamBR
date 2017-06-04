@@ -4,7 +4,6 @@ import {
     Actions, CreateAlarmActionType, StoreAlarmsActionType, StoreAlarmsOccurencesActionType,
     ToggleAlarmActionType
 } from "./actions";
-import {v4} from 'uuid';
 
 const initialState: State = {
     alarms: [],
@@ -23,16 +22,6 @@ const alarmReducer = (state: Alarm, action: Actions): Alarm => {
 
 const alarmsReducer = (state: Alarm[], action: Actions): Alarm[] => {
     switch (action.type) {
-        case CreateAlarmActionType: {
-            return [...state, {
-                id: v4(),
-                sensorId: action.sensorId,
-                temp: action.temp,
-                type: action.alarmType,
-                isEnabled: true,
-                description: action.description
-            }];
-        }
         case ToggleAlarmActionType: {
             const alarmToToggle = state.filter(a => a.id === action.alarmId)[0];
             const alarmIndex = state.indexOf(alarmToToggle);

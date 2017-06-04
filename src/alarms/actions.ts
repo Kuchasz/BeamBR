@@ -1,5 +1,5 @@
 import {Alarm, AlarmOccurence, AlarmType} from "./state";
-import {getAlarms, getAlarmsOccurences} from "./apis";
+import {getAlarms, getAlarmsOccurences, saveAlarm} from "./apis";
 
 export type CreateAlarmActionType = 'createAlarmActionType';
 export const CreateAlarmActionType = 'createAlarmActionType';
@@ -58,13 +58,16 @@ export interface AcceptPastAlarmOccurenceAction{
     alarmId: string;
 }
 
-export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType, description: string) => ({
-    type: CreateAlarmActionType,
-    sensorId,
-    temp,
-    alarmType: type,
-    description
-});
+export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType, description: string) => (distpach) => {
+    saveAlarm({
+        id: undefined,
+        isEnabled: true,
+        sensorId,
+        temp,
+        type,
+        description
+    }).then(() => distpach(createFetchAlarmsAction()));
+};
 
 export const createToggleAlarmAction = (alarmId: string) => ({
     type: ToggleAlarmActionType,

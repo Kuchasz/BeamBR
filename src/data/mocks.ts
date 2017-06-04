@@ -51,6 +51,8 @@ const createAlarm: () => Alarm = () => ({
 
 export const alarms = Array.from(Array(Math.floor(Math.random() * 15)).keys()).map(() => createAlarm());
 
+export const addAlarm = (alarm: Alarm) => alarms.push({...alarm, id: v4()});
+
 const getLastTempForSensor = (sensorId: string): number => lastTempsForSensors[sensorId];
 
 const getIfAlarmShouldOccur = (alarm: Alarm): boolean => {
