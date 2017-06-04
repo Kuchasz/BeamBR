@@ -1,5 +1,5 @@
 import {Alarm, AlarmOccurence, AlarmType} from "./state";
-import {getAlarms, getAlarmsOccurences, saveAlarm} from "./apis";
+import {deleteAlarm, getAlarms, getAlarmsOccurences, saveAlarm} from "./apis";
 
 export type CreateAlarmActionType = 'createAlarmActionType';
 export const CreateAlarmActionType = 'createAlarmActionType';
@@ -105,9 +105,9 @@ export const createAcceptPastAlarmOccurenceAction = (alarmId: string) => ({
     alarmId
 });
 
-export const createDeleteAlarmAction = (alarmId: string) => ({
-    type: DeleteAlarmActionType,
-    alarmId
-});
+export const createDeleteAlarmAction = (alarmId: string) => (dispatch) => {
+    deleteAlarm(alarmId)
+        .then(() => dispatch(createFetchAlarmsAction()));
+}
 
 export type Actions = CreateAlarmAction | ToggleAlarmAction | FetchAlarmsAction | StoreAlarmsAction | FetchAlarmsOccurencesAction | StoreAlarmsOccurencesAction | AcceptPastAlarmOccurenceAction | DeleteAlarmAction;

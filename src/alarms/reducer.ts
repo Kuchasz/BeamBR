@@ -29,12 +29,6 @@ const alarmsReducer = (state: Alarm[], action: Actions): Alarm[] => {
                 alarmReducer(alarmToToggle, action),
                 ...state.slice(alarmIndex + 1)];
         }
-        case DeleteAlarmActionType: {
-            const alarmToDelete = state.filter(a => a.id === action.alarmId)[0];
-            const alarmIndex = state.indexOf(alarmToDelete);
-            return [...state.slice(0, alarmIndex),
-                ...state.slice(alarmIndex + 1)];
-        }
         default:
             return state;
     }
@@ -65,7 +59,6 @@ const alarmsOccurencesReducer = (state: AlarmOccurence[], action: Actions): Alar
 export const reducer = (state: State = initialState, action: Actions): State => {
     switch (action.type) {
         case ToggleAlarmActionType:
-        case DeleteAlarmActionType:
             return {...state, alarms: alarmsReducer(state.alarms, action)};
         case StoreAlarmsActionType:
             return {...state, alarms: action.alarms};

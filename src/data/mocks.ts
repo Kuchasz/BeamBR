@@ -53,6 +53,11 @@ export const alarms = [];
 
 export const addAlarm = (alarm: Alarm) => alarms.push({...alarm, id: v4()});
 
+export const removeAlarm = (alarmId: string) => {
+    const alarmIndex = alarms.map(a => a.id).indexOf(alarmId);
+    alarms.splice(alarmIndex, 1);
+}
+
 const getLastTempForSensor = (sensorId: string): number => lastTempsForSensors[sensorId];
 
 const getIfAlarmShouldOccur = (alarm: Alarm): boolean => {
