@@ -13,26 +13,30 @@ export const AlarmListItem = ({id, onToggle, onDelete, isEnabled, temp, type}: P
         alignItems: 'center',
         background: '#DDD',
         cursor: 'pointer',
-        margin: '5px',
-        opacity: isEnabled ? 1 : 0.5
+        margin: '5px'
     })}>
         <div onClick={() => onDelete(id)} {...css({
             transition: 'all 0.25s',
+            height: '100%',
+            width: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             ':hover': {
                 background: 'red',
                 '> div': {
-                    transform: 'rotate(-45deg)'
+                    transform: 'rotate(-45deg)',
+                    fontSize: '20px'
                 }
             }
         })}>
             <div {...css({
-                margin: '4px',
                 transition: 'all 0.25s',
                 transform: 'rotate(45deg)',
                 display: 'inline-block'
             })}>{String.fromCharCode(10010)}</div>
         </div>
-        <div onClick={() => onToggle(id)} {...css({margin: '4px'})}>
+        <div onClick={() => onToggle(id)} {...css({margin: '4px', opacity: isEnabled ? 1 : 0.5})}>
             <span {...css({margin: '0px 4px'})}>{type === AlarmType.HigherThan ? String.fromCharCode(8598) : String.fromCharCode(8601)}</span>
             <span>{temp.toFixed(2)} &#8451;</span>
         </div>

@@ -242,7 +242,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
                             {this.isSensorHovered(sensor) ?
                                 <div style={{padding: '5px', position: 'absolute', background: 'beige'}}>
                                     {this.getAlarmOccurences(sensor).map(ao => <div>
-                                        <span onClick={() => this.acceptAlarmOccurence(ao)}>
+                                        <span onClick={() => ao.type === AlarmOccurenceType.Past && this.acceptAlarmOccurence(ao)}>
                                             <span>{ao.temp.toFixed(2)} &#8451;</span>
                                             <span style={{margin: '0px 4px 0px 4px'}}>{this.getAlarm(ao.alarmId).type === AlarmType.HigherThan ? String.fromCharCode(8598) : String.fromCharCode(8601)}</span>
                                             <span>{this.getAlarm(ao.alarmId).temp.toFixed(2)} &#8451;</span>
