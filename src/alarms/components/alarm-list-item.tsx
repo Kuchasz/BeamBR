@@ -3,11 +3,12 @@ import {Alarm, AlarmType} from "../state";
 import {css} from 'glamor';
 
 interface Props extends Alarm {
-    onClick: (alarmId: string) => void;
+    onToggle: (alarmId: string) => void;
+    onDelete: (alarmId: string) => void;
 }
 
-export const AlarmListItem = ({id, onClick, isEnabled, temp, type}: Props) => (
-    <div onClick={() => onClick(id)} {...css({
+export const AlarmListItem = ({id, onToggle, onDelete, isEnabled, temp, type}: Props) => (
+    <div {...css({
         display: 'flex',
         alignItems: 'center',
         background: '#DDD',
@@ -15,7 +16,7 @@ export const AlarmListItem = ({id, onClick, isEnabled, temp, type}: Props) => (
         margin: '5px',
         opacity: isEnabled ? 1 : 0.5
     })}>
-        <div {...css({
+        <div onClick={() => onDelete(id)} {...css({
             transition: 'all 0.25s',
             ':hover': {
                 background: 'red',
@@ -31,7 +32,9 @@ export const AlarmListItem = ({id, onClick, isEnabled, temp, type}: Props) => (
                 display: 'inline-block'
             })}>{String.fromCharCode(10010)}</div>
         </div>
-        <div {...css({margin: '0px 4px'})}>{type === AlarmType.HigherThan ? String.fromCharCode(8598) : String.fromCharCode(8601)}</div>
-        <div>{temp.toFixed(2)} &#8451;</div>
+        <div onClick={() => onToggle(id)} {...css({margin: '4px'})}>
+            <span {...css({margin: '0px 4px'})}>{type === AlarmType.HigherThan ? String.fromCharCode(8598) : String.fromCharCode(8601)}</span>
+            <span>{temp.toFixed(2)} &#8451;</span>
+        </div>
     </div>
 );

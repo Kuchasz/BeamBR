@@ -4,7 +4,7 @@ import {getAlarmsForSensor} from "../../main/reducer";
 import {Alarm, AlarmType} from "../state";
 import {AlarmListItem} from "./alarm-list-item";
 import {HTMLInputEvent} from "../../core/html";
-import {createAlarmAction, createToggleAlarmAction} from "../actions";
+import {createAlarmAction, createToggleAlarmAction, createDeleteAlarmAction} from "../actions";
 import {css} from 'glamor';
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
     sensorId: string;
     createAlarmAction(temp: number, type: AlarmType, description: string): void;
     createToggleAlarmAction(alarmId: string): void;
+    createDeleteAlarmAction(alarmId: string): void;
 }
 
 interface State {
@@ -63,8 +64,8 @@ class AlarmsListView extends React.Component<Props, State> {
                     <input ref={(element: HTMLInputElement) => this.valueInput = element} type="number" onChange={({target: {value}}: HTMLInputEvent) => this.setValue(Number(value)) }></input>
                 </span>
                 <span>
-                    <span onClick={()=>this.setState({selectedType: AlarmType.HigherThan})} {...css({border: this.state.selectedType === AlarmType.HigherThan ? 'solid 1px #AAA' : null, margin: '10px'})}>&#8598;</span>
-                    <span onClick={()=>this.setState({selectedType: AlarmType.LowerThan})} {...css({border: this.state.selectedType === AlarmType.LowerThan ? 'solid 1px #AAA' : null, margin: '10px'})}>&#8601;</span>
+                    <span onClick={()=>this.setState({selectedType: AlarmType.HigherThan})} {...css({border: this.state.selectedType === AlarmType.HigherThan ? 'solid 1px #AAA' : null, cursor: 'pointer', padding: '4px 8px'})}>&#8598;</span>
+                    <span onClick={()=>this.setState({selectedType: AlarmType.LowerThan})} {...css({border: this.state.selectedType === AlarmType.LowerThan ? 'solid 1px #AAA' : null, cursor: 'pointer', padding: '4px 8px'})}>&#8601;</span>
                 </span>
                 <span>
                     <span {...css({display: 'block'})}>Description</span>
@@ -73,7 +74,7 @@ class AlarmsListView extends React.Component<Props, State> {
                 <button onClick={this.addAlarm.bind(this)}>Add</button>
             </div>
             <div {...css({display: 'flex'})}>
-                {this.props.alarms.map(a => <AlarmListItem onClick={(alarmId) => this.props.createToggleAlarmAction(alarmId)} {...a}/>)}
+                {this.props.alarms.map(a => <AlarmListItem onDelete={(alarmId) => this.props.createDeleteAlarmAction(alarmId)} onToggle={(alarmId) => this.props.createToggleAlarmAction(alarmId)} {...a}/>)}
             </div>
         </div>
     }
@@ -83,5 +84,6 @@ export const AlarmsList = connect((state, ownProps) => ({
     alarms: getAlarmsForSensor(state, ownProps.sensorId)
 }), (dispatch, ownProps) => ({
     createAlarmAction: (temp, type, description) => dispatch(createAlarmAction(ownProps.sensorId, temp, type, description)),
-    createToggleAlarmAction: (alarmId) => dispatch(createToggleAlarmAction(alarmId))
+    createToggleAlarmAction: (alarmId) => dispatch(createToggleAlarmAction(alarmId)),
+    createDeleteAlarmAction: (alarmId) => dispatch(createDeleteAlarmAction(alarmId))
 }))(AlarmsListView);

@@ -22,6 +22,9 @@ export const StoreAlarmsOccurencesActionType = 'storeAlarmsOccurencesActionType'
 export type AcceptPastAlarmOccurenceActionType = 'acceptPastAlarmOccurenceActionType ';
 export const AcceptPastAlarmOccurenceActionType = 'acceptPastAlarmOccurenceActionType ';
 
+export type DeleteAlarmActionType = 'deleteAlarmActionType';
+export const DeleteAlarmActionType = 'deleteAlarmActionType';
+
 export interface CreateAlarmAction {
     type: CreateAlarmActionType;
     sensorId: string;
@@ -55,6 +58,11 @@ export interface StoreAlarmsOccurencesAction{
 
 export interface AcceptPastAlarmOccurenceAction{
     type: AcceptPastAlarmOccurenceActionType;
+    alarmId: string;
+}
+
+export interface DeleteAlarmAction{
+    type: DeleteAlarmActionType;
     alarmId: string;
 }
 
@@ -97,4 +105,9 @@ export const createAcceptPastAlarmOccurenceAction = (alarmId: string) => ({
     alarmId
 });
 
-export type Actions = CreateAlarmAction | ToggleAlarmAction | FetchAlarmsAction | StoreAlarmsAction | FetchAlarmsOccurencesAction | StoreAlarmsOccurencesAction | AcceptPastAlarmOccurenceAction;
+export const createDeleteAlarmAction = (alarmId: string) => ({
+    type: DeleteAlarmActionType,
+    alarmId
+});
+
+export type Actions = CreateAlarmAction | ToggleAlarmAction | FetchAlarmsAction | StoreAlarmsAction | FetchAlarmsOccurencesAction | StoreAlarmsOccurencesAction | AcceptPastAlarmOccurenceAction | DeleteAlarmAction;

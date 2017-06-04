@@ -49,7 +49,7 @@ const createAlarm: () => Alarm = () => ({
     description: alarmsDescriptions[Math.floor(Math.random() * alarmsDescriptions.length)]
 });
 
-export const alarms = Array.from(Array(Math.floor(Math.random() * 15)).keys()).map(() => createAlarm());
+export const alarms = [];
 
 export const addAlarm = (alarm: Alarm) => alarms.push({...alarm, id: v4()});
 
