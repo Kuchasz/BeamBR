@@ -5,6 +5,7 @@ import {Alarm, AlarmType} from "../state";
 import {AlarmListItem} from "./alarm-list-item";
 import {HTMLInputEvent} from "../../core/html";
 import {createAlarmAction, createToggleAlarmAction} from "../actions";
+import {css} from 'glamor';
 
 interface Props {
     alarms: Alarm[];
@@ -58,20 +59,20 @@ class AlarmsListView extends React.Component<Props, State> {
         return <div>
             <div>
                 <span>
-                    <span style={{display: 'block'}}>Temperature</span>
+                    <span {...css({display: 'block'})}>Temperature</span>
                     <input ref={(element: HTMLInputElement) => this.valueInput = element} type="number" onChange={({target: {value}}: HTMLInputEvent) => this.setValue(Number(value)) }></input>
                 </span>
                 <span>
-                    <span onClick={()=>this.setState({selectedType: AlarmType.HigherThan})} style={{border: this.state.selectedType === AlarmType.HigherThan ? 'solid 1px #AAA' : null, margin: '10px'}}>&#8598;</span>
-                    <span onClick={()=>this.setState({selectedType: AlarmType.LowerThan})} style={{border: this.state.selectedType === AlarmType.LowerThan ? 'solid 1px #AAA' : null, margin: '10px'}}>&#8601;</span>
+                    <span onClick={()=>this.setState({selectedType: AlarmType.HigherThan})} {...css({border: this.state.selectedType === AlarmType.HigherThan ? 'solid 1px #AAA' : null, margin: '10px'})}>&#8598;</span>
+                    <span onClick={()=>this.setState({selectedType: AlarmType.LowerThan})} {...css({border: this.state.selectedType === AlarmType.LowerThan ? 'solid 1px #AAA' : null, margin: '10px'})}>&#8601;</span>
                 </span>
                 <span>
-                    <span style={{display: 'block'}}>Description</span>
+                    <span {...css({display: 'block'})}>Description</span>
                     <input ref={(element: HTMLInputElement) => this.descriptionInput = element} type="text" onChange={({target: {value}}: HTMLInputEvent) => this.setDescription(value) }></input>
                 </span>
                 <button onClick={this.addAlarm.bind(this)}>Add</button>
             </div>
-            <div style={{display: 'flex'}}>
+            <div {...css({display: 'flex'})}>
                 {this.props.alarms.map(a => <AlarmListItem onClick={(alarmId) => this.props.createToggleAlarmAction(alarmId)} {...a}/>)}
             </div>
         </div>
