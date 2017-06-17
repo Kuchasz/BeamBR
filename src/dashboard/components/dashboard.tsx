@@ -8,6 +8,7 @@ import {InnerRoute} from "../../routes/state";
 import {createNavigateToInnerRouteAction} from "../../routes/actions";
 import {Visualization} from "../../visualization/components/visualization";
 import {TempsReader} from "./state-reader";
+import {css} from 'glamor';
 
 interface Props{
     innerRoute: InnerRoute;
@@ -33,18 +34,20 @@ const selectedMenu = {
 class DashboardView extends React.Component<Props, State>{
     render(){
         return (
-            <div>
+            <div {...css({display: 'flex'})}>
                 <NetworkConnectionState/>
                 <TempsReader/>
-                <span style={{display: 'flex'}}>
-                    <div style={{...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.SensorsConfig ? selectedMenu : null)}} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.SensorsConfig)}>Sensors config</div>
-                    <div style={{...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.NetworksConfig ? selectedMenu : null)}} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.NetworksConfig)}>Networks config</div>
-                    <div style={{...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.Visualization ? selectedMenu : null)}} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.Visualization)}>Visualization</div>
+                <span {...css({background: 'yellow', alignSelf: 'stretch'})}>
+                    <div {...css({...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.SensorsConfig ? selectedMenu : null)})} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.SensorsConfig)}>Sensors config</div>
+                    <div {...css({...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.NetworksConfig ? selectedMenu : null)})} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.NetworksConfig)}>Networks config</div>
+                    <div {...css({...menuButtonStyle, ...(this.props.innerRoute === InnerRoute.Visualization ? selectedMenu : null)})} onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.Visualization)}>Visualization</div>
                 </span>
                 <br/>
-                {this.props.innerRoute === InnerRoute.SensorsConfig ? <SensorsList/> : null}
-                {this.props.innerRoute === InnerRoute.NetworksConfig ? <NetworksList/> : null}
-                {this.props.innerRoute === InnerRoute.Visualization ? <Visualization/> : null}
+                <div {...css({background: 'red', flex: 1})}>
+                    {this.props.innerRoute === InnerRoute.SensorsConfig ? <SensorsList/> : null}
+                    {this.props.innerRoute === InnerRoute.NetworksConfig ? <NetworksList/> : null}
+                    {this.props.innerRoute === InnerRoute.Visualization ? <Visualization/> : null}
+                </div>
             </div>
         )
     }
