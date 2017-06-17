@@ -46,3 +46,6 @@ export const getAlarms = (state) =>
 
 export const getVisualizationConfig = (state) =>
     visualization.getConfig(state.visualization);
+
+export const getVisualizationIntervals = (state) =>
+    visualization.getIntervals(state.visualization);

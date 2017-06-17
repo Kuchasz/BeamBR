@@ -5,6 +5,8 @@ const initialState = {
     token: undefined
 };
 
+console.warn('Login - reducer missing state typings');
+
 export const reducer = (state = initialState, action: Actions) => {
     switch (action.type) {
         case LogoutActionType:

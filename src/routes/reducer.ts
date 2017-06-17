@@ -6,7 +6,7 @@ const initialState = {
     currentInnerRoute: InnerRoute.Visualization
 };
 
-export const reducer = (state: State = initialState, action: Actions) => {
+export const reducer = (state: State = initialState, action: Actions): State => {
     switch (action.type) {
         case NavigateToRouteActionType:
             return {

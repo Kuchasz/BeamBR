@@ -12,7 +12,7 @@ const initialState = {
     networks: []
 };
 
-export const reducer = (state: State = initialState, action: Actions) =>{
+export const reducer = (state: State = initialState, action: Actions): State =>{
     switch (action.type){
         case StoreNetworksActionType:
             return {...state, networks: action.networks};
@@ -23,7 +23,7 @@ export const reducer = (state: State = initialState, action: Actions) =>{
     }
 };
 
-const connectionReducer = (state: NetworkConnection, action: Actions) => {
+const connectionReducer = (state: NetworkConnection, action: Actions): NetworkConnection => {
     switch (action.type){
         case StoreConnectionActionType:
             return {...state, network: action.network};

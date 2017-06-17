@@ -1,6 +1,9 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
-import {getTemperatures, getSensors, getAlarmsOccurences, getAlarms, getVisualizationConfig} from "../../main/reducer";
+import {
+    getTemperatures, getSensors, getAlarmsOccurences, getAlarms, getVisualizationConfig,
+    getVisualizationIntervals
+} from "../../main/reducer";
 import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
 import {TemperaturesChart} from "./temperatures-chart";
@@ -8,7 +11,7 @@ import {HTMLInputEvent} from "../../core/html";
 import {Alarm, AlarmOccurence} from "../../alarms/state";
 import {createAcceptPastAlarmOccurenceAction} from "../../alarms/actions";
 import {createChangeVisualizationConfigAction} from "../actions";
-import {VisualizationConfig} from "../state";
+import {VisualizationConfig, VisualizationInterval} from "../state";
 
 interface Props {
     temperatures: Temperature[];
@@ -16,8 +19,9 @@ interface Props {
     alarmsOccurences: AlarmOccurence[];
     alarms: Alarm[];
     config: VisualizationConfig;
+    intervals: VisualizationInterval[];
     createAcceptPastAlarmOccurenceAction: (alarmId: string) => void;
-    createChangeVisualizationConfigAction: (minValue: number, maxValue: number, valueSteps: number) => void;
+    createChangeVisualizationConfigAction: (config: VisualizationConfig) => void;
 }
 
 interface State{
@@ -35,15 +39,15 @@ class VisualizationView extends React.Component<Props, State> {
     }
 
     onChangeMinValue(value: number){
-        this.props.createChangeVisualizationConfigAction(value, this.props.config.maxValue, this.props.config.valueSteps);
+        this.props.createChangeVisualizationConfigAction({...this.props.config, minValue: value});
     }
 
     onChangeMaxValue(value: number){
-        this.props.createChangeVisualizationConfigAction(this.props.config.minValue, value, this.props.config.valueSteps);
+        this.props.createChangeVisualizationConfigAction({...this.props.config, maxValue: value});
     }
 
     onChangeValueSteps(steps: number){
-        this.props.createChangeVisualizationConfigAction(this.props.config.minValue, this.props.config.maxValue, steps);
+        this.props.createChangeVisualizationConfigAction({...this.props.config, valueSteps: steps});
     }
 
     componentDidMount(){
@@ -70,12 +74,15 @@ class VisualizationView extends React.Component<Props, State> {
                     </span>
                 </div>
                     <TemperaturesChart onApplyAlarmOccurence={(alarmOccurence) => this.props.createAcceptPastAlarmOccurenceAction(alarmOccurence.alarmId)}
+                                       onApplyVisualizationInterval={(selectedIntervalName) => this.props.createChangeVisualizationConfigAction({...this.props.config, selectedIntervalName})}
                                        valueSteps={this.props.config.valueSteps}
                                        maxValue={this.props.config.maxValue}
                                        minValue={this.props.config.minValue}
+                                       selectedIntervalName={this.props.config.selectedIntervalName}
                                        alarms={this.props.alarms}
                                        alarmsOccurences={this.props.alarmsOccurences}
                                        sensors={this.props.sensors}
+                                       intervals={this.props.intervals}
                                        temperatures={this.props.temperatures}/>
             </div>)
     }
@@ -86,7 +93,8 @@ export const Visualization = connect((state, ownProps) => ({
     sensors: getSensors(state),
     alarmsOccurences: getAlarmsOccurences(state),
     alarms: getAlarms(state),
-    config: getVisualizationConfig(state)
+    config: getVisualizationConfig(state),
+    intervals: getVisualizationIntervals(state)
 }), {
     createAcceptPastAlarmOccurenceAction,
     createChangeVisualizationConfigAction

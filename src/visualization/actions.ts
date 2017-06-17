@@ -1,4 +1,5 @@
 import {VisualizationConfig} from "./state";
+
 export const changeVisualizationConfigActionType = 'changeVisualizationConfig';
 export type changeVisualizationConfigActionType = 'changeVisualizationConfig';
 
@@ -7,13 +8,9 @@ export interface ChangeVisualizationConfigAction{
     config: VisualizationConfig;
 }
 
-export const createChangeVisualizationConfigAction = (minValue: number, maxValue: number, valueSteps: number): ChangeVisualizationConfigAction =>({
+export const createChangeVisualizationConfigAction = (config: VisualizationConfig): ChangeVisualizationConfigAction =>({
     type: changeVisualizationConfigActionType,
-    config: {
-        minValue,
-        maxValue,
-        valueSteps
-    }
+    config
 });
 
 export type Actions = ChangeVisualizationConfigAction;

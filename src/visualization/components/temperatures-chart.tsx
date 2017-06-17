@@ -9,17 +9,18 @@ interface Props {
     sensors: Sensor[];
     alarmsOccurences: AlarmOccurence[];
     alarms: Alarm[];
+    intervals: Interval[];
+    selectedIntervalName: string;
     maxValue: number;
     minValue: number;
     valueSteps: number;
     onApplyAlarmOccurence: (alarmsOccurences: AlarmOccurence) => void;
+    onApplyVisualizationInterval: (visualizationIntervalName: string) => void;
 }
 
 interface State {
     grayedSensors: string[];
     hiddenSensors: string[];
-    intervals: Interval[];
-    selectedInterval: string;
     hoveredSensor: string;
 }
 
@@ -30,48 +31,6 @@ export class TemperaturesChart extends React.Component<Props, State> {
         this.state = {
             grayedSensors: [],
             hiddenSensors: [],
-            intervals: [
-                {
-                    name: '1h',
-                    time: 3600
-                },
-                {
-                    name: '30m',
-                    time: 1800
-                },
-                {
-                    name: '10m',
-                    time: 600
-                },
-                {
-                    name: '5m',
-                    time: 300
-                },
-                {
-                    name: '2m',
-                    time: 120
-                },
-                {
-                    name: '1m',
-                    time: 60
-                },
-                {
-                    name: '30s',
-                    time: 30
-                },
-                {
-                    name: '15s',
-                    time: 15
-                },
-                {
-                    name: '10s',
-                    time: 10
-                },
-                {
-                    name: '5s',
-                    time: 5
-                }],
-            selectedInterval: '30s',
             hoveredSensor: undefined
         };
     }
@@ -123,7 +82,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
 
         const currentTime = new Date();
         const maxTime = currentTime.getTime();
-        const minTime = currentTime.getTime() - this.state.intervals.filter(i => i.name === this.state.selectedInterval)[0].time * minimumTimeUnit;
+        const minTime = currentTime.getTime() - this.props.intervals.filter(i => i.name === this.props.selectedIntervalName)[0].time * minimumTimeUnit;
 
         const ctx = this.canvas.getContext('2d');
         ctx.fillStyle = "black";
@@ -196,9 +155,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
     }
 
     setSelectedInterval(name: string) {
-        this.setState({
-            selectedInterval: name
-        });
+        this.props.onApplyVisualizationInterval(name);
     }
 
     setHoveredSensor(sensorId: string) {
@@ -228,7 +185,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
     render() {
         return <div style={{display: 'inline-block', position: 'relative'}}>
             <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
-                {this.state.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)} style={{ cursor: 'pointer', color: this.state.selectedInterval === interval.name ? 'white' : 'gray' }}>
+                {this.props.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)} style={{ cursor: 'pointer', color: this.props.selectedIntervalName === interval.name ? 'white' : 'gray' }}>
                     {interval.name}
                 </div>)}
             </div>

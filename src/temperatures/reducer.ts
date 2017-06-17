@@ -3,7 +3,7 @@ import {Actions, StoreTemperaturesActionType} from "./actions";
 
 const initialState = [];
 
-export const reducer = (state: State = initialState, action: Actions) => {
+export const reducer = (state: State = initialState, action: Actions): State => {
     switch (action.type) {
         case StoreTemperaturesActionType:
             return [...state, ...action.temperatures];

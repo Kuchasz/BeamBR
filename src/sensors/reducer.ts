@@ -5,7 +5,7 @@ const initialState = {
     sensors: []
 };
 
-const sensorReducer = (state: Sensor, action: Actions) => {
+const sensorReducer = (state: Sensor, action: Actions): Sensor => {
     switch (action.type) {
         case SetNameForSensorActionType:
             return {...state, name: action.name};
@@ -16,7 +16,7 @@ const sensorReducer = (state: Sensor, action: Actions) => {
     }
 };
 
-export const reducer = (state: State = initialState, action: Actions) => {
+export const reducer = (state: State = initialState, action: Actions): State => {
     switch (action.type) {
         case SetNameForSensorActionType: {
             const sensorToRename = getSensorById(state, action.id);
