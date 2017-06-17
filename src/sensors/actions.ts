@@ -1,4 +1,4 @@
-import {getSensors} from "./apis";
+import {getSensors, setColorForSensor, setNameForSensor} from "./apis";
 import {Sensor} from "./state";
 import {Color} from "../core/colors";
 
@@ -14,32 +14,36 @@ export const StoreSensorsActionType = 'storeSensorsActionType';
 export type SetColorForSensorActionType = 'setColorForSensorActionType';
 export const SetColorForSensorActionType = 'setColorForSensorActionType';
 
-interface SetNameForSensorAction{
+interface SetNameForSensorAction {
     type: SetNameForSensorActionType;
     id: string;
     name: string;
 }
 
-interface FetchSensorsAction{
+interface FetchSensorsAction {
     type: FetchSensorsActionType;
 }
 
-interface StoreSensorsAction{
+interface StoreSensorsAction {
     type: StoreSensorsActionType;
     sensors: Sensor[];
 }
 
-interface SetColorForSensorAction{
+interface SetColorForSensorAction {
     type: SetColorForSensorActionType;
     id: string;
     color: Color;
 }
 
-export const createSetNameForSensorAction = (id: string, name: string) => ({
-    type: SetNameForSensorActionType,
-    id,
-    name
-});
+export const createSetNameForSensorAction = (id: string, name: string) => (dispatch) => {
+    setNameForSensor(id, name).then(() => {
+        dispatch({
+            type: SetNameForSensorActionType,
+            id,
+            name
+        });
+    });
+};
 
 export const createFetchSensorsAction = () => (dispatch) => {
     getSensors().then(sensors => dispatch(createStoreSensorsAction(sensors)));
@@ -50,10 +54,14 @@ export const createStoreSensorsAction = (sensors: Sensor[]) => ({
     sensors
 });
 
-export const createSetColorForSensorAction = (id: string, color: Color) => ({
-    type: SetColorForSensorActionType,
-    id,
-    color
-});
+export const createSetColorForSensorAction = (id: string, color: Color) => (dispatch) => {
+    setColorForSensor(id, color).then(() => {
+        dispatch({
+            type: SetColorForSensorActionType,
+            id,
+            color
+        });
+    });
+};
 
 export type Actions = SetNameForSensorAction | FetchSensorsAction | StoreSensorsAction | SetColorForSensorAction;

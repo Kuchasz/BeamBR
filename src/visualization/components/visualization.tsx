@@ -10,7 +10,10 @@ import {TemperaturesChart} from "./temperatures-chart";
 import {HTMLInputEvent} from "../../core/html";
 import {Alarm, AlarmOccurence} from "../../alarms/state";
 import {createAcceptPastAlarmOccurenceAction} from "../../alarms/actions";
-import {createChangeVisualizationConfigAction} from "../actions";
+import {
+    createChangeVisualizationConfigAction, createGrayVisualizationSensorAction,
+    createHideVisualizationSensorAction
+} from "../actions";
 import {VisualizationConfig, VisualizationInterval} from "../state";
 
 interface Props {
@@ -22,6 +25,8 @@ interface Props {
     intervals: VisualizationInterval[];
     createAcceptPastAlarmOccurenceAction: (alarmId: string) => void;
     createChangeVisualizationConfigAction: (config: VisualizationConfig) => void;
+    createHideVisualizationSensorAction: (sensorId: string) => void;
+    createGrayVisualizationSensorAction: (sensorId: string) => void;
 }
 
 interface State{
@@ -75,11 +80,15 @@ class VisualizationView extends React.Component<Props, State> {
                 </div>
                     <TemperaturesChart onApplyAlarmOccurence={(alarmOccurence) => this.props.createAcceptPastAlarmOccurenceAction(alarmOccurence.alarmId)}
                                        onApplyVisualizationInterval={(selectedIntervalName) => this.props.createChangeVisualizationConfigAction({...this.props.config, selectedIntervalName})}
+                                       onHideSensor={(sensorId) => this.props.createHideVisualizationSensorAction(sensorId)}
+                                       onGraySensor={(sensorId) => this.props.createGrayVisualizationSensorAction(sensorId)}
                                        valueSteps={this.props.config.valueSteps}
                                        maxValue={this.props.config.maxValue}
                                        minValue={this.props.config.minValue}
                                        selectedIntervalName={this.props.config.selectedIntervalName}
                                        alarms={this.props.alarms}
+                                       hiddenSensors={this.props.config.hiddenSensors}
+                                       grayedSensors={this.props.config.grayedSensors}
                                        alarmsOccurences={this.props.alarmsOccurences}
                                        sensors={this.props.sensors}
                                        intervals={this.props.intervals}
@@ -97,5 +106,7 @@ export const Visualization = connect((state, ownProps) => ({
     intervals: getVisualizationIntervals(state)
 }), {
     createAcceptPastAlarmOccurenceAction,
-    createChangeVisualizationConfigAction
+    createChangeVisualizationConfigAction,
+    createHideVisualizationSensorAction,
+    createGrayVisualizationSensorAction
 })(VisualizationView);

@@ -3,6 +3,8 @@ export interface VisualizationConfig{
     maxValue: number;
     valueSteps: number;
     selectedIntervalName: string;
+    hiddenSensors: string[];
+    grayedSensors: string[];
 }
 
 export interface VisualizationInterval{

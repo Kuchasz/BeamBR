@@ -9,6 +9,8 @@ interface Props {
     sensors: Sensor[];
     alarmsOccurences: AlarmOccurence[];
     alarms: Alarm[];
+    grayedSensors: string[];
+    hiddenSensors: string[];
     intervals: Interval[];
     selectedIntervalName: string;
     maxValue: number;
@@ -16,11 +18,11 @@ interface Props {
     valueSteps: number;
     onApplyAlarmOccurence: (alarmsOccurences: AlarmOccurence) => void;
     onApplyVisualizationInterval: (visualizationIntervalName: string) => void;
+    onGraySensor: (sensorId: string) => void;
+    onHideSensor: (sensorId: string) => void;
 }
 
 interface State {
-    grayedSensors: string[];
-    hiddenSensors: string[];
     hoveredSensor: string;
 }
 
@@ -29,8 +31,6 @@ export class TemperaturesChart extends React.Component<Props, State> {
     constructor() {
         super();
         this.state = {
-            grayedSensors: [],
-            hiddenSensors: [],
             hoveredSensor: undefined
         };
     }
@@ -43,37 +43,17 @@ export class TemperaturesChart extends React.Component<Props, State> {
     }
 
     graySensor(sensorId: string) {
-        const {grayedSensors} = this.state;
-        const sensorIndex = grayedSensors.indexOf(sensorId);
-        if (sensorIndex !== -1) {
-            this.setState({
-                grayedSensors: [...grayedSensors.slice(0, sensorIndex), ...grayedSensors.slice(sensorIndex + 1)]
-            })
-        } else {
-            this.setState({
-                grayedSensors: [...grayedSensors, sensorId]
-            })
-        }
+            this.props.onGraySensor(sensorId);
     }
 
     hideSensor(sensorId: string) {
-        const {hiddenSensors} = this.state;
-        const sensorIndex = hiddenSensors.indexOf(sensorId);
-        if (sensorIndex !== -1) {
-            this.setState({
-                hiddenSensors: [...hiddenSensors.slice(0, sensorIndex), ...hiddenSensors.slice(sensorIndex + 1)]
-            })
-        } else {
-            this.setState({
-                hiddenSensors: [...hiddenSensors, sensorId]
-            })
-        }
+        this.props.onHideSensor(sensorId);
     }
 
     renderChart() {
 
         const {valueSteps, temperatures, minValue, maxValue, sensors} = this.props;
-        const sensorsToRender = sensors.filter(s => this.state.hiddenSensors.indexOf(s.id) === -1);
+        const sensorsToRender = sensors.filter(s => this.props.hiddenSensors.indexOf(s.id) === -1);
 
         const minimumTimeUnit = 1000;
 
@@ -136,7 +116,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
     }
 
     getColorForSensor(sensor: Sensor) {
-        return (this.state.grayedSensors.indexOf(sensor.id) === -1)
+        return (this.props.grayedSensors.indexOf(sensor.id) === -1)
             ? `${sensor.color.hex}`
             : `rgba(${sensor.color.r}, ${sensor.color.g}, ${sensor.color.b}, 0.25)`;
     }
@@ -147,7 +127,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
     }
 
     isSensorVisible(sensor: Sensor) {
-        return (this.state.hiddenSensors.indexOf(sensor.id) === -1)
+        return (this.props.hiddenSensors.indexOf(sensor.id) === -1)
     }
 
     isSensorHovered(sensor: Sensor) {

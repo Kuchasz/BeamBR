@@ -1,12 +1,17 @@
 import {State, VisualizationConfig, VisualizationInterval} from "./state";
-import {Actions, ChangeVisualizationConfigActionType} from "./actions";
+import {
+    Actions, ChangeVisualizationConfigActionType, GrayVisualizationSensorActionType,
+    HideVisualizationSensorActionType
+} from "./actions";
 
 const initialState: State = {
     config: {
         minValue: 20,
         maxValue: 80,
         valueSteps: 25,
-        selectedIntervalName: '30s'
+        selectedIntervalName: '30s',
+        hiddenSensors: [],
+        grayedSensors: []
     },
     intervals: [{
         name: '1h',
@@ -43,6 +48,20 @@ const initialState: State = {
 
 export const reducer = (state: State = initialState, action: Actions): State => {
     switch (action.type) {
+        case HideVisualizationSensorActionType: {
+            const sensorIndex = state.config.hiddenSensors.indexOf(action.sensorId);
+            const hiddenSensors = (sensorIndex === -1)
+                ? [...state.config.hiddenSensors, action.sensorId]
+                : [...state.config.hiddenSensors.slice(0, sensorIndex), ...state.config.hiddenSensors.slice(sensorIndex + 1)]
+            return {...state, config: {...state.config, hiddenSensors}}
+        }
+        case GrayVisualizationSensorActionType: {
+            const sensorIndex = state.config.grayedSensors.indexOf(action.sensorId);
+            const grayedSensors = (sensorIndex === -1)
+                ? [...state.config.grayedSensors, action.sensorId]
+                : [...state.config.grayedSensors.slice(0, sensorIndex), ...state.config.grayedSensors.slice(sensorIndex + 1)]
+            return {...state, config: {...state.config, grayedSensors}}
+        }
         case ChangeVisualizationConfigActionType:
             return {...state, config: action.config};
         default:
