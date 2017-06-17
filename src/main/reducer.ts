@@ -5,6 +5,7 @@ import * as networking from '../networking/reducer';
 import * as sensors from '../sensors/reducer';
 import * as temperatures from '../temperatures/reducer';
 import * as alarms from '../alarms/reducer';
+import * as visualization from '../visualization/reducer';
 
 export const reducer = combineReducers({
     login: login.reducer,
@@ -12,7 +13,8 @@ export const reducer = combineReducers({
     networking: networking.reducer,
     sensors: sensors.reducer,
     temperatures: temperatures.reducer,
-    alarms: alarms.reducer
+    alarms: alarms.reducer,
+    visualization: visualization.reducer
 });
 
 export const getNetwork = (state, id: string) =>
@@ -41,3 +43,6 @@ export const getAlarmsOccurences = (state) =>
 
 export const getAlarms = (state) =>
     alarms.getAlarms(state.alarms);
+
+export const getVisualizationConfig = (state) =>
+    visualization.getConfig(state.visualization);
