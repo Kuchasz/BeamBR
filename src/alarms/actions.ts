@@ -27,10 +27,7 @@ export const DeleteAlarmActionType = 'deleteAlarmActionType';
 
 export interface CreateAlarmAction {
     type: CreateAlarmActionType;
-    sensorId: string;
-    temp: number;
-    alarmType: AlarmType;
-    description: string;
+    alarm: Alarm;
 }
 
 export interface ToggleAlarmAction {
@@ -66,15 +63,16 @@ export interface DeleteAlarmAction{
     alarmId: string;
 }
 
-export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType, description: string) => (distpach) => {
-    saveAlarm({
-        id: undefined,
-        isEnabled: true,
+export const createAlarmAction = (sensorId: string, temp: number, type: AlarmType, description: string) => (dispatch, getState) => {
+    saveAlarm(
         sensorId,
         temp,
         type,
         description
-    }).then(() => distpach(createFetchAlarmsAction()));
+    ).then(alarm => dispatch(({
+        type: CreateAlarmActionType,
+        alarm
+    })));
 };
 
 export const createToggleAlarmAction = (alarmId: string) => ({
@@ -107,7 +105,10 @@ export const createAcceptPastAlarmOccurenceAction = (alarmId: string) => ({
 
 export const createDeleteAlarmAction = (alarmId: string) => (dispatch) => {
     deleteAlarm(alarmId)
-        .then(() => dispatch(createFetchAlarmsAction()));
-}
+        .then(() => dispatch({
+            type: DeleteAlarmActionType,
+            alarmId
+        }));
+};
 
 export type Actions = CreateAlarmAction | ToggleAlarmAction | FetchAlarmsAction | StoreAlarmsAction | FetchAlarmsOccurencesAction | StoreAlarmsOccurencesAction | AcceptPastAlarmOccurenceAction | DeleteAlarmAction;

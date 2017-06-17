@@ -1,9 +1,10 @@
-import {Alarm, AlarmOccurence} from "./state";
+import {Alarm, AlarmOccurence, AlarmType} from "./state";
 import {alarms, createAlarmOccurences, addAlarm, removeAlarm} from "../data/mocks";
+import {v4} from 'uuid';
 
 export const getAlarms = () => new Promise<Alarm[]>(res => {
     setTimeout(() => {
-        res(alarms);
+        res([...alarms]);
     }, Math.floor(Math.random() * 40 + 10));
 });
 
@@ -13,10 +14,18 @@ export const getAlarmsOccurences = () => new Promise<AlarmOccurence[]>(res => {
     }, Math.floor(Math.random() * 90 + 10))
 });
 
-export const saveAlarm = (alarm: Alarm) => new Promise<boolean>(res => {
+export const saveAlarm = (sensorId: string, temp: number, type: AlarmType, description: string) => new Promise<Alarm>(res => {
     setTimeout(() => {
+        const alarm = {
+            id: v4(),
+            isEnabled: true,
+            sensorId,
+            temp,
+            type,
+            description
+        };
         addAlarm(alarm);
-        res(true);
+        res(alarm);
     }, Math.floor(Math.random() * 90 + 10));
 });
 

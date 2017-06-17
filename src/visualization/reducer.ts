@@ -1,5 +1,5 @@
 import {State, VisualizationConfig, VisualizationInterval} from "./state";
-import {Actions, changeVisualizationConfigActionType} from "./actions";
+import {Actions, ChangeVisualizationConfigActionType} from "./actions";
 
 const initialState: State = {
     config: {
@@ -43,7 +43,7 @@ const initialState: State = {
 
 export const reducer = (state: State = initialState, action: Actions): State => {
     switch (action.type) {
-        case changeVisualizationConfigActionType:
+        case ChangeVisualizationConfigActionType:
             return {...state, config: action.config};
         default:
             return state;

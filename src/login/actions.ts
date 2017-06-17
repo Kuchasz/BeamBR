@@ -21,7 +21,7 @@ interface LogoutAction {
     type: LogoutActionType
 }
 
-interface StoreUserProfileAction{
+interface StoreUserProfileAction {
     type: StoreUserProfileActionType,
     login: string,
     token: string
@@ -33,7 +33,7 @@ export const createLoginAction = (login, password) => (dispatch) => {
             dispatch(createStoreUserProfileAction(login, token));
             dispatch(createNavigateToRouteAction(Route.Dashboard))
         })
-        .catch(()=>console.log(`Argh! Failure...`));
+        .catch(() => console.log(`Argh! Failure...`));
 };
 
 export const createLogoutAction = () => ({

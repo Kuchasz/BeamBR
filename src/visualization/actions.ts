@@ -1,15 +1,15 @@
 import {VisualizationConfig} from "./state";
 
-export const changeVisualizationConfigActionType = 'changeVisualizationConfig';
-export type changeVisualizationConfigActionType = 'changeVisualizationConfig';
+export const ChangeVisualizationConfigActionType = 'changeVisualizationConfig';
+export type ChangeVisualizationConfigActionType = 'changeVisualizationConfig';
 
 export interface ChangeVisualizationConfigAction{
-    type: changeVisualizationConfigActionType;
+    type: ChangeVisualizationConfigActionType;
     config: VisualizationConfig;
 }
 
 export const createChangeVisualizationConfigAction = (config: VisualizationConfig): ChangeVisualizationConfigAction =>({
-    type: changeVisualizationConfigActionType,
+    type: ChangeVisualizationConfigActionType,
     config
 });
 

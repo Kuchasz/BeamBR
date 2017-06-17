@@ -1,16 +1,15 @@
 import {Actions, LogoutActionType, StoreUserProfileActionType} from "./actions";
+import {State} from "./state";
 
-const initialState = {
+const initialState: State = {
     login: undefined,
     token: undefined
 };
 
-console.warn('Login - reducer missing state typings');
-
-export const reducer = (state = initialState, action: Actions) => {
+export const reducer = (state = initialState, action: Actions): State => {
     switch (action.type) {
         case LogoutActionType:
-            return state;
+            return {...initialState};
         case StoreUserProfileActionType:
             return {
                 ...state,

@@ -40,23 +40,14 @@ export const createTemperatureValue = (sensorId: string) => {
     return newTempForSensor;
 };
 
-const createAlarm: () => Alarm = () => ({
-    id: v4(),
-    sensorId: sensors[Math.floor(Math.random() * sensors.length)].id,
-    isEnabled: Math.random() > 0.25,
-    temp: Math.random() * 50,
-    type: Math.random() > 0.5 ? AlarmType.HigherThan : AlarmType.LowerThan,
-    description: alarmsDescriptions[Math.floor(Math.random() * alarmsDescriptions.length)]
-});
-
 export const alarms = [];
 
-export const addAlarm = (alarm: Alarm) => alarms.push({...alarm, id: v4()});
+export const addAlarm = (alarm: Alarm) => alarms.push({...alarm});
 
 export const removeAlarm = (alarmId: string) => {
     const alarmIndex = alarms.map(a => a.id).indexOf(alarmId);
     alarms.splice(alarmIndex, 1);
-}
+};
 
 const getLastTempForSensor = (sensorId: string): number => lastTempsForSensors[sensorId];
 
