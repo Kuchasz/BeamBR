@@ -5,7 +5,7 @@ import {Network} from "../state";
 import {getIsSecured} from "../reducer";
 import {createFetchNetworksAction, createConnectToNetworkAction} from "../actions";
 import {HTMLInputEvent} from "../../core/html";
-import {getNetworks} from "../../main/reducer";
+import {getNetworks} from "../../root/reducer";
 
 interface Props {
     networks: Network[];

@@ -3,7 +3,7 @@ import {connect} from 'preact-redux';
 import {
     getTemperatures, getSensors, getAlarmsOccurences, getAlarms, getVisualizationConfig,
     getVisualizationIntervals
-} from "../../main/reducer";
+} from "../../root/reducer";
 import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
 import {TemperaturesChart} from "./temperatures-chart";

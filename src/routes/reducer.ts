@@ -2,7 +2,7 @@ import {Route, State, InnerRoute} from "./state";
 import {Actions, NavigateToRouteActionType, NavigateToInnerRouteActionType} from "./actions";
 
 const initialState = {
-    currentRoute: Route.Dashboard,
+    currentRoute: Route.AppPage,
     currentInnerRoute: InnerRoute.Visualization
 };
 

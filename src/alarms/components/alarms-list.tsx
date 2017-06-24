@@ -1,6 +1,6 @@
 import * as React from 'preact';
 import {connect} from 'preact-redux';
-import {getAlarmsForSensor} from "../../main/reducer";
+import {getAlarmsForSensor} from "../../root/reducer";
 import {Alarm, AlarmType} from "../state";
 import {AlarmListItem} from "./alarm-list-item";
 import {HTMLInputEvent} from "../../core/html";

@@ -1,7 +1,7 @@
 import {render} from "preact";
-import {Main} from "./main/components/main";
+import {Main} from "./root/components/root";
 import * as React from 'preact';
-import * as main from './main/reducer';
+import * as main from './root/reducer';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'preact-redux';
 import thunk from 'redux-thunk';

@@ -31,7 +31,7 @@ export const createLoginAction = (login, password) => (dispatch) => {
     getAuthToken(login, password)
         .then(token => {
             dispatch(createStoreUserProfileAction(login, token));
-            dispatch(createNavigateToRouteAction(Route.Dashboard))
+            dispatch(createNavigateToRouteAction(Route.AppPage))
         })
         .catch(() => console.log(`Argh! Failure...`));
 };

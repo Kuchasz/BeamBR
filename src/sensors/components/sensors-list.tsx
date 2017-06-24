@@ -3,7 +3,7 @@ import {connect} from 'preact-redux';
 import {SensorListItem} from './sensor-list-item';
 import {Sensor} from "../state";
 import {createFetchSensorsAction, createSetNameForSensorAction, createSetColorForSensorAction} from "../actions";
-import {getSensors} from "../../main/reducer";
+import {getSensors} from "../../root/reducer";
 import {HTMLInputEvent} from "../../core/html";
 import {ColorPalette} from "../../core/components/color-palette";
 import {Color, colors} from "../../core/colors";

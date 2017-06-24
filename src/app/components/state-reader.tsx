@@ -11,7 +11,7 @@ interface Props {
 interface State {
 }
 
-class StateReader extends React.Component<Props, State> {
+class StateReaderComponent extends React.Component<Props, State> {
 
     loopInterval: any;
 
@@ -31,7 +31,7 @@ class StateReader extends React.Component<Props, State> {
     }
 }
 
-export const TempsReader = connect(undefined, {
+export const StateReader = connect(undefined, {
     createFetchTemperaturesAction,
     createFetchAlarmsOccurencesAction
-})(StateReader);
+})(StateReaderComponent);

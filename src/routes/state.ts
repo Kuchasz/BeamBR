@@ -1,6 +1,6 @@
 export enum Route{
-    LoginForm,
-    Dashboard
+    LoginPage,
+    AppPage
 }
 
 export enum InnerRoute{

@@ -12,7 +12,7 @@ interface State {
     password: string;
 }
 
-class LoginFormView extends React.Component<Props, State> {
+class LoginPageView extends React.Component<Props, State> {
 
     state = {
         login: undefined,
@@ -30,6 +30,6 @@ class LoginFormView extends React.Component<Props, State> {
     }
 }
 
-export const LoginForm = connect(undefined, {
+export const LoginPage = connect(undefined, {
     createLoginAction
-})(LoginFormView);
+})(LoginPageView);
