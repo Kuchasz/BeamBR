@@ -72,10 +72,13 @@ export class TemperaturesChart extends React.Component<Props, State> {
 
         const temperaturesToDisplay = temperatures.filter(t => t.time >= (minTime - minimumTimeUnit) && t.time <= maxTime);
 
+        ctx.strokeStyle = "#232323";
+
         for (let i = 0; i <= valueSteps; i++) {
             ctx.beginPath();
-            ctx.moveTo(40, canvasHeight / valueSteps * i);
-            ctx.lineTo(canvasWidth, canvasHeight / valueSteps * i);
+            const targetY = Math.floor(canvasHeight / valueSteps * i);
+            ctx.moveTo(50, targetY);
+            ctx.lineTo(canvasWidth, targetY);
             ctx.stroke();
         }
 
@@ -104,9 +107,9 @@ export class TemperaturesChart extends React.Component<Props, State> {
             const text = ((valueSteps - i) * (maxValue - minValue) / valueSteps + minValue).toFixed(2).toString();
 
             const yOffset = i === 0
-                ? 8
+                ? 12
                 : i === valueSteps
-                    ? canvasHeight / valueSteps * i - 8
+                    ? canvasHeight / valueSteps * i - 4
                     : canvasHeight / valueSteps * i + 4;
 
             ctx.fillText(text, 8, yOffset);
