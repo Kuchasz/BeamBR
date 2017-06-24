@@ -3,6 +3,7 @@ import {Temperature} from "../../temperatures/state";
 import {Sensor} from "../../sensors/state";
 import {Interval} from "../../core/interval";
 import {Alarm, AlarmOccurence, AlarmOccurenceType, AlarmType} from "../../alarms/state";
+import {css} from 'glamor';
 
 interface Props {
     temperatures: Temperature[];
@@ -65,7 +66,7 @@ export class TemperaturesChart extends React.Component<Props, State> {
         const minTime = currentTime.getTime() - this.props.intervals.filter(i => i.name === this.props.selectedIntervalName)[0].time * minimumTimeUnit;
 
         const ctx = this.canvas.getContext('2d');
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "#333";
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.lineWidth = 1;
 
@@ -95,11 +96,11 @@ export class TemperaturesChart extends React.Component<Props, State> {
             ctx.stroke();
         });
 
-        ctx.strokeStyle = '#333';
+        ctx.strokeStyle = '#111';
 
         for (let i = 0; i <= valueSteps; i++) {
             ctx.font = "12px Verdana";
-            ctx.fillStyle = "#333";
+            ctx.fillStyle = "#111";
             const text = ((valueSteps - i) * (maxValue - minValue) / valueSteps + minValue).toFixed(2).toString();
 
             const yOffset = i === 0
@@ -164,12 +165,12 @@ export class TemperaturesChart extends React.Component<Props, State> {
 
     render() {
         return <div style={{display: 'inline-block', position: 'relative'}}>
-            <div style={{display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px'}}>
-                {this.props.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)} style={{ cursor: 'pointer', color: this.props.selectedIntervalName === interval.name ? 'white' : 'gray' }}>
+            <div style={{display: 'flex', justifyContent: 'space-around', background: '#111', padding: '10px'}}>
+                {this.props.intervals.map(interval => <div onClick={() => this.setSelectedInterval(interval.name)} {...css({':hover': {background: 'rgba(255, 255, 255, 0.05)'}, padding: '8px', flex: 1, textAlign: 'center', transition: 'all 0.25s', cursor: 'pointer', fontWeight: this.props.selectedIntervalName === interval.name ? 500 : 100, color: this.props.selectedIntervalName === interval.name ? 'white' : 'gray' })}>
                     {interval.name}
                 </div>)}
             </div>
-            <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-around', background: 'black', padding: '10px' }}>
+            <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-around', background: '#111', padding: '10px' }}>
                 {this.props.sensors.map(sensor => <div style={{cursor: 'pointer'}}>
                     <span onClick={() => this.hideSensor(sensor.id)} style={{display: 'inline-block', borderRadius: 10, width: 10, height: 10, marginRight: 5, borderWidth: '1px', borderStyle: 'solid', borderColor: this.getColorForSensor(sensor), background: this.isSensorVisible(sensor) ? this.getColorForSensor(sensor) : null }}></span>
                     <span onClick={() => this.graySensor(sensor.id)} style={{color: this.getColorForSensor(sensor)}}>{sensor.name} - {this.getLastTemperatureForSensor(sensor.id)}</span>
