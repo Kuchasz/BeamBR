@@ -2,5 +2,5 @@
     "board": "esp8266:esp8266:nodemcuv2",
     "configuration": "CpuFrequency=80,UploadSpeed=115200,FlashSize=4M3M",
     "port": "COM3",
-    "sketch": "server\\sockets.ino"
+    "sketch": "server\\sockets\\sockets.ino"
 }

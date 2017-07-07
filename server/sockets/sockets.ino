@@ -5,7 +5,7 @@
 #include "ESP8266WebServer.h"
 #include "FS.h"
 #include <vector>
-#include "Sensor/Sensor.h"
+#include "Sensor.h"
 
 const char* ssid = "Profit";
 const char* password = "44441111";
@@ -15,67 +15,6 @@ OneWire* oneWire = new OneWire(D5);
 DallasTemperature* sensors = new DallasTemperature(oneWire);
 
 static Ticker* tempsReader = new Ticker();
-
-String formatAddress(DeviceAddress deviceAddress)
-{
-	String finalAddress = "";
-
-	for (uint8_t i = 0; i < 8; i++)
-	{
-		finalAddress += (deviceAddress[i] < 16) ? "0" : String(deviceAddress[i], HEX);
-	}
-
-  	return finalAddress;
-}
-
-String formatColor(SensorColor color)
-{
-	String finalColor = "";
-
-	for (uint8_t i = 0; i < 3; i++)
-	{
-		finalColor += (color[i] < 10) ? "0" + String(color[i]) : String(color[i], HEX);
-	}
-
-  	return finalColor;
-}
-
-class Sensor{
-	public:
-	Sensor(DeviceAddress targetAddress);
-	void UpdateTemperature();
-	float GetTemperature();
-	String GetId();
-	String GetColor();
-
-	private:
-	DeviceAddress address = {0, 0, 0, 0, 0, 0, 0, 0};
-	float temperature;
-	SensorColor color = { 255, 0, 0 };
-};
-
-Sensor::Sensor(DeviceAddress targetAddress){
-	temperature = 0.0;
-	for(auto i = 0; i < 8; i ++){
-		this->address[i] = targetAddress[i];
-	}
-}
-
-float Sensor::GetTemperature(){
-	return this->temperature;
-}
-
-void Sensor::UpdateTemperature(){
-	this->temperature = sensors->getTempC(address);
-}
-
-String Sensor::GetId() {
-	return formatAddress(this->address);
-}
-
-String Sensor::GetColor() {
-	return formatColor(this->color);
-}
 
 std::vector<Sensor*> _sensors;
 
@@ -94,12 +33,12 @@ void setup() {
 	SPIFFS.begin();
 	sensors->begin();
 
-	numberOfSensors = sensors->getDeviceCount();
+ 	numberOfSensors = sensors->getDeviceCount();
 
 	for(auto i = 0; i < numberOfSensors; i++){
 		DeviceAddress targetAddress;
 		sensors->getAddress(targetAddress, i);
-		_sensors.push_back(new Sensor(targetAddress));
+		_sensors.push_back(new Sensor(targetAddress, sensors));
 	}
 
 	WiFi.begin(ssid, password);
@@ -144,6 +83,13 @@ void setup() {
 
 		sensorsString += "]";
 		server->send(200, "text/json", sensorsString);
+
+	});
+
+	server->on("/sensor/:id/color", HTTP_POST, [](){
+
+		auto requestString = server->args();
+		Serial.println(requestString);
 
 	});
 
