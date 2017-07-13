@@ -11,6 +11,8 @@ class Sensor{
 	float temperature;
 	SensorColor color = { 255, 0, 0 };
 	DallasTemperature* sensors;
+	uint8_t resolution;
+	String name;
 
 	public:
 	Sensor(DeviceAddress targetAddress, DallasTemperature* sensors);
@@ -18,6 +20,9 @@ class Sensor{
 	float GetTemperature();
 	String GetId();
 	String GetColor();
+	String GetName();
+	String GetResolution();
+	void SetColor(String color);
 };
 
 #endif

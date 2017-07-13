@@ -6,6 +6,7 @@
 #include "FS.h"
 #include <vector>
 #include "Sensor.h"
+#include <ArduinoJson.h>
 
 const char* ssid = "Profit";
 const char* password = "44441111";
@@ -15,12 +16,15 @@ OneWire* oneWire = new OneWire(D5);
 DallasTemperature* sensors = new DallasTemperature(oneWire);
 
 static Ticker* tempsReader = new Ticker();
+bool shouldReadTemps = true;
+
 
 std::vector<Sensor*> _sensors;
 
 uint8_t numberOfSensors;
 
 void readTemperatures(){
+	shouldReadTemps = false;
 	sensors->requestTemperatures();
 
 	for(auto i = 0; i < numberOfSensors; i++){
@@ -61,42 +65,71 @@ void setup() {
 
 	server->on("/temps", []() {
 
-		String temperaturesString = "{";
-
+		StaticJsonBuffer<200> jsonBuffer;
+		JsonArray& root = jsonBuffer.createArray();
+		
 		for(auto i = 0; i < numberOfSensors; i++){
-			temperaturesString += String((i == 0) ? "" : ", ") + "\"" + _sensors.at(i)->GetId() + "\": \"" + String(_sensors.at(i)->GetTemperature()) + "\"";
+			JsonObject& sensor = jsonBuffer.createObject();
+			sensor["id"] =_sensors.at(i)->GetId();
+			sensor["value"] = _sensors.at(i)->GetTemperature();
+			root.add(sensor);
 		}
 
-		temperaturesString += "}";
+		String tempsString;
+		root.printTo(tempsString);
 
-		server->send(200, "text/json", temperaturesString);
+		server->send(200, "text/json", tempsString);
 
 	});
 
 	server->on("/sensors", []() {
 
-		String sensorsString = "[";
-
+		StaticJsonBuffer<500> jsonBuffer;
+		JsonArray& root = jsonBuffer.createArray();
+		
 		for(auto i = 0; i < numberOfSensors; i++){
-			sensorsString += String((i == 0) ? "" : ", ") + "{ \"id\":\"" + _sensors.at(i)->GetId() + "\", \"color\":\"" + _sensors.at(i)->GetColor() + "\"}";
+			JsonObject& sensor = jsonBuffer.createObject();
+			sensor["id"] =_sensors.at(i)->GetId();
+			sensor["color"] = _sensors.at(i)->GetColor();
+			sensor["resolution"] = _sensors.at(i)->GetResolution();
+			sensor["name"] = _sensors.at(i)->GetName();
+			root.add(sensor);
 		}
 
-		sensorsString += "]";
+		String sensorsString;
+		root.printTo(sensorsString);
+
 		server->send(200, "text/json", sensorsString);
 
 	});
 
-	server->on("/sensor/:id/color", HTTP_POST, [](){
+	server->on("/sensor/color", HTTP_POST, [](){
 
-		auto requestString = server->args();
-		Serial.println(requestString);
+		StaticJsonBuffer<200> jsonBuffer;
+		JsonObject& sensor = jsonBuffer.parse(server->arg("plain"));
 
+		sensor.printTo(Serial);
+
+		uint8_t sensorIndex;
+		
+		for (auto i = 0; i < numberOfSensors; i++){
+			if(_sensors.at(i)->GetId() == sensor["id"])
+				sensorIndex = i;
+		}
+
+		_sensors.at(sensorIndex)->SetColor(sensor["color"]);
+		server->send(200, "text/json");
+		
 	});
 
 	server->begin();
-	tempsReader->attach(1, readTemperatures);
+	tempsReader->attach(1, []() {
+		shouldReadTemps = true;
+	});
 }
 
 void loop() {
 	server->handleClient();
+	if(shouldReadTemps)
+		readTemperatures();
 }
