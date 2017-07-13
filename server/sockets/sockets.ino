@@ -119,6 +119,22 @@ void setup() {
 		
 	});
 
+	server->on("/sensor/name", HTTP_POST, [](){
+
+		StaticJsonBuffer<200> jsonBuffer;
+		JsonObject& sensor = jsonBuffer.parse(server->arg("plain"));
+
+		uint8_t sensorIndex;
+		for (auto i = 0; i < numberOfSensors; i++){
+			if(_sensors.at(i)->GetId() == sensor["id"])
+				sensorIndex = i;
+		}
+
+		_sensors.at(sensorIndex)->SetName(sensor["name"]);
+		server->send(200, "text/json");
+		
+	});
+
 	server->begin();
 	tempsReader->attach(1, []() {
 		shouldReadTemps = true;

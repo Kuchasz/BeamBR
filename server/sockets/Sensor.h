@@ -23,6 +23,7 @@ class Sensor{
 	String GetName();
 	String GetResolution();
 	void SetColor(String color);
+	void SetName(String name);
 };
 
 #endif

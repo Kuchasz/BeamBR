@@ -71,3 +71,7 @@ void Sensor::SetColor(String color){
 	this->color[2] = b;
 	
 }
+
+void Sensor::SetName(String name){
+	this->name = name;
+}
