@@ -9,9 +9,4 @@ export const getTemperatures = () => new Promise<Temperature[]>((res) => {
                     sensorId: t.id, 
                     value: Number(t.value), 
                     time: new Date().getTime()})))));
-    // res(sensors.map(s => ({
-    //     sensorId: s.id,
-    //     value: createTemperatureValue(s.id),
-    //     time: new Date().getTime()
-    // })));
 });

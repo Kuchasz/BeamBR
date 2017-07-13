@@ -2,9 +2,9 @@ import {Network} from "./state";
 import {networks} from "../data/mocks";
 
 export const getNetworks = () => new Promise<Network[]>((res) => {
-    setTimeout(() => {
-        res(networks);
-    }, Math.random() * 2000 + 1000);
+    fetch("http://192.168.1.5/networks")
+        .then(result => result.json()
+            .then(networks => res(networks)));
 });
 
 export const connectToNetwork = (ssid: string, password: string) => new Promise((res, rej) => {

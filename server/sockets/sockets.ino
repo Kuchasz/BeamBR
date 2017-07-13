@@ -57,13 +57,13 @@ void setup() {
 	Serial.println("Connected!");
 	Serial.println(WiFi.localIP());
 
-	server->on("/", []() {
+	server->on("/", HTTP_GET, []() {
 		File rootHtml = SPIFFS.open("/index.html", "r");
 		Serial.println(rootHtml.size());
 		server->streamFile(rootHtml, "text/html");
 	});
 
-	server->on("/temps", []() {
+	server->on("/temps", HTTP_GET, []() {
 
 		StaticJsonBuffer<200> jsonBuffer;
 		JsonArray& root = jsonBuffer.createArray();
@@ -82,7 +82,7 @@ void setup() {
 
 	});
 
-	server->on("/sensors", []() {
+	server->on("/sensors", HTTP_GET, []() {
 
 		StaticJsonBuffer<500> jsonBuffer;
 		JsonArray& root = jsonBuffer.createArray();
@@ -132,7 +132,30 @@ void setup() {
 
 		_sensors.at(sensorIndex)->SetName(sensor["name"]);
 		server->send(200, "text/json");
+
+	});
+
+	server->on("/networks", HTTP_GET, [](){
+
+		auto numberOfNetworks = WiFi.scanNetworks();
+
+		StaticJsonBuffer<500> jsonBuffer;
+		JsonArray& root = jsonBuffer.createArray();
 		
+		for (int i = 0; i < numberOfNetworks; ++i) {
+			JsonObject& network = jsonBuffer.createObject();
+			network["ssid"] = WiFi.SSID(i);
+			network["strength"] = WiFi.RSSI(i);
+			network["channel"] = WiFi.channel(i);
+			network["isSecured"] = WiFi.encryptionType(i) == ENC_TYPE_NONE;
+			root.add(network);
+		}
+
+		String networksString;
+		root.printTo(networksString);
+
+		server->send(200, "text/json", networksString);
+
 	});
 
 	server->begin();
