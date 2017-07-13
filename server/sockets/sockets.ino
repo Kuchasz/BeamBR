@@ -108,10 +108,7 @@ void setup() {
 		StaticJsonBuffer<200> jsonBuffer;
 		JsonObject& sensor = jsonBuffer.parse(server->arg("plain"));
 
-		sensor.printTo(Serial);
-
 		uint8_t sensorIndex;
-		
 		for (auto i = 0; i < numberOfSensors; i++){
 			if(_sensors.at(i)->GetId() == sensor["id"])
 				sensorIndex = i;
