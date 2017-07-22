@@ -37,7 +37,7 @@ class AppPageView extends React.Component<Props, State>{
                         <MenuItem onClick={() => this.props.createNavigateToInnerRouteAction(InnerRoute.Visualization)} isActive={this.props.innerRoute === InnerRoute.Visualization} text="Visualization"></MenuItem>
                     </Menu>
                 </div>
-                <div {...css({flex: 1, background: '#dedede'})}>
+                <div {...css({padding: '8px', flex: 1, background: '#dedede'})}>
                     {this.props.innerRoute === InnerRoute.SensorsConfig ? <SensorsList/> : null}
                     {this.props.innerRoute === InnerRoute.NetworksConfig ? <NetworksList/> : null}
                     {this.props.innerRoute === InnerRoute.Visualization ? <Visualization/> : null}
