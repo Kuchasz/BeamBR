@@ -26,7 +26,7 @@ const createNetwork = (): Network => ({
 
 export const networks = Array.from(Array(Math.floor(Math.random() * 10)).keys()).map(() => createNetwork());
 
-const lastTempsForSensors = {};
+const lastTempsForSensors : {[sensorId: string]: number}= {};
 
 export const createTemperatureValue = (sensorId: string) => {
     const lastTempForSensor = lastTempsForSensors[sensorId] || Math.random() * 50 + 20;

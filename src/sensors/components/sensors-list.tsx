@@ -43,7 +43,7 @@ class SensorsListView extends React.Component<Props, State> {
         return (
             <div>
                 <button onClick={this.props.createFetchSensorsAction}>Get Sensors</button>
-                <div style={{visibility: this.state.selectedSensorId !== undefined ? 'visible' : 'collapsed'}}>
+                <div style={{display: this.state.selectedSensorId !== undefined ? 'block' : 'none'}}>
                     <div>
                         <label>Set color for sensor</label>
                         <ColorPalette onChoose={(color) => this.setColor(color)} colors={colors}/>
