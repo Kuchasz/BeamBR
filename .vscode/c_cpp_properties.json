@@ -1,6 +1,53 @@
 {
     "configurations": [
         {
+            "name": "Linux",
+            "includePath": [
+                "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/cores/arduino/",
+                "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/EEPROM/",
+                "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/HID/",
+                "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/SPI/",
+                "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/SoftwareSerial/",
+                "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/Wire/",
+                "/home/rafau/Downloads/arduino-ide/hardware/tools/avr/avr/include/",
+                "/home/rafau/Downloads/arduino-ide/hardware/tools/avr/avr/include/avr/",
+                "/home/rafau/Downloads/arduino-ide/hardware/tools/avr/avr/include/compat/",
+                "/home/rafau/Downloads/arduino-ide/hardware/tools/avr/avr/include/util/",
+                "/home/rafau/Arduino/libraries/DallasTemperature",
+                "/home/rafau/Arduino/libraries/ArduinoJson",
+                "/home/rafau/Arduino/libraries/OneWire",
+                "/home/rafau/Arduino/libraries",
+                "/home/rafau/Downloads/arduino-ide/libraries",
+                "/home/rafau/Downloads/arduino-ide/libraries/WiFi/src",
+                "/home/rafau/.arduino15/packages/esp8266/hardware/esp8266/2.3.0/libraries",
+                "/home/rafau/.arduino15/packages/esp8266/hardware/esp8266/2.3.0/cores/esp8266"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false,
+                "path": [
+                    "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/cores/arduino/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/EEPROM/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/HID/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/SPI/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/SoftwareSerial/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/arduino/avr/libraries/Wire/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/tools/avr/avr/include/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/tools/avr/avr/include/avr/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/tools/avr/avr/include/compat/",
+                    "/home/rafau/Downloads/arduino-ide/hardware/tools/avr/avr/include/util/",
+                    "/home/rafau/Arduino/libraries/DallasTemperature",
+                    "/home/rafau/Arduino/libraries/ArduinoJson",
+                    "/home/rafau/Arduino/libraries/OneWire",
+                    "/home/rafau/Arduino/libraries",
+                    "/home/rafau/Downloads/arduino-ide/libraries",
+                    "/home/rafau/Downloads/arduino-ide/libraries/WiFi/src",
+                    "/home/rafau/.arduino15/packages/esp8266/hardware/esp8266/2.3.0/libraries",
+                    "/home/rafau/.arduino15/packages/esp8266/hardware/esp8266/2.3.0/cores/esp8266"
+                ]
+            },
+            "intelliSenseMode": "clang-x64"
+        },
+        {
             "name": "Win32",
             "includePath": [
                 "C:\\Users\\Stacjonarny\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.3.0\\cores\\esp8266",
@@ -14,10 +61,12 @@
                     "C:\\Users\\Stacjonarny\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.3.0\\cores\\esp8266",
                     "C:\\Users\\Stacjonarny\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.3.0\\libraries",
                     "C:\\Users\\Stacjonarny\\Documents\\Arduino\\libraries",
-                    "server\\libraries"
+                    "server\\libraries",
+                    "${workspaceRoot}"
                 ]
             },
             "intelliSenseMode": "msvc-x64"
         }
-    ]
+    ],
+    "version": 2
 }

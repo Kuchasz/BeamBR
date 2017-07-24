@@ -10,12 +10,12 @@ class Sensor{
 	DeviceAddress address = {0, 0, 0, 0, 0, 0, 0, 0};
 	float temperature;
 	SensorColor color = { 255, 0, 0 };
-	DallasTemperature* sensors;
+	DallasTemperature sensors;
 	uint8_t resolution;
 	String name;
 
 	public:
-	Sensor(DeviceAddress targetAddress, DallasTemperature* sensors);
+	Sensor(DeviceAddress targetAddress, DallasTemperature sensors);
 	void UpdateTemperature();
 	float GetTemperature();
 	String GetId();

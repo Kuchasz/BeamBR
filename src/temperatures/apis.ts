@@ -2,7 +2,7 @@ import {Temperature} from "./state";
 import {sensors, createTemperatureValue} from "../data/mocks";
 
 export const getTemperatures = () => new Promise<Temperature[]>((res) => {
-    fetch('http://192.168.1.5/temps')
+    fetch('http://192.168.1.1/temps')
         .then(result => result.json()
             .then(temperatures => res(temperatures
                 .map(t => ({

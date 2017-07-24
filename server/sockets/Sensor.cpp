@@ -25,7 +25,7 @@ String formatAddress(DeviceAddress deviceAddress)
   	return finalAddress;
 }
 
-Sensor::Sensor(DeviceAddress targetAddress, DallasTemperature* sensors){
+Sensor::Sensor(DeviceAddress targetAddress, DallasTemperature sensors){
 	temperature = 0.0;
 	this->name = String(rand());
 	this->resolution = 11;
@@ -40,7 +40,7 @@ float Sensor::GetTemperature(){
 }
 
 void Sensor::UpdateTemperature(){
-	auto newTemperature = sensors->getTempC(address);
+	auto newTemperature = sensors.getTempC(address);
 	this->temperature = newTemperature;
 }
 

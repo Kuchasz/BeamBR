@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "ino": "cpp",
         "initializer_list": "cpp",
         "xstring": "cpp",
         "xutility": "cpp",
@@ -12,6 +13,12 @@
         "xlocnum": "cpp",
         "xloctime": "cpp",
         "system_error": "cpp",
-        "libc_replacements.c": "cpp"
-    }
+        "libc_replacements.c": "cpp",
+        "ip_frag.c": "cpp",
+        "wlif.c": "cpp",
+        "ard_spi.c": "cpp",
+        "nvram.c": "cpp",
+        "umm_malloc.c": "cpp"
+    },
+    "C_Cpp.intelliSenseEngine": "Default"
 }

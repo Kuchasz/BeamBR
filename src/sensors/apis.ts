@@ -4,7 +4,7 @@ import {sensors} from "../data/mocks";
 import { Color, colorFromHex } from "../core/colors";
 
 export const getSensors = () => new Promise<Sensor[]>(res => {
-    fetch('http://192.168.1.5/sensors')
+    fetch('http://192.168.1.1/sensors')
         .then(result => result
             .json()
             .then(sensors => res(sensors.map(s => ({
@@ -16,14 +16,14 @@ export const getSensors = () => new Promise<Sensor[]>(res => {
 });
 
 export const setColorForSensor = (id: string, color: Color) => new Promise<boolean>(res => {
-    fetch("http://192.168.1.5/sensor/color", {
+    fetch("http://192.168.1.1/sensor/color", {
         method: 'post',
         body: JSON.stringify({id, color: color.hex.slice(1)})
     }).then(() => res(true));
 });
 
 export const setNameForSensor = (id: string, name: string) => new Promise<boolean>(res => {
-    fetch("http://192.168.1.5/sensor/name", {
+    fetch("http://192.168.1.1/sensor/name", {
         method: 'post',
         body: JSON.stringify({id, name})
     }).then(() => res(true));
