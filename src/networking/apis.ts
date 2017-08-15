@@ -2,7 +2,7 @@ import {Network} from "./state";
 import {networks} from "../data/mocks";
 
 export const getNetworks = () => new Promise<Network[]>((res) => {
-    fetch("http://192.168.1.1/networks")
+    fetch("networks")
         .then(result => result.json()
             .then(networks => res(networks)));
 });

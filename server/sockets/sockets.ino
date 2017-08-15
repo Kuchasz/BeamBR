@@ -42,6 +42,8 @@ void setup() {
 	SPIFFS.begin();
 	sensors.begin();
 
+	pinMode(D1, OUTPUT);
+
  	numberOfSensors = sensors.getDeviceCount();
 
 	for(auto i = 0; i < numberOfSensors; i++){
@@ -50,7 +52,7 @@ void setup() {
 		_sensors.push_back(new Sensor(targetAddress, sensors));
 	}
 
-	WiFi.begin(ssid, password);
+	// WiFi.begin(ssid, password);
 
 	WiFi.softAP(apSSID);
 
@@ -67,38 +69,15 @@ void setup() {
 	// Serial.println(WiFi.localIP());
 
 	server.on("/", HTTP_GET, []() {
-		digitalWrite(D2, HIGH);
+		digitalWrite(D1, HIGH);
 		File rootHtml = SPIFFS.open("/index.html", "r");
 
-		// if (server.streamFile(rootHtml, "text/html") != rootHtml.size()) {
-		// 	Serial.println("Sent less data than expected!");
-		// }
+		if (server.streamFile(rootHtml, "text/html") != rootHtml.size()) {
+			Serial.println("Sent less data than expected!");
+		}
 
-		// server.client().println("HTTP/1.1 200 OK");
-		// server.client().println("Connection: close");
-		// server.client().println("Content-Type: text/html");
-		// server.client().println("Content-Length: " + String((rootHtml.size())));
-		// server.client().println();
-		// server.client().writeText(rootHtml);
+		digitalWrite(D1, LOW);
 
-		// rootHtml.close();
-
-		// char buf[1024];
-		// int siz = rootHtml.size();
-		
-		// while(siz > 0) {
-		// 	size_t len = std::min((int)(sizeof(buf) - 1), siz);
-		// 	rootHtml.read((uint8_t *)buf, len);
-		// 	server.client().write((const char*)buf, len);
-		// 	siz -= len;
-		// }
-
-		// server.streamFile(rootHtml, );
-
-		digitalWrite(D2, LOW);
-
-		// Serial.println(rootHtml.size());
-		
 	});
 
 	server.on("/temps", HTTP_GET, []() {
@@ -197,9 +176,9 @@ void setup() {
 	});
 
 	server.begin();
-	// tempsReader.attach(1, []() {
-	// 	shouldReadTemps = true;
-	// });
+	tempsReader.attach(1, []() {
+		shouldReadTemps = true;
+	});
 }
 
 void loop() {
