@@ -1,9 +1,9 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <Ticker.h>
-#include "ESP8266WiFi.h"
-#include "ESP8266WebServer.h"
-#include "FS.h"
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include <FS.h>
 #include <vector>
 #include "Sensor.h"
 #include <ArduinoJson.h>
@@ -11,13 +11,18 @@
 const char* ssid = "Profit";
 const char* password = "44441111";
 
-ESP8266WebServer* server = new ESP8266WebServer(80);
-OneWire* oneWire = new OneWire(D5);
-DallasTemperature* sensors = new DallasTemperature(oneWire);
+const char* apSSID = "BeamBR";
 
-static Ticker* tempsReader = new Ticker();
+ESP8266WebServer server(80);
+OneWire oneWire(D5);
+DallasTemperature sensors(&oneWire);
+
+Ticker tempsReader;
 bool shouldReadTemps = true;
 
+IPAddress apIP(192, 168, 1, 1);
+IPAddress apGateway(192, 168, 1, 1);
+IPAddress apSubmask(255, 255, 255, 0);
 
 std::vector<Sensor*> _sensors;
 
@@ -25,7 +30,7 @@ uint8_t numberOfSensors;
 
 void readTemperatures(){
 	shouldReadTemps = false;
-	sensors->requestTemperatures();
+	sensors.requestTemperatures();
 
 	for(auto i = 0; i < numberOfSensors; i++){
 		_sensors.at(i)->UpdateTemperature();
@@ -35,35 +40,47 @@ void readTemperatures(){
 void setup() {
 	Serial.begin(115200);
 	SPIFFS.begin();
-	sensors->begin();
+	sensors.begin();
 
- 	numberOfSensors = sensors->getDeviceCount();
+	pinMode(D1, OUTPUT);
+
+ 	numberOfSensors = sensors.getDeviceCount();
 
 	for(auto i = 0; i < numberOfSensors; i++){
 		DeviceAddress targetAddress;
-		sensors->getAddress(targetAddress, i);
+		sensors.getAddress(targetAddress, i);
 		_sensors.push_back(new Sensor(targetAddress, sensors));
 	}
 
-	WiFi.begin(ssid, password);
+	// WiFi.begin(ssid, password);
 
-	Serial.println("Connecting!");
+	WiFi.softAP(apSSID);
 
-	while (WiFi.status() != WL_CONNECTED) {
-		delay(500);
-		Serial.print(".");
-	}
+	WiFi.softAPConfig(apIP, apGateway, apSubmask);
 
-	Serial.println("Connected!");
-	Serial.println(WiFi.localIP());
+	// Serial.println("Connecting!");
 
-	server->on("/", HTTP_GET, []() {
+	// while (WiFi.status() != WL_CONNECTED) {
+	// 	delay(500);
+	// 	Serial.print(".");
+	// }
+
+	// Serial.println("Connected!");
+	// Serial.println(WiFi.localIP());
+
+	server.on("/", HTTP_GET, []() {
+		digitalWrite(D1, HIGH);
 		File rootHtml = SPIFFS.open("/index.html", "r");
-		Serial.println(rootHtml.size());
-		server->streamFile(rootHtml, "text/html");
+
+		if (server.streamFile(rootHtml, "text/html") != rootHtml.size()) {
+			Serial.println("Sent less data than expected!");
+		}
+
+		digitalWrite(D1, LOW);
+
 	});
 
-	server->on("/temps", HTTP_GET, []() {
+	server.on("/temps", HTTP_GET, []() {
 
 		StaticJsonBuffer<200> jsonBuffer;
 		JsonArray& root = jsonBuffer.createArray();
@@ -78,11 +95,11 @@ void setup() {
 		String tempsString;
 		root.printTo(tempsString);
 
-		server->send(200, "text/json", tempsString);
+		server.send(200, "text/json", tempsString);
 
 	});
 
-	server->on("/sensors", HTTP_GET, []() {
+	server.on("/sensors", HTTP_GET, []() {
 
 		StaticJsonBuffer<500> jsonBuffer;
 		JsonArray& root = jsonBuffer.createArray();
@@ -99,14 +116,14 @@ void setup() {
 		String sensorsString;
 		root.printTo(sensorsString);
 
-		server->send(200, "text/json", sensorsString);
+		server.send(200, "text/json", sensorsString);
 
 	});
 
-	server->on("/sensor/color", HTTP_POST, [](){
+	server.on("/sensor/color", HTTP_POST, [](){
 
 		StaticJsonBuffer<200> jsonBuffer;
-		JsonObject& sensor = jsonBuffer.parse(server->arg("plain"));
+		JsonObject& sensor = jsonBuffer.parse(server.arg("plain"));
 
 		uint8_t sensorIndex;
 		for (auto i = 0; i < numberOfSensors; i++){
@@ -115,14 +132,14 @@ void setup() {
 		}
 
 		_sensors.at(sensorIndex)->SetColor(sensor["color"]);
-		server->send(200, "text/json");
+		server.send(200, "text/json");
 		
 	});
 
-	server->on("/sensor/name", HTTP_POST, [](){
+	server.on("/sensor/name", HTTP_POST, [](){
 
 		StaticJsonBuffer<200> jsonBuffer;
-		JsonObject& sensor = jsonBuffer.parse(server->arg("plain"));
+		JsonObject& sensor = jsonBuffer.parse(server.arg("plain"));
 
 		uint8_t sensorIndex;
 		for (auto i = 0; i < numberOfSensors; i++){
@@ -131,11 +148,11 @@ void setup() {
 		}
 
 		_sensors.at(sensorIndex)->SetName(sensor["name"]);
-		server->send(200, "text/json");
+		server.send(200, "text/json");
 
 	});
 
-	server->on("/networks", HTTP_GET, [](){
+	server.on("/networks", HTTP_GET, [](){
 
 		auto numberOfNetworks = WiFi.scanNetworks();
 
@@ -154,18 +171,18 @@ void setup() {
 		String networksString;
 		root.printTo(networksString);
 
-		server->send(200, "text/json", networksString);
+		server.send(200, "text/json", networksString);
 
 	});
 
-	server->begin();
-	tempsReader->attach(1, []() {
+	server.begin();
+	tempsReader.attach(1, []() {
 		shouldReadTemps = true;
 	});
 }
 
 void loop() {
-	server->handleClient();
+	server.handleClient();
 	if(shouldReadTemps)
 		readTemperatures();
 }
